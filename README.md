@@ -1,33 +1,8 @@
-<style type="text/css">
-table.parameters {
-    width: 100%;
-    border: 1px solid #333333;
-}
-table.parameters th {
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #333333;
-    text-align: left;
-    padding: 2px 8px;
-}
-table.parameters td {
-    padding: 2px 8px;
-}
-table.parameters td.parameter {
-    font-weight: bold;
-    background: #fdf6e3;
-}
-table.parameters td.default {
-    color: hsl(8, 67%, 57%);
-}
-</style>
-
 # Smart Maps
 
 Smart Map is a plugin which allows you to easily manage geographic points. With Smart Map, you can:
 
 - Display multiple locations on a dynamic map
-<!--- Display multiple locations on a static map --->
 - Search entries to find the closest location
 
 Once you have installed the Smart Map plugin, simply create a new field using the "Smart Map Address" field type, and add it to a section. You'll see the magic once you start editing entries in that section!
@@ -81,48 +56,42 @@ This will create a &lt;div&gt; tag which will automatically be used as a contain
     
     {{ craft.smartMap.map(locations, options) }}
 
-<table class="parameters">
-    <colgroup>
-        <col width="80">
-        <col width="80">
-        <col width="180">
-        <col width="*">
-    </colgroup>
+<table>
     <tr>
-        <th class="parameter">Options</th>
-        <th class="type">Type</th>
-        <th class="default">Default</th>
-        <th class="description">Description</th>
+        <th>Options</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
     </tr>
     <tr>
-        <td class="parameter">id</td>
-        <td class="type">string</td>
-        <td class="default">"smartmap-mapcanvas"</td>
-        <td class="description">Set id attribute of container.</td>
+        <td>id</td>
+        <td>string</td>
+        <td>"smartmap-mapcanvas"</td>
+        <td>Set id attribute of container.</td>
     </tr>
     <tr>
-        <td class="parameter">width</td>
-        <td class="type">int</td>
-        <td class="default"><em>null</em></td>
-        <td class="description">Width of map (in px)</td>
+        <td>width</td>
+        <td>int</td>
+        <td><em>null</em></td>
+        <td>Width of map (in px)</td>
     </tr>
     <tr>
-        <td class="parameter">height</td>
-        <td class="type">int</td>
-        <td class="default"><em>null</em></td>
-        <td class="description">Height of map (in px)</td>
+        <td>height</td>
+        <td>int</td>
+        <td><em>null</em></td>
+        <td>Height of map (in px)</td>
     </tr>
     <tr>
-        <td class="parameter">zoom</td>
-        <td class="type">int</td>
-        <td class="default">8</td>
-        <td class="description">Zoom level <em>(higher number = greater detail)</em></td>
+        <td>zoom</td>
+        <td>int</td>
+        <td>8</td>
+        <td>Zoom level <em>(higher number = greater detail)</em></td>
     </tr>
     <tr>
-        <td class="parameter">center</td>
-        <td class="type">array</td>
-        <td class="default">(avg. of all coords)</td>
-        <td class="description">Map center, ie: {'lat':38.897837, 'lng':-77.036512}</td>
+        <td>center</td>
+        <td>array</td>
+        <td>(avg. of all coords)</td>
+        <td>Map center, ie: {'lat':38.897837, 'lng':-77.036512}</td>
     </tr>
 </table>
 
@@ -169,30 +138,25 @@ Your target can be anything that translates into a full or partial address...
  - Aurora, IL
  - 742 Evergreen Terrace
 
-<table class="parameters">
-    <colgroup>
-        <col width="100">
-        <col width="100">
-        <col width="*">
-    </colgroup>
+<table>
     <tr>
-        <th class="parameter">Parameter</th>
-        <th class="default">Default</th>
-        <th class="description">Description</th>
+        <th>Parameter</th>
+        <th>Default</th>
+        <th>Description</th>
     </tr>
     <tr>
-        <td class="parameter">target</td>
-        <td class="default">&nbsp;</td>
-        <td class="description">[REQUIRED] Starting point for proximity search</td>
+        <td>target</td>
+        <td>&nbsp;</td>
+        <td>[REQUIRED] Starting point for proximity search</td>
     </tr>
     <tr>
-        <td class="parameter">range</td>
-        <td class="default">25</td>
-        <td class="description">Search radius, measured in "units"</td>
+        <td>range</td>
+        <td>25</td>
+        <td>Search radius, measured in "units"</td>
     </tr>
     <tr>
-        <td class="parameter">units</td>
-        <td class="default">"miles"</td>
-        <td class="description">Units of measurement ("miles" or "kilometers")</td>
+        <td>units</td>
+        <td>"miles"</td>
+        <td>Units of measurement ("miles" or "kilometers")</td>
     </tr>
 </table>
