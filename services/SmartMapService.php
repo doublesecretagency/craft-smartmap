@@ -229,7 +229,7 @@ class SmartMapService extends BaseApplicationComponent
         return "($unitVal * acos(cos(radians($lat)) * cos(radians($table.lat)) * cos(radians($table.lng) - radians($lng)) + sin(radians($lat)) * sin(radians($table.lat))))";
     }
 
-    // Automatically detect type of search to be carried out
+    // Get coordinates from Google Maps API
     private function _geocodeGoogleMapApi($target)
     {
 

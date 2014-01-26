@@ -10,7 +10,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
         //craft()->smartMap->checkApiKey();
 
-        craft()->templates->includeJsFile('http://maps.google.com/maps/api/js?sensor=false');
+        craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
         craft()->templates->includeJsResource('smartmap/js/smartmap.js');
         craft()->templates->includeCssResource('smartmap/css/smartmap.css');
 
@@ -72,7 +72,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
         //$filter = SmartMap_FilterCriteriaModel::populateModel($coords, $options = array());
 
-        $src  = 'http://maps.googleapis.com/maps/api/staticmap?sensor=false';
+        $src  = '//maps.googleapis.com/maps/api/staticmap?sensor=false';
         //$src .= '&key='.$this->mapApiKey;
         $src .= '&center='.$coords['lat'].','.$coords['lng'];
         $src .= '&zoom='.($options['zoom'] ? $options['zoom'] : 15);

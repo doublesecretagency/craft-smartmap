@@ -25,7 +25,7 @@ class SmartMap_AddressFieldType extends BaseFieldType
         switch (craft()->smartMap->mapApi) {
             case MapApi::GoogleMaps:
             default:
-                $apiJs = 'https://maps.googleapis.com/maps/api/js?key='.craft()->smartMap->mapApiKey.'&sensor=false';
+                $apiJs = '//maps.googleapis.com/maps/api/js?key='.craft()->smartMap->mapApiKey.'&sensor=false';
                 break;
         }
 
