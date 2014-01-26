@@ -1,0 +1,12 @@
+{% extends '_layouts/cp' %}
+
+{% includeCssResource 'smartmap/css/documentation.css' %}
+
+{% set tabs = {
+    main:       {label: "How To Use"|t,          url: url('smartmap')},
+    entry:      {label: "View Entry Data"|t,     url: url('smartmap/docs/entry-data')},
+    dynamic:    {label: "Dynamic Map"|t,         url: url('smartmap/docs/dynamic-map')},
+    search:     {label: "Proximity Searching"|t, url: url('smartmap/docs/search')},
+} %}
+
+{# static: {label: "Static Map"|t, url: url('smartmap/docs/static-map')}, #}

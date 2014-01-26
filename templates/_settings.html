@@ -1,0 +1,30 @@
+{% import "_includes/forms" as forms %}
+
+{% set getApiKey = 'https://developers.google.com/maps/documentation/javascript/tutorial#api_key' %}
+
+<p>A tab will appear at the top of the control panel, allowing you easy access to documentation.</p>
+
+{{ forms.checkbox({
+	label: "Enable documentation?"|t,
+	id: 'showDocs',
+	name: 'showDocs',
+	checked: settings.showDocs,
+	errors: settings.getErrors('showDocs')
+}) }}
+
+<hr />
+
+<p>In order to use this plugin, you'll need your own Google API Key.</p>
+
+<h2>Where can I get an API Key?</h2>
+<p>Getting an API key is easy! Simply <a href="{{ getApiKey }}" target="_blank">follow the instructions found here...</a></p>
+
+{{ forms.textField({
+	label: "API Key"|t,
+	id: 'apiKey',
+	name: 'apiKey',
+	instructions: "Enter your Google Maps API key:"|t,
+	value: settings.apiKey,
+	autofocus: true,
+	errors: settings.getErrors('apiKey')
+}) }}

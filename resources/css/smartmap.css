@@ -1,0 +1,3 @@
+
+/* Fix Google Map UI bug */
+.smartmap-mapcanvas img {max-width: none}

@@ -1,0 +1,54 @@
+{% extends 'smartmap/_layout' %}
+{% set selectedTab = 'main' %}
+
+{% set title = 'How To Use Smart Map'|t %}
+
+{% set content %}
+	<h2>What is Smart Map?</h2>
+	<p>Smart Map is a plugin which allows you to easily manage geographic points. With Smart Map, you can:</p>
+	<ul>
+		<li> - Display multiple locations on a dynamic map</li>
+		<!-- li> - Display multiple locations on a static map</li -->
+		<li> - Search entries to find the closest location</li>
+	</ul>
+
+	<!-- p style="font-style:italic">* Currently only tested with US addresses.</p -->
+	
+	<h2>Basic Instructions</h2>
+	<h3>Add your API key</h3>
+	<ol>
+		<li>Go to: Settings &gt; Plugins &gt; <a href="{{ url('settings/plugins/smartmap') }}">Smart Map</a></li>
+		<li>Enter your API key.</li>
+		<li>Save</li>
+	</ol>
+	<h3>Create an Address Field</h3>
+	<ol>
+		<li>Create a new field. For the field type, select <strong>Smart Map Address</strong>.</li>
+		<li>Add that field to your section.</li>
+	</ol>
+	<h3>Filling Out an Address</h3>
+	<ol>
+		<li>Edit (or create) an entry.</li>
+		<li>Begin filling out the address. When you navigate between fields, you will be shown a list of addresses which match what you've entered so far.</li>
+		<li>Click on the correct address.</li>
+		<li>Click Save! Your address will be saved, along with its geographic coordinates.</li>
+	</ol>
+
+    <h2>Using a Smart Map Address field</h2>
+    <p>As you begin entering the address, a list of possible matches will appear. You can simply click on the address which matches the one you are entering, and the remaining fields will be filled in automatically.</p>
+    <p>You may see an address option which is very close to correct, but perhaps some of the information is a little off (say it's showing the correct zip code, but a neighboring city). You can easily correct any of the address information after picking out the closest match. This allows the latitude and longitude to be calculated automatically.</p>
+    <p>It's the latitude and longitude that are so important to Smart Map. This information is used when searching through existing addresses, to determine which of them is closest to your target. It is also used to plot each address on a map.</p>
+
+	<hr />
+
+	<h2>Want to hide the "Smart Map" tab at the top of this page?</h2>
+	<ol>
+		<li>Settings &gt; Plugins &gt; <a href="{{ url('settings/plugins/smartmap') }}">Smart Map</a></li>
+		<li>Uncheck "Enable documentation?"</li>
+		<li>Save</li>
+	</ol>
+
+    <!-- h2>About the Publisher</h2>
+    <p>On behalf of us here at the <a href="http://doublesecretagency.com" target="_blank">Double Secret Agency</a>, thank you for installing the Smart Map plugin!</p -->
+
+{% endset %}

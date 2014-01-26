@@ -1,0 +1,61 @@
+
+div.smartmap-field {
+	position: relative;
+}
+div.smartmap-matches {
+	display: none;
+	position: absolute;
+	top: 0px;
+	left: 610px;
+	width: 370px;
+	min-height: 100px;
+	padding: 12px 3px 0;
+	background-color: #ffffff;
+	border: 2px solid #cccccc;
+}
+div.smartmap-matches-intro {
+	margin-left: 9px;
+}
+ul.smartmap-matches-options {
+	max-height: 154px;
+	overflow: scroll;
+	margin-top: 5px;
+	margin-left: 0px;
+}
+ul.smartmap-matches-options li span {
+	display: inline-block;
+	color: #0d78f2;
+	padding: 1px 8px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	cursor: pointer;
+}
+ul.smartmap-matches-options li span:hover {
+	background-color: #FFE796;
+}
+
+div.smartmap-street-address div.field {
+	margin: 4px 0;
+}
+
+div.smartmap-city-state-zip {
+	margin-top: 4px;
+}
+div.smartmap-city-state-zip div.field {
+	float: left;
+	margin: 0px 7px 0px 0px;
+}
+
+div.smartmap-coordinates {
+	clear: both;
+	padding-top: 14px;
+}
+div.smartmap-coordinates div.field {
+	float: left;
+	width: 49.5%;
+	margin: 0px;
+}
+div.smartmap-coordinates div.field:first-child {
+	margin-right: 1%;
+}
