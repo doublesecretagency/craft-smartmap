@@ -50,7 +50,7 @@ Add this Twig tag to your template:
 
 ... which will automatically render a container for your Google Map:
 
-    &lt;div class="smartmap-mapcanvas"&gt;&lt;/div&gt;
+    <div class="smartmap-mapcanvas"></div>
 
 There are several options available to customize your map:
 
@@ -160,8 +160,8 @@ Your target can be anything that translates into a full or partial address...
     </tr>
     <tr>
         <td>target</td>
-        <td>&nbsp;</td>
-        <td>[REQUIRED] Starting point for proximity search</td>
+        <td>_[REQUIRED]_</td>
+        <td>Starting point for proximity search</td>
     </tr>
     <tr>
         <td>range</td>

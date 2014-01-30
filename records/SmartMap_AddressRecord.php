@@ -5,7 +5,7 @@ class SmartMap_AddressRecord extends BaseRecord
 {
     public function getTableName()
     {
-        return craft()->smartMap->pluginTable;
+        return 'smartmap_addresses';
     }
 
     protected function defineAttributes()
