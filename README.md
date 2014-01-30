@@ -42,6 +42,72 @@ How to display your Smart Map Address values:
 
 ---------------------------------------
 
+## How to sort entries by closest locations
+
+Include this in your "craft.entries" call:
+
+    .myAddressField(params).order('distance')
+
+This will tell Craft to:
+ - Filter your Smart Map field with the parameter you specify.
+ - Order the results by closest distance from your specified target.
+
+_* From this example, replace "myAddressField" with the name of your Smart Map Address field_
+
+
+    {% set target = '90210' %}
+    {% set params = {
+        target: target,
+        range: 100
+    } %}
+
+    {% set entries = craft.entries.myAddressField(params).order('distance').find() %}
+
+    <h1>Showing results for "{{ target }}"...</h1>
+    {% for entry in entries %}
+        <h2>{{ entry.title }}</h2>
+        <div>
+            {{ entry.myAddressField.street1 }}<br />
+            {{ entry.myAddressField.street2 }}<br />
+            {{ entry.myAddressField.city }}, {{ entry.myAddressField.state }} {{ entry.myAddressField.zip }}<br>
+            <strong>{{ entry.myAddressField.distance | number_format(1) }} miles away</strong>
+        </div>
+    {% else %}
+        <h2>No results found</h2>
+    {% endfor %}
+
+The "target" parameter is required. All others are optional.
+
+Your target can be anything that translates into a full or partial address...
+ - 90210
+ - Aurora, IL
+ - 742 Evergreen Terrace
+
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Default</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>target</td>
+        <td><em>[REQUIRED]</em></td>
+        <td>Starting point for proximity search</td>
+    </tr>
+    <tr>
+        <td>range</td>
+        <td>25</td>
+        <td>Search radius, measured in "units"</td>
+    </tr>
+    <tr>
+        <td>units</td>
+        <td>"miles"</td>
+        <td>Units of measurement ("miles" or "kilometers")</td>
+    </tr>
+</table>
+
+---------------------------------------
+
 ## How to render a Google Map of your locations
 
 Add this Twig tag to your template:
@@ -108,69 +174,3 @@ Check your DOM to see if the map container has been generated. If it has, then y
 Ways to fix it:
  - Add a "height" value to your map options.
  - Set the height of ".smartmap-mapcanvas" in your style sheet.
-
----------------------------------------
-
-## How to sort entries by closest locations
-
-Include this in your "craft.entries" call:
-
-    .myAddressField(params).order('distance')
-
-This will tell Craft to:
- - Filter your Smart Map field with the parameter you specify.
- - Order the results by closest distance from your specified target.
-
-_* From this example, replace "myAddressField" with the name of your Smart Map Address field_
-
-
-    {% set target = '90210' %}
-    {% set params = {
-        target: target,
-        range: 100
-    } %}
-
-    {% set entries = craft.entries.myAddressField(params).order('distance').find() %}
-
-    <h1>Showing results for "{{ target }}"...</h1>
-    {% for entry in entries %}
-        <h2>{{ entry.title }}</h2>
-        <div>
-            {{ entry.myAddressField.street1 }}<br />
-            {{ entry.myAddressField.street2 }}<br />
-            {{ entry.myAddressField.city }}, {{ entry.myAddressField.state }} {{ entry.myAddressField.zip }}<br>
-            <strong>{{ entry.myAddressField.distance | number_format(1) }} miles away</strong>
-        </div>
-    {% else %}
-        <h2>No results found</h2>
-    {% endfor %}
-
-The "target" parameter is required. All others are optional.
-
-Your target can be anything that translates into a full or partial address...
- - 90210
- - Aurora, IL
- - 742 Evergreen Terrace
-
-<table>
-    <tr>
-        <th>Parameter</th>
-        <th>Default</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>target</td>
-        <td><em>[REQUIRED]</em></td>
-        <td>Starting point for proximity search</td>
-    </tr>
-    <tr>
-        <td>range</td>
-        <td>25</td>
-        <td>Search radius, measured in "units"</td>
-    </tr>
-    <tr>
-        <td>units</td>
-        <td>"miles"</td>
-        <td>Units of measurement ("miles" or "kilometers")</td>
-    </tr>
-</table>
