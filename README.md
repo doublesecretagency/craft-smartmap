@@ -160,7 +160,7 @@ Your target can be anything that translates into a full or partial address...
     </tr>
     <tr>
         <td>target</td>
-        <td>_[REQUIRED]_</td>
+        <td><em>[REQUIRED]</em></td>
         <td>Starting point for proximity search</td>
     </tr>
     <tr>
