@@ -8,9 +8,6 @@ class SmartMapPlugin extends BasePlugin
 	
 	public function init()
 	{
-		// Table prefix & name
-		craft()->smartMap->dbPrefix    = craft()->db->tablePrefix;
-		craft()->smartMap->pluginTable = 'smartmap_addresses';
 		// Enums
 		$this->_loadEnums();
 		// Events
@@ -29,7 +26,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '1.0.1';
+		return '1.0.2';
 	}
 
 	public function getDeveloper()

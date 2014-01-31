@@ -6,9 +6,6 @@ class SmartMapService extends BaseApplicationComponent
 
     public $targetCoords; // TEMP: Until P&T "distance" fix
 
-    public $dbPrefix;
-    public $pluginTable;
-
     public $measurementUnit;
     public $mapApi;
     public $mapApiKey;
@@ -58,7 +55,7 @@ class SmartMapService extends BaseApplicationComponent
     public function modifyQuery(DbCommand $query, $params)
     {
         // Join with plugin table
-        $query->join($this->pluginTable, 'elements.id = '.$this->dbPrefix.$this->pluginTable.'.elementId');
+        $query->join(SmartMap_AddressRecord::TABLE_NAME﻿, 'elements.id = '.craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME﻿.'.elementId');
         // Search by comparing coordinates
         $filter = $this->_parseFilter($params);
         $this->_searchCoords($query, $filter);
@@ -224,7 +221,7 @@ class SmartMapService extends BaseApplicationComponent
                 break;
         }
         // Set table reference
-        $table = $this->dbPrefix.$this->pluginTable;
+        $table = craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME﻿;
         // Calculate haversine formula
         return "($unitVal * acos(cos(radians($lat)) * cos(radians($table.lat)) * cos(radians($table.lng) - radians($lng)) + sin(radians($lat)) * sin(radians($table.lat))))";
     }
