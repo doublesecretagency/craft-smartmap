@@ -7,23 +7,23 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     // Create dynamic Google Map of locations
     public function googleMap($markers, $options = array())
     {
+        // If solo marker, process as an array
+        if (!is_array($markers)) {
+            return $this->googleMap(array($markers), $options);
+        }
 
         //craft()->smartMap->checkApiKey();
 
+        // Include JavaScript & CSS
         craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
         craft()->templates->includeJsResource('smartmap/js/smartmap.js');
         craft()->templates->includeCssResource('smartmap/css/smartmap.css');
 
-        $js = '';
+        // Decipher map info
+        $map = $this->_getMapCoords($markers, $options);
 
-        $map = $this->_getMapCoords($markers);
-
-        if (array_key_exists('center', $options)) {
-            $center = $options['center'];
-        } else {
-            $center = $map['center'];
-        }
-        $js .= 'smartMap.center = '.json_encode($center).';'.PHP_EOL;
+        // Initialize JS, starting with center
+        $js = 'smartMap.center = '.json_encode($map['center']).';'.PHP_EOL;
 
         if (array_key_exists('id', $options)) {
             $id = $options['id'];
@@ -60,26 +60,37 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     }
 
     // Create <img> of static map
-    public function image($coords, $options = array())
+    public function staticImg($markers, $options = array())
     {
-        $src = $this->imageSource($coords, $options);
+        $src = $this->staticImgSource($markers, $options);
         return $this->_safeOutput('<img src="'.$src.'" />');
     }
 
     // Get source of static map image
-    public function imageSource($coords, $options = array())
+    public function staticImgSource($markers, $options = array())
     {
 
         //$filter = SmartMap_FilterCriteriaModel::populateModel($coords, $options = array());
 
+        // Decipher map info
+        $map = $this->_getMapCoords($markers, $options);
+
+        $width  = (array_key_exists('width', $options)  ? $options['width']  : '200');
+        $height = (array_key_exists('height', $options) ? $options['height'] : '200');
+
         $src  = '//maps.googleapis.com/maps/api/staticmap?sensor=false';
-        //$src .= '&key='.$this->mapApiKey;
-        $src .= '&center='.$coords['lat'].','.$coords['lng'];
-        $src .= '&zoom='.($options['zoom'] ? $options['zoom'] : 15);
-        $src .= '&size=150x150';
+        //$src .= '&key='.craft()->smartMap->mapApiKey;
+        $src .= '&center='.$map['center']['lat'].','.$map['center']['lng'];
+        $src .= '&zoom='.(array_key_exists('zoom', $options) ? $options['zoom'] : 15);
+        $src .= '&size='.$width.'x'.$height;
         $src .= '&visual_refresh=true';
         $src .= '&maptype=roadmap';
-        $src .= '&markers=color:green%7C'.$coords['lat'].','.$coords['lng'];
+
+        $i = 0;
+        foreach ($map['markers'] as $marker) {
+            if ($i) {$src .= '|';}
+            $src .= '&markers=color:red%7C'.$marker['lat'].','.$marker['lng'];
+        }
 
         return $src;
 
@@ -92,8 +103,12 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     }
 
     // Decipher map center & markers based on locations
-    private function _getMapCoords($locations)
+    private function _getMapCoords($locations, $options = array())
     {
+        // If one location, process as an array
+        if (!is_array($locations)) {
+            return $this->_getMapCoords(array($locations), $options);
+        }
 
         // Initialize variables
         $error   = false;
@@ -154,8 +169,12 @@ class SmartMap_VariablesService extends BaseApplicationComponent
             }
         }
 
-        // If error was triggered
-        if ($error) {
+        // Determine center of map
+        if (array_key_exists('center', $options)) {
+            // Center is specified in options
+            $center = $options['center'];
+        } else if ($error) {
+            // Error was triggered
             $center = array(
                 'lat' => 0,
                 'lng' => 0

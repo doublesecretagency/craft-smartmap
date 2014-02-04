@@ -5,21 +5,21 @@ class SmartMapVariable
 {
 
 	// Display a dynamic Google map
-	public function map($target, $options = array())
+	public function map($markers, $options = array())
 	{
-		return craft()->smartMap_variables->googleMap($target, $options);
+		return craft()->smartMap_variables->googleMap($markers, $options);
 	}
 
 	// Display a static map image
-	public function img($target, $options = array())
+	public function img($markers, $options = array())
 	{
-		return craft()->smartMap_variables->image($target, $options);
+		return craft()->smartMap_variables->staticImg($markers, $options);
 	}
 
 	// Render the source for a static map image
-	public function imgSrc($target, $options = array())
+	public function imgSrc($markers, $options = array())
 	{
-		return craft()->smartMap_variables->imageSource($target, $options);
+		return craft()->smartMap_variables->staticImgSource($markers, $options);
 	}
 	
 }

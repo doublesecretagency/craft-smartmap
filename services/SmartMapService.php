@@ -41,7 +41,7 @@ class SmartMapService extends BaseApplicationComponent
     // Check if API key is valid
     public function checkApiKey()
     {
-        if (!craft()->smartMap->mapApiKey) {
+        if (!$this->mapApiKey) {
             throw new Exception("Please enter your Google Maps API key. [/admin/settings/plugins/smartmap]");
         }
     }
