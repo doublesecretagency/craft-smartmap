@@ -46,7 +46,9 @@ How to display your Smart Map Address values:
 
 The code above will render an address like this:
 
-<div style="margin-left:30px;">![](resources/images/template-example.png)</div>
+<div style="margin-left:30px;">
+![](resources/images/template-example.png)
+</div>
 
 ---------------------------------------
 
