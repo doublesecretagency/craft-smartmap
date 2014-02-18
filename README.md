@@ -1,4 +1,6 @@
-# Smart Maps
+![](resources/images/map-example.png)
+
+# Smart Map
 
 Smart Map is a plugin which allows you to easily manage geographic points. With Smart Map, you can:
 

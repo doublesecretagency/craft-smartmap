@@ -5,10 +5,10 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 {
 
     // Create dynamic Google Map of locations
-    public function googleMap($markers, $options = array())
+    public function googleMap($markers = false, $options = array())
     {
         // If solo marker, process as an array
-        if (!is_array($markers)) {
+        if ($markers && !is_array($markers)) {
             return $this->googleMap(array($markers), $options);
         }
 
@@ -18,9 +18,10 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
         craft()->templates->includeJsResource('smartmap/js/smartmap.js');
         craft()->templates->includeCssResource('smartmap/css/smartmap.css');
+        craft()->templates->includeJs('smartMap.searchUrl = "'.UrlHelper::getActionUrl('smartMap/search').'";');
 
         // Decipher map info
-        $map = $this->_getMapCoords($markers, $options);
+        $map = craft()->smartMap->markerCoords($markers, $options);
 
         // Initialize JS, starting with center
         $js = 'smartMap.center = '.json_encode($map['center']).';'.PHP_EOL;
@@ -39,7 +40,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         $template = (array_key_exists('markerInfo', $options) ? $options['markerInfo'] : false);
 
         // Add map markers
-        if ($markers) {
+        if ($map['markers']) {
             foreach ($map['markers'] as $i => $m) {
                 $js .= $this->_addMarker($i, $m);
                 $js .= $this->_addMarkerInfo($i, $markers[$i], $template);
@@ -73,7 +74,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         //$filter = SmartMap_FilterCriteriaModel::populateModel($coords, $options = array());
 
         // Decipher map info
-        $map = $this->_getMapCoords($markers, $options);
+        $map = craft()->smartMap->markerCoords($markers, $options);
 
         $width  = (array_key_exists('width', $options)  ? $options['width']  : '200');
         $height = (array_key_exists('height', $options) ? $options['height'] : '200');
@@ -100,105 +101,6 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         // SHOULD ALSO BUILD IN FUNCTIONALITY FOR STREET VIEW MAPS
         // http://maps.googleapis.com/maps/api/streetview?size=200x200&location=40.720032,-73.988354&heading=235&sensor=false
 
-    }
-
-    // Decipher map center & markers based on locations
-    private function _getMapCoords($locations, $options = array())
-    {
-        // If one location, process as an array
-        if (!is_array($locations)) {
-            return $this->_getMapCoords(array($locations), $options);
-        }
-
-        // Initialize variables
-        $error   = false;
-        $markers = array();
-        $allLats = array();
-        $allLngs = array();
-        $handles = array();
-
-        // If no locations are specified
-        if (empty($locations)) {
-            $error = "No locations specified";
-        } else {
-            // Find all Smart Map Address field handles
-            foreach (craft()->fields->getAllFields() as $field) {
-                if ($field->type == 'SmartMap_Address') {
-                    $handles[] = $field->handle;
-                }
-            }
-            // Loop through locations
-            foreach ($locations as $loc) {
-                if (is_object($loc)) {
-                // If location is an object
-                    if (!empty($handles)) {
-                        foreach ($handles as $handle) {
-                            $address = $loc->{$handle};
-                            if (!empty($address)) {
-                                $lat = $address['lat'];
-                                $lng = $address['lng'];
-                                $markers[] = array(
-                                    'lat'   => (float) $lat,
-                                    'lng'   => (float) $lng,
-                                    'title' => $loc->title
-                                );
-                                $allLats[] = $lat;
-                                $allLngs[] = $lng;
-                            }
-                        }
-                    }
-                } else if (is_array($loc)) {
-                // Else, if location is an array
-                    if (!craft()->smartMap->_isAssoc($loc) && count($loc) == 2) {
-                        $lat = $loc[0];
-                        $lng = $loc[1];
-                        $title = '';
-                    } else {
-                        $lat = craft()->smartMap->_findKeyInArray($loc, array('latitude','lat'));
-                        $lng = craft()->smartMap->_findKeyInArray($loc, array('longitude','lng','lon','long'));
-                        $title = (array_key_exists('title',$loc) ? $loc['title'] : '');
-                    }
-                    $markers[] = array(
-                        'lat'   => $lat,
-                        'lng'   => $lng,
-                        'title' => $title
-                    );
-                    $allLats[] = $lat;
-                    $allLngs[] = $lng;
-                }
-            }
-        }
-
-        // Determine center of map
-        if (array_key_exists('center', $options)) {
-            // Center is specified in options
-            $center = $options['center'];
-        } else if ($error) {
-            // Error was triggered
-            $center = array(
-                'lat' => 0,
-                'lng' => 0
-            );
-            $markers[] = array(
-                'lat'   => 0,
-                'lng'   => 0,
-                'title' => $error
-            );
-        } else {
-            // Calculate center of map
-            $centerLat = (min($allLats) + max($allLats)) / 2;
-            $centerLng = (min($allLngs) + max($allLngs)) / 2;
-            $center = array(
-                'lat' => round($centerLat, 6),
-                'lng' => round($centerLng, 6)
-            );
-        }
-
-        // Return center point and all markers
-        return array(
-            'center'  => $center,
-            'markers' => $markers,
-        );
     }
 
     // Add marker

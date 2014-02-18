@@ -5,7 +5,7 @@ class SmartMapVariable
 {
 
 	// Display a dynamic Google map
-	public function map($markers, $options = array())
+	public function map($markers = false, $options = array())
 	{
 		return craft()->smartMap_variables->googleMap($markers, $options);
 	}

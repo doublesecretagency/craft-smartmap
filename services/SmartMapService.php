@@ -58,7 +58,7 @@ class SmartMapService extends BaseApplicationComponent
     public function modifyQuery(DbCommand $query, $params)
     {
         // Join with plugin table
-        $query->join($this->pluginTable, 'elements.id = '.$this->dbPrefix.$this->pluginTable.'.elementId');
+        $query->join($this->pluginTable, 'elements.id='.$this->dbPrefix.$this->pluginTable.'.elementId');
         // Search by comparing coordinates
         $filter = $this->_parseFilter($params);
         $this->_searchCoords($query, $filter);
@@ -150,24 +150,24 @@ class SmartMapService extends BaseApplicationComponent
     private function _parseFilter($params)
     {
         if (is_array($params['target'])) {
-            if (!$this->_isAssoc($params['target']) && count($params['target']) == 2) {
+            if (!$this->isAssoc($params['target']) && count($params['target']) == 2) {
                 $lat = $params['target'][0];
                 $lng = $params['target'][1];
             } else {
-                $lat = $this->_findKeyInArray($params['target'],array('latitude','lat'));
-                $lng = $this->_findKeyInArray($params['target'],array('longitude','lng','lon','long'));
+                $lat = $this->findKeyInArray($params['target'],array('latitude','lat'));
+                $lng = $this->findKeyInArray($params['target'],array('longitude','lng','lon','long'));
             }
             $coords = array(
                 'lat' => $lat,
                 'lng' => $lng,
             );
             $api = MapApi::LatLngArray;
-        } else if (is_string($params['target'])) {
+        } else if (is_string($params['target']) || is_numeric($params['target'])) {
             $api = MapApi::GoogleMaps;
         } else {
             // Invalid target
             //  - Throw error here?
-            $coords = $this->_searchNorthPole();
+            $coords = $this->defaultCoords();
             $api = MapApi::LatLngArray;
         }
 
@@ -241,19 +241,195 @@ class SmartMapService extends BaseApplicationComponent
         $response = json_decode(curl_exec($ch), true);
 
         if (empty($response['results'])) {
-            return $this->_searchNorthPole();
+            return $this->defaultCoords();
         } else {
             return $response['results'][0]['geometry']['location'];
         }
 
     }
 
-    // Invalid target, search from North Pole
-    private function _searchNorthPole()
+    // Decipher map center & markers based on locations
+    public function markerCoords($locations, $options = array())
     {
+        if ($locations && !is_array($locations)) {
+            // If one location, process as an array
+            return $this->markerCoords(array($locations), $options);
+        }
+
+        // Initialize variables
+        $markers = array();
+        $allLats = array();
+        $allLngs = array();
+        $handles = array();
+
+        // If no locations are specified
+        if (!empty($locations)) {
+            // Find all Smart Map Address field handles
+            foreach (craft()->fields->getAllFields() as $field) {
+                if ($field->type == 'SmartMap_Address') {
+                    $handles[] = $field->handle;
+                }
+            }
+            // Loop through locations
+            foreach ($locations as $loc) {
+                if (is_object($loc)) {
+                    // If location is an object
+                    if (!empty($handles)) {
+                        foreach ($handles as $handle) {
+                            $address = $loc->{$handle};
+                            if (!empty($address)) {
+                                $lat = $address['lat'];
+                                $lng = $address['lng'];
+                                $markers[] = array(
+                                    'lat'   => (float) $lat,
+                                    'lng'   => (float) $lng,
+                                    'title' => $loc->title
+                                );
+                                $allLats[] = $lat;
+                                $allLngs[] = $lng;
+                            }
+                        }
+                    }
+                } else if (is_array($loc)) {
+                    // Else, if location is an array
+                    if (!craft()->smartMap->isAssoc($loc) && count($loc) == 2) {
+                        $lat = $loc[0];
+                        $lng = $loc[1];
+                        $title = '';
+                    } else {
+                        $lat = craft()->smartMap->findKeyInArray($loc, array('latitude','lat'));
+                        $lng = craft()->smartMap->findKeyInArray($loc, array('longitude','lng','lon','long'));
+                        $title = (array_key_exists('title',$loc) ? $loc['title'] : '');
+                    }
+                    $markers[] = array(
+                        'lat'   => $lat,
+                        'lng'   => $lng,
+                        'title' => $title
+                    );
+                    $allLats[] = $lat;
+                    $allLngs[] = $lng;
+                }
+            }
+        }
+
+        // Determine center of map
+        if (array_key_exists('center', $options)) {
+            // Center is specified in options
+            $center = $options['center'];
+        } else if (empty($locations)) {
+            // Error was triggered
+            $center = $this->targetCenter();
+            $markers = array();
+        } else {
+            // Calculate center of map
+            $centerLat = (min($allLats) + max($allLats)) / 2;
+            $centerLng = (min($allLngs) + max($allLngs)) / 2;
+            $center = array(
+                'lat' => round($centerLat, 6),
+                'lng' => round($centerLng, 6)
+            );
+        }
+
+        // Return center point and all markers
         return array(
-            'lat' => 90,
-            'lng' => 0,
+            'center'  => $center,
+            'markers' => $markers,
+        );
+    }
+
+    // Search via AJAX
+    public function ajaxSearch($params)
+    {
+        $query = craft()->db->createCommand()
+            ->select()
+            ->from('elements');
+
+        // Join with plugin table
+        $query->join($this->pluginTable, $this->dbPrefix.'elements.id='.$this->dbPrefix.$this->pluginTable.'.elementId');
+
+        // Join with content table
+        $query->join('content', $this->dbPrefix.'elements.id='.$this->dbPrefix.'content.elementId');
+
+        // Set query limit
+        if (array_key_exists('limit', $params)) {
+            $query->limit($params['limit']);
+        }
+
+        // Filter by specified section(s)
+        if (array_key_exists('section', $params)) {
+            if (!is_array($params['section'])) {
+                $where = $this->dbPrefix.'sections.handle=:handle';
+                $pdo = array(':handle'=>$params['section']);
+            } else {
+                $i = 0;
+                $where = '';
+                $pdo = array();
+                foreach ($params['section'] as $handle) {
+                    if ($where) {$where .= ' OR ';}
+                    $where .= $this->dbPrefix.'sections.handle=:handle'.$i;
+                    $pdo[':handle'.$i] = $handle;
+                    $i++;
+                }
+            }
+            $query
+                ->join('entries', $this->dbPrefix.$this->pluginTable.'.elementId='.$this->dbPrefix.'entries.id')
+                ->join('sections', $this->dbPrefix.'entries.sectionId='.$this->dbPrefix.'sections.id')
+                ->andWhere($where, $pdo)
+            ;
+        }
+
+        /* BUG: Not working properly
+        // Filter by specified field(s)
+        if (array_key_exists('field', $params)) {
+            if (!is_array($params['field'])) {
+                $where = $this->dbPrefix.$this->pluginTable.'.handle=:handle';
+                $pdo = array(':handle'=>$params['field']);
+            } else {
+                $i = 0;
+                $where = '';
+                $pdo = array();
+                foreach ($params['field'] as $handle) {
+                    if ($where) {$where .= ' OR ';}
+                    $where .= $this->dbPrefix.$this->pluginTable.'.handle=:handle'.$i;
+                    $pdo[':handle'.$i] = $handle;
+                    $i++;
+                }
+            }
+            $query
+                ->andWhere($where, $pdo)
+            ;
+        }
+        */
+
+        // Search by comparing coordinates
+        $filter = $this->_parseFilter($params);
+        $this->_searchCoords($query, $filter);
+
+        $query->order('distance');
+        $markers = $query->queryAll();
+        return $this->markerCoords($markers);
+    }
+
+    // Center coordinates of target
+    public function targetCenter($target = false)
+    {
+        if (!$this->targetCoords) {
+            if ($target) {
+                $this->targetCoords = $this->_geocodeGoogleMapApi($target);
+            } else {
+                $this->targetCoords = $this->defaultCoords();
+            }
+        }
+        return $this->targetCoords;
+    }
+
+    // Use default coordinates
+    public function defaultCoords()
+    {
+        // Point Nemo
+        return array(
+            'lat' => -48.876667,
+            'lng' => -123.393333,
         );
     }
 
@@ -263,7 +439,7 @@ class SmartMapService extends BaseApplicationComponent
     // ==================================================== //
 
     // Get the target from an array
-    private function _findKeyInArray($array, $possibleKeys)
+    public function findKeyInArray($array, $possibleKeys)
     {
         foreach ($possibleKeys as $key) {
             if (array_key_exists($key, $array)) {
@@ -273,7 +449,7 @@ class SmartMapService extends BaseApplicationComponent
     }
 
     // Determine if array is associative
-    private function _isAssoc($array) {
+    public function isAssoc($array) {
         return (bool) count(array_filter(array_keys($array), 'is_string'));
     }
 

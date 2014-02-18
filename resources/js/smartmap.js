@@ -5,10 +5,30 @@ var smartMap = {
     marker: {},
     infoWindow: {},
     id: 'smartmap-mapcanvas',
+    searchUrl: '',
     zoom: 8,
     center: {
-        lat: 90,
-        lng: 0
+        // Point Nemo
+        lat: -48.876667,
+        lng: -123.393333
+    },
+    // Conduct search via AJAX
+    search: function (data) {
+        jQuery.post(smartMap.searchUrl, data, function (response) {
+            if (typeof response == 'string') {
+                alert(response);
+            } else if (typeof response == 'object') {
+                var marker;
+                for (i in response.markers) {
+                    marker = response.markers[i];
+                    smartMap.addMarker(marker, marker.title);
+                }
+                smartMap.map.panTo(response.center);
+                if (data.zoom) {
+                    smartMap.map.setZoom(data.zoom);
+                }
+            }
+        });
     },
     // Initialize map object
     init: function () {
@@ -22,13 +42,17 @@ var smartMap = {
     getOptions: function () {
         return {
             zoom: smartMap.zoom,
-            center: new google.maps.LatLng(smartMap.center.lat, smartMap.center.lng)
+            center: smartMap.getLatLng(smartMap.center)
         };
+    },
+    // Get map options
+    getLatLng: function (coords) {
+        return new google.maps.LatLng(coords.lat, coords.lng);
     },
     // Add new map marker
     addMarker: function (coords, title) {
         return new google.maps.Marker({
-            position: coords,
+            position: smartMap.getLatLng(coords),
             map: smartMap.map,
             title: title
         });
@@ -43,11 +67,13 @@ var smartMap = {
             smartMap.infoWindow[i].open(smartMap.map, smartMap.marker[i]);
         });
     },
+    /*
     // Zoom in on a marker
     zoomOnMarker: function (i, zoom) {
         smartMap.map.setZoom(zoom);
         smartMap.map.panTo(smartMap.marker[i].position);
     },
+    */
     // Set marker click event
     markerClickEvent: function (marker, callback) {
         //google.maps.event.addListener(marker, 'click', callback);
