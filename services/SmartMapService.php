@@ -4,6 +4,8 @@ namespace Craft;
 class SmartMapService extends BaseApplicationComponent
 {
 
+    public $settings;
+
     public $targetCoords; // TEMP: Until P&T "distance" fix
 
     public $measurementUnit;

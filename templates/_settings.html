@@ -4,13 +4,16 @@
 
 <p>A tab will appear at the top of the control panel, allowing you easy access to documentation.</p>
 
-{{ forms.checkbox({
-	label: "Enable documentation?"|t,
-	id: 'showDocs',
-	name: 'showDocs',
-	checked: settings.showDocs,
-	errors: settings.getErrors('showDocs')
+{{ forms.lightswitchField({
+    id:     "showDocs",
+    name:   "showDocs",
+    on:     settings.showDocs,
+    onLabel: "Show"|t,
+    offLabel: "Hide"|t,
+    errors: settings.getErrors('showDocs'),
 }) }}
+
+<p>Or you can view the documentation without enabling the tab. <a href="{{ url('smartmap') }}">Read docs...</a></p>
 
 <hr />
 
