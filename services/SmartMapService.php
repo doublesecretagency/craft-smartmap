@@ -113,6 +113,15 @@ class SmartMapService extends BaseApplicationComponent
             $attr['handle']    = $handle;
         }
 
+        // Force empty values as NULL
+        if (!$attr['street1']) {$attr['street1'] = null;}
+        if (!$attr['street2']) {$attr['street2'] = null;}
+        if (!$attr['city'])    {$attr['city']    = null;}
+        if (!$attr['state'])   {$attr['state']   = null;}
+        if (!$attr['zip'])     {$attr['zip']     = null;}
+        if (!$attr['lat'])     {$attr['lat']     = null;}
+        if (!$attr['lng'])     {$attr['lng']     = null;}
+
         // Set record attributes
         $addressRecord->setAttributes($attr, false);
 

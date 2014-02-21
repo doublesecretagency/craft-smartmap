@@ -60,13 +60,13 @@
 			placeholder: "Latitude"|t,
 			id: handle~'-lat',
 			name: handle~'[lat]',
-			value: lat,
+			value: (lat ? lat : null),
 		}) }}
 		{{ forms.textField({
 			placeholder: "Longitude"|t,
 			id: handle~'-lng',
 			name: handle~'[lng]',
-			value: lng,
+			value: (lng ? lng : null),
 		}) }}
 	</div>
 </div>
