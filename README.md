@@ -179,10 +179,12 @@ There are several options available to customize your map:
     </tr>
 </table>
 
-### Help, my map isn't appearing!
+---------------------------------------
+
+# Help, my map isn't appearing!
 
 Check your DOM to see if the map container has been generated. If it has, then you're probably facing a simple CSS issue. By default, the "height" of a div will be zero... So even though the container is there, it isn't visible.
 
-Ways to fix it:
+**Ways to fix it:**
  - Add a "height" value to your map options.
  - Set the height of ".smartmap-mapcanvas" in your style sheet.

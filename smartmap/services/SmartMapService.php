@@ -6,6 +6,10 @@ class SmartMapService extends BaseApplicationComponent
 
     public $settings;
 
+    public $here;
+    private $_hereCookieName = 'smartMap_autodetect';
+    private $_hereCookieExpires;
+
     public $targetCoords; // TEMP: Until P&T "distance" fix
 
     public $measurementUnit;
@@ -18,6 +22,26 @@ class SmartMapService extends BaseApplicationComponent
     public $content;
     public $isNewContent;
 
+    function init()
+    {
+        $this->_hereCookieExpires = time()+(60*60); // After 1 hour
+        $this->currentLocation();
+    }
+
+    // Automatically detect & set current location
+    public function currentLocation()
+    {
+        $cookieName = $this->_hereCookieName;
+        if (array_key_exists($cookieName, $_COOKIE)) {
+            $this->here = json_decode($_COOKIE[$cookieName], true);
+        } else {
+            $api = new \Guzzle\Http\Client('http://freegeoip.net');
+            $this->here = $api->get('/json/')->send()->json();
+            $data = json_encode($this->here);
+            $expires = $this->_hereCookieExpires;
+            setcookie($cookieName, $data, $expires);
+        }
+    }
 
     // TEMP: Until P&T "distance" fix
     // Use haversine formula
@@ -178,7 +202,7 @@ class SmartMapService extends BaseApplicationComponent
         } else {
             // Invalid target
             //  - Throw error here?
-            $coords = $this->defaultCoords();
+            $coords = $this->_defaultCoords();
             $api = MapApi::LatLngArray;
         }
 
@@ -252,7 +276,7 @@ class SmartMapService extends BaseApplicationComponent
         $response = json_decode(curl_exec($ch), true);
 
         if (empty($response['results'])) {
-            return $this->defaultCoords();
+            return $this->_defaultCoords();
         } else {
             return $response['results'][0]['geometry']['location'];
         }
@@ -424,24 +448,33 @@ class SmartMapService extends BaseApplicationComponent
     // Center coordinates of target
     public function targetCenter($target = false)
     {
-        if (!$this->targetCoords) {
+        $coords =& $this->targetCoords;
+        if (!$coords) {
             if ($target) {
-                $this->targetCoords = $this->_geocodeGoogleMapApi($target);
+                $coords = $this->_geocodeGoogleMapApi($target);
             } else {
-                $this->targetCoords = $this->defaultCoords();
+                $coords = $this->_defaultCoords();
             }
         }
-        return $this->targetCoords;
+        return $coords;
     }
 
     // Use default coordinates
-    public function defaultCoords()
+    public function _defaultCoords()
     {
-        // Point Nemo
-        return array(
-            'lat' => -48.876667,
-            'lng' => -123.393333,
+        $coords = array(
+            // Current location
+            'lat' => $this->here['latitude'],
+            'lng' => $this->here['longitude'],
         );
+        if (!$coords['lat'] && !$coords['lng']) {
+            $coords = array(
+                // Point Nemo
+                'lat' => -48.876667,
+                'lng' => -123.393333,
+            );
+        }
+        return $coords;
     }
 
 

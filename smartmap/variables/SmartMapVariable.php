@@ -11,15 +11,21 @@ class SmartMapVariable
     }
 
     // Display a static map image
-    public function img($markers, $options = array())
+    public function img($markers = false, $options = array())
     {
         return craft()->smartMap_variables->staticImg($markers, $options);
     }
 
     // Render the source for a static map image
-    public function imgSrc($markers, $options = array())
+    public function imgSrc($markers = false, $options = array())
     {
         return craft()->smartMap_variables->staticImgSource($markers, $options);
+    }
+
+    // Renders details about "my" current location
+    public function my()
+    {
+        return craft()->smartMap->here;
     }
 
     // FOR INTERNAL USE ONLY
