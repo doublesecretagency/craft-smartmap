@@ -1,4 +1,4 @@
-![](resources/images/map-example.png)
+![](smartmap/resources/images/map-example.png)
 
 # Smart Map
 
@@ -17,11 +17,11 @@ Once you have installed the Smart Map plugin, simply create a new field using th
 
 As you begin entering an address, a list of possible matches will appear. You can simply click on the address which matches the one you are entering, and the remaining fields will be filled in automatically.
 
-![](resources/images/fieldtype-example-1.png)
+![](smartmap/resources/images/fieldtype-example-1.png)
 
 You may see an address option which is very close to correct, but perhaps some of the information is a little off (perhaps it's showing the correct zip code, but a neighboring city name)... You can easily correct any of the address information after picking out the closest match. This allows the latitude and longitude to be calculated automatically.
 
-![](resources/images/fieldtype-example-2.png)
+![](smartmap/resources/images/fieldtype-example-2.png)
 
 It's the latitude and longitude that are so important to Smart Map... This information is used to plot each address on a map. It is also used when searching through existing addresses, to determine which of them is closest to your target.
 
@@ -48,7 +48,7 @@ How to display your Smart Map Address values:
 
 The code above will render an address like this:
 
-![](resources/images/template-example.png)
+![](smartmap/resources/images/template-example.png)
 
 ---------------------------------------
 
@@ -118,7 +118,7 @@ Your target can be anything that translates into a full or partial address...
 
 ---------------------------------------
 
-![](resources/images/google-map-example.png)
+![](smartmap/resources/images/google-map-example.png)
 
 ## How to render a Google Map of your locations
 
