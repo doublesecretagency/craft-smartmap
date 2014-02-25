@@ -16,6 +16,8 @@ class SmartMapService extends BaseApplicationComponent
     public $mapApi;
     public $mapApiKey;
 
+    public $defaultZoom = 11;
+
     public $dbPrefix;
     public $pluginTable;
 
@@ -86,8 +88,7 @@ class SmartMapService extends BaseApplicationComponent
         // Join with plugin table
         $query->join($this->pluginTable, 'elements.id='.$this->dbPrefix.$this->pluginTable.'.elementId');
         // Search by comparing coordinates
-        $filter = $this->_parseFilter($params);
-        $this->_searchCoords($query, $filter);
+        $this->_searchCoords($query, $params);
         // Return modified query
         return $query;
     }
@@ -184,7 +185,11 @@ class SmartMapService extends BaseApplicationComponent
     // Parse query filter
     private function _parseFilter($params)
     {
-        if (is_array($params['target'])) {
+        if (!array_key_exists('target', $params)) {
+            $api = MapApi::LatLngArray;
+            $coords = $this->_defaultCoords();
+        } else if (is_array($params['target'])) {
+            $api = MapApi::LatLngArray;
             if (!$this->isAssoc($params['target']) && count($params['target']) == 2) {
                 $lat = $params['target'][0];
                 $lng = $params['target'][1];
@@ -196,14 +201,13 @@ class SmartMapService extends BaseApplicationComponent
                 'lat' => $lat,
                 'lng' => $lng,
             );
-            $api = MapApi::LatLngArray;
         } else if (is_string($params['target']) || is_numeric($params['target'])) {
             $api = MapApi::GoogleMaps;
         } else {
             // Invalid target
             //  - Throw error here?
-            $coords = $this->_defaultCoords();
             $api = MapApi::LatLngArray;
+            $coords = $this->_defaultCoords();
         }
 
         $filter = SmartMap_FilterCriteriaModel::populateModel($params);
@@ -230,8 +234,9 @@ class SmartMapService extends BaseApplicationComponent
     }
 
     // Search by coordinates
-    private function _searchCoords(&$query, SmartMap_FilterCriteriaModel $filter)
+    private function _searchCoords(&$query, $params)
     {
+        $filter = $this->_parseFilter($params);
         // Implement haversine formula
         $haversine = $this->_haversine(
             $filter->coords['lat'],
@@ -437,8 +442,7 @@ class SmartMapService extends BaseApplicationComponent
         */
 
         // Search by comparing coordinates
-        $filter = $this->_parseFilter($params);
-        $this->_searchCoords($query, $filter);
+        $this->_searchCoords($query, $params);
 
         $query->order('distance');
         $markers = $query->queryAll();

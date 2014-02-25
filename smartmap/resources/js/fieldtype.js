@@ -50,11 +50,16 @@ function findCoords(handle) {
 
 	geocoder.geocode({'address': checkAddress}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
+			$('#'+handle+' .smartmap-matches-intro').html('Found the following matches: (Click to auto-fill)');
 			for (i in results) {
 				deconstructAddress(results[i]);
 			}
 		} else {
-			console.log('Geocode was not successful for the following reason:', status);
+			if ('ZERO_RESULTS' == status) {
+				$('#'+handle+' .smartmap-matches-intro').html('No matches found.');
+			} else {
+				console.log('Geocode was not successful for the following reason:', status);
+			}
 		}
 	});
 

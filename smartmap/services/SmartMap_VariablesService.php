@@ -33,7 +33,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
             $id = 'smartmap-mapcanvas';
         }
 
-        $js .= (array_key_exists('zoom', $options) ? 'smartMap.zoom = '.$options['zoom'].';'.PHP_EOL : '');
+        $js .= 'smartMap.zoom = '.(array_key_exists('zoom', $options) ? $options['zoom'] : craft()->smartMap->defaultZoom).';'.PHP_EOL;
 
         $js .= 'smartMap.init();'.PHP_EOL;
 
@@ -82,7 +82,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         $src  = '//maps.googleapis.com/maps/api/staticmap?sensor=false';
         //$src .= '&key='.craft()->smartMap->mapApiKey;
         $src .= '&center='.$map['center']['lat'].','.$map['center']['lng'];
-        $src .= '&zoom='.(array_key_exists('zoom', $options) ? $options['zoom'] : 15);
+        $src .= '&zoom='.(array_key_exists('zoom', $options) ? $options['zoom'] : craft()->smartMap->defaultZoom);
         $src .= '&size='.$width.'x'.$height;
         $src .= '&visual_refresh=true';
         $src .= '&maptype=roadmap';

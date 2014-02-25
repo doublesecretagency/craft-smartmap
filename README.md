@@ -65,7 +65,7 @@ This will tell Craft to:
 _* From this example, replace "myAddressField" with the name of your Smart Map Address field_
 
 
-    {% set target = '90210' %}
+    {% set target = craft.request.getParam('find') %}
     {% set params = {
         target: target,
         range: 100
@@ -86,12 +86,12 @@ _* From this example, replace "myAddressField" with the name of your Smart Map A
         <h2>No results found</h2>
     {% endfor %}
 
-The "target" parameter is required. All others are optional.
-
 Your target can be anything that translates into a full or partial address...
  - 90210
  - Aurora, IL
  - 742 Evergreen Terrace
+
+All parameters are optional.
 
 <table>
     <tr>
@@ -101,7 +101,7 @@ Your target can be anything that translates into a full or partial address...
     </tr>
     <tr>
         <td>target</td>
-        <td><em>[REQUIRED]</em></td>
+        <td>(autodetects current location)</td>
         <td>Starting point for proximity search</td>
     </tr>
     <tr>
@@ -178,6 +178,18 @@ There are several options available to customize your map:
         <td>Map center, ie: {'lat':38.897837, 'lng':-77.036512}</td>
     </tr>
 </table>
+
+---------------------------------------
+
+<!-- ![](smartmap/resources/images/google-map-example.png) -->
+
+## How to render a static map of your locations
+
+The Twig tag for rendering a static map is _almost exactly the same_ as the tag for rendering a Google Map (shown above). There is only one subtle difference... instead of calling the method "map", use the method "img".
+
+    {{ craft.smartMap.img(locations, options) }}
+
+Otherwise, everything else about these two tags is identical. They both take locations and options in the same order... but one renders a dynamic map while the other renders a static map.
 
 ---------------------------------------
 
