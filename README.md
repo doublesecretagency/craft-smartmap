@@ -65,7 +65,7 @@ This will tell Craft to:
 _* From this example, replace "myAddressField" with the name of your Smart Map Address field_
 
 
-    {% set target = craft.request.getParam('find') %}
+    {% set target = craft.request.getParam('find') %} {# example.com?find=90210 #}
     {% set params = {
         target: target,
         range: 100
