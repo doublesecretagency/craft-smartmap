@@ -33,12 +33,13 @@ class SmartMapService extends BaseApplicationComponent
     // Automatically detect & set current location
     public function currentLocation()
     {
+        $ip = ('127.0.0.1' == $_SERVER['REMOTE_ADDR'] ? '' : $_SERVER['REMOTE_ADDR']);
         $cookieName = $this->_hereCookieName;
         if (array_key_exists($cookieName, $_COOKIE)) {
             $this->here = json_decode($_COOKIE[$cookieName], true);
         } else {
             $api = new \Guzzle\Http\Client('http://freegeoip.net');
-            $this->here = $api->get('/json/')->send()->json();
+            $this->here = $api->get('/json/'.$ip)->send()->json();
             $data = json_encode($this->here);
             $expires = $this->_hereCookieExpires;
             setcookie($cookieName, $data, $expires);
