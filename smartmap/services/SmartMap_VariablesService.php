@@ -111,10 +111,17 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         return 'smartMap.marker['.$i.'] = smartMap.addMarker('.json_encode($m).', "'.$title.'");'.PHP_EOL;
     }
     // Add marker info bubble (if specified)
+    //  * WARNING: Marker info bubbles are an undocumented feature of *
+    //  * the Smart Map plugin. This feature may change at any time.  *
     private function _addMarkerInfo($i, $entry, $template)
     {
         if ($template) {
-            $html = craft()->templates->render($template, array('i'=>$i));
+            $segments = craft()->request->getSegments();
+            array_unshift($segments, '');
+            $html = craft()->templates->render($template, array(
+                'i' => $i,
+                'segment' => $segments,
+            ));
             $infoWindow = craft()->templates->renderObjectTemplate($html, $entry);
             $infoWindow = json_encode($infoWindow);
             return "smartMap.addInfoWindow($i, $infoWindow)".PHP_EOL;
