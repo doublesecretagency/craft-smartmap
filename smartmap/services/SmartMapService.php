@@ -26,6 +26,7 @@ class SmartMapService extends BaseApplicationComponent
 
     function init()
     {
+        parent::init();
         $this->_hereCookieExpires = time()+(60*60); // After 1 hour
         $this->currentLocation();
     }

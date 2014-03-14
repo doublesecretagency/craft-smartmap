@@ -8,18 +8,19 @@ class SmartMapPlugin extends BasePlugin
 	
 	public function init()
 	{
+		parent::init();
+		// Enums
+		$this->_loadEnums();
 		// Table prefix & name
 		craft()->smartMap->dbPrefix    = craft()->db->tablePrefix;
 		craft()->smartMap->pluginTable = 'smartmap_addresses';
-		// Enums
-		$this->_loadEnums();
+		// Plugin Settings
+    	craft()->smartMap->settings = $this->getSettings();
+    	craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];
 		// Events
 		craft()->on('content.saveContent', function(Event $event) {
 			craft()->smartMap->contentSaved($event->params['content'], $event->params['isNewContent']);
 		});
-		// Plugin Settings
-    	craft()->smartMap->settings = $this->getSettings();
-    	craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];
 	}
 
 	public function getName()
