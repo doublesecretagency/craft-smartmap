@@ -4,6 +4,12 @@ namespace Craft;
 class SmartMapVariable
 {
 
+    // Link to the Google map
+    public function linkToGoogle($address)
+    {
+        return craft()->smartMap_variables->linkToGoogle($address);
+    }
+
     // Display a dynamic Google map
     public function map($markers = false, $options = array())
     {

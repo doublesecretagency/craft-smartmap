@@ -103,6 +103,13 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
     }
 
+    // Get a link to open the Google map
+    public function linkToGoogle($address)
+    {
+        $q = $address['street1'].', '.$address['city'].', '.$address['state'].', '.$address['zip'];
+        return 'http://maps.google.com/?q='.$q;
+    }
+
     // Add marker
     private function _addMarker($i, $m)
     {

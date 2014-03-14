@@ -27,6 +27,14 @@ It's the latitude and longitude that are so important to Smart Map... This infor
 
 ---------------------------------------
 
+## Linking directly to a Google Map page
+
+_* From this example, replace "myAddressField" with the name of your Smart Map Address field_
+
+    <a href="{{ craft.smartMap.linkToGoogle(entry.myAddressField) }}" target="_blank">Open Google Map in new page</a>
+
+---------------------------------------
+
 ## Using your Smart Map field values in a template
 
 _* From this example, replace "myAddressField" with the name of your Smart Map Address field_
