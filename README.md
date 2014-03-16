@@ -9,7 +9,7 @@ Smart Map is a plugin which allows you to easily manage geographic points. With 
 - Search entries to find the closest location
 - ... and more!
 
-Once you have installed the Smart Map plugin, simply create a new field using the "Smart Map Address" field type, and add it to a section. You'll see the magic once you start editing entries in that section!
+Once you have installed the Smart Map plugin, simply create a new field using the "Address (Smart Map)" field type, and add it to a section. You'll see the magic once you start editing entries in that section!
 
 ## Using a "Smart Map Address" field
 
