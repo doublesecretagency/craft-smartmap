@@ -304,7 +304,7 @@ class SmartMapService extends BaseApplicationComponent
         $allLngs = array();
         $handles = array();
 
-        // If no locations are specified
+        // If locations are specified
         if (!empty($locations)) {
             // Find all Smart Map Address field handles
             foreach (craft()->fields->getAllFields() as $field) {
@@ -360,8 +360,12 @@ class SmartMapService extends BaseApplicationComponent
             $center = $options['center'];
         } else if (empty($locations)) {
             // Error was triggered
-            $center = $this->targetCenter();
             $markers = array();
+            if (array_key_exists('target', $options)) {
+                $center = $this->targetCoords = $this->_geocodeGoogleMapApi($options['target']);
+            } else {
+                $center = $this->targetCenter();
+            }
         } else {
             // Calculate center of map
             $centerLat = (min($allLats) + max($allLats)) / 2;

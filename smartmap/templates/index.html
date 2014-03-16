@@ -7,23 +7,24 @@
 	<h2>What is Smart Map?</h2>
 	<p>Smart Map is a plugin which allows you to easily manage geographic points. With Smart Map, you can:</p>
 	<ul>
-		<li> - Display multiple locations on a dynamic map</li>
-		<!-- li> - Display multiple locations on a static map</li -->
+		<li> - Display locations on a dynamic map</li>
+		<li> - Display locations on a static map</li>
 		<li> - Search entries to find the closest location</li>
+		<li> - ... and more!</li>
 	</ul>
-
-	<!-- p style="font-style:italic">* Currently only tested with US addresses.</p -->
 	
 	<h2>Basic Instructions</h2>
+	{#
 	<h3>Add your API key</h3>
 	<ol>
 		<li>Go to: Settings &gt; Plugins &gt; <a href="{{ url('settings/plugins/smartmap') }}">Smart Map</a></li>
 		<li>Enter your API key.</li>
 		<li>Save</li>
 	</ol>
+	#}
 	<h3>Create an Address Field</h3>
 	<ol>
-		<li>Create a new field. For the field type, select <strong>Smart Map Address</strong>.</li>
+		<li>Create a new field. For the field type, select <strong>Address (Smart Map)</strong>.</li>
 		<li>Add that field to your section.</li>
 	</ol>
 	<h3>Filling Out an Address</h3>
@@ -49,7 +50,9 @@
 		</ol>
     {% endif #}
 
-    <!-- h2>About the Publisher</h2>
-    <p>On behalf of us here at the <a href="http://doublesecretagency.com" target="_blank">Double Secret Agency</a>, thank you for installing the Smart Map plugin!</p -->
+    {#
+    <h2>About the Publisher</h2>
+    <p>On behalf of us here at the <a href="http://doublesecretagency.com" target="_blank">Double Secret Agency</a>, thank you for installing the Smart Map plugin!</p>
+    #}
 
 {% endset %}

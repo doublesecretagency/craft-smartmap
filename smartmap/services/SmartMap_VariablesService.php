@@ -113,7 +113,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     // Add marker
     private function _addMarker($i, $m)
     {
-        $title = $m['title'];
+        $title = preg_replace('/"/', '\"', $m['title']);
         unset($m['title']);
         return 'smartMap.marker['.$i.'] = smartMap.addMarker('.json_encode($m).', "'.$title.'");'.PHP_EOL;
     }

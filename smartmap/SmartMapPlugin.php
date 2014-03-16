@@ -15,7 +15,7 @@ class SmartMapPlugin extends BasePlugin
 		craft()->smartMap->dbPrefix    = craft()->db->tablePrefix;
 		craft()->smartMap->pluginTable = 'smartmap_addresses';
 		// Plugin Settings
-    	craft()->smartMap->settings = $this->getSettings();
+    	craft()->smartMap->settings  = $this->getSettings();
     	craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];
 		// Events
 		craft()->on('content.saveContent', function(Event $event) {
@@ -30,7 +30,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '1.0.12';
+		return '1.1.0';
 	}
 
 	public function getDeveloper()
