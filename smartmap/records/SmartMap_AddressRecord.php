@@ -3,10 +3,12 @@ namespace Craft;
 
 class SmartMap_AddressRecord extends BaseRecord
 {
+
+    const TABLE_NAME = 'smartmap_addresses';
     
     public function getTableName()
     {
-        return 'smartmap_addresses';
+        return static::TABLE_NAME;
     }
 
     protected function defineAttributes()

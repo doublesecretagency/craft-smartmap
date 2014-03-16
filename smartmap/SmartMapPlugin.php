@@ -11,9 +11,6 @@ class SmartMapPlugin extends BasePlugin
 		parent::init();
 		// Enums
 		$this->_loadEnums();
-		// Table prefix & name
-		craft()->smartMap->dbPrefix    = craft()->db->tablePrefix;
-		craft()->smartMap->pluginTable = 'smartmap_addresses';
 		// Plugin Settings
     	craft()->smartMap->settings  = $this->getSettings();
     	craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];

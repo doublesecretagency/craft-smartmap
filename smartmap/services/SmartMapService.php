@@ -18,9 +18,6 @@ class SmartMapService extends BaseApplicationComponent
 
     public $defaultZoom = 11;
 
-    public $dbPrefix;
-    public $pluginTable;
-
     public $content;
     public $isNewContent;
 
@@ -88,7 +85,7 @@ class SmartMapService extends BaseApplicationComponent
     public function modifyQuery(DbCommand $query, $params)
     {
         // Join with plugin table
-        $query->join($this->pluginTable, 'elements.id='.$this->dbPrefix.$this->pluginTable.'.elementId');
+        $query->join(SmartMap_AddressRecord::TABLE_NAME, 'elements.id='.craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.elementId');
         // Search by comparing coordinates
         $this->_searchCoords($query, $params);
         // Return modified query
@@ -266,7 +263,7 @@ class SmartMapService extends BaseApplicationComponent
                 break;
         }
         // Set table reference
-        $table = $this->dbPrefix.$this->pluginTable;
+        $table = craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME;
         // Calculate haversine formula
         return "($unitVal * acos(cos(radians($lat)) * cos(radians($table.lat)) * cos(radians($table.lng) - radians($lng)) + sin(radians($lat)) * sin(radians($table.lat))))";
     }
@@ -391,10 +388,10 @@ class SmartMapService extends BaseApplicationComponent
             ->from('elements');
 
         // Join with plugin table
-        $query->join($this->pluginTable, $this->dbPrefix.'elements.id='.$this->dbPrefix.$this->pluginTable.'.elementId');
+        $query->join(SmartMap_AddressRecord::TABLE_NAME, craft()->db->tablePrefix.'elements.id='.craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.elementId');
 
         // Join with content table
-        $query->join('content', $this->dbPrefix.'elements.id='.$this->dbPrefix.'content.elementId');
+        $query->join('content', craft()->db->tablePrefix.'elements.id='.craft()->db->tablePrefix.'content.elementId');
 
         // Set query limit
         if (array_key_exists('limit', $params)) {
@@ -404,7 +401,7 @@ class SmartMapService extends BaseApplicationComponent
         // Filter by specified section(s)
         if (array_key_exists('section', $params)) {
             if (!is_array($params['section'])) {
-                $where = $this->dbPrefix.'sections.handle=:handle';
+                $where = craft()->db->tablePrefix.'sections.handle=:handle';
                 $pdo = array(':handle'=>$params['section']);
             } else {
                 $i = 0;
@@ -412,14 +409,14 @@ class SmartMapService extends BaseApplicationComponent
                 $pdo = array();
                 foreach ($params['section'] as $handle) {
                     if ($where) {$where .= ' OR ';}
-                    $where .= $this->dbPrefix.'sections.handle=:handle'.$i;
+                    $where .= craft()->db->tablePrefix.'sections.handle=:handle'.$i;
                     $pdo[':handle'.$i] = $handle;
                     $i++;
                 }
             }
             $query
-                ->join('entries', $this->dbPrefix.$this->pluginTable.'.elementId='.$this->dbPrefix.'entries.id')
-                ->join('sections', $this->dbPrefix.'entries.sectionId='.$this->dbPrefix.'sections.id')
+                ->join('entries', craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.elementId='.craft()->db->tablePrefix.'entries.id')
+                ->join('sections', craft()->db->tablePrefix.'entries.sectionId='.craft()->db->tablePrefix.'sections.id')
                 ->andWhere($where, $pdo)
             ;
         }
@@ -428,7 +425,7 @@ class SmartMapService extends BaseApplicationComponent
         // Filter by specified field(s)
         if (array_key_exists('field', $params)) {
             if (!is_array($params['field'])) {
-                $where = $this->dbPrefix.$this->pluginTable.'.handle=:handle';
+                $where = craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.handle=:handle';
                 $pdo = array(':handle'=>$params['field']);
             } else {
                 $i = 0;
@@ -436,7 +433,7 @@ class SmartMapService extends BaseApplicationComponent
                 $pdo = array();
                 foreach ($params['field'] as $handle) {
                     if ($where) {$where .= ' OR ';}
-                    $where .= $this->dbPrefix.$this->pluginTable.'.handle=:handle'.$i;
+                    $where .= craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.handle=:handle'.$i;
                     $pdo[':handle'.$i] = $handle;
                     $i++;
                 }
