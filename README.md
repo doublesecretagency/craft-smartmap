@@ -60,6 +60,7 @@ This will tell Craft to:
  - Filter your Address field with the parameter you specify.
  - Order the results by closest distance from your specified target.
 
+Example:
 
     {# example.com?near=90210 #}
     
