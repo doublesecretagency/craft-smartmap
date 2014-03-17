@@ -60,7 +60,7 @@ This will tell Craft to:
  - Filter your Address field with the parameter you specify.
  - Order the results by closest distance from your specified target.
 
-    {# http://example.com?near=90210 #}
+    {# example.com?near=90210 #}
     
     {% set target = craft.request.getParam('near') %}
     {% set params = {
