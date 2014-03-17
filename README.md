@@ -60,16 +60,14 @@ This will tell Craft to:
  - Filter your Address field with the parameter you specify.
  - Order the results by closest distance from your specified target.
 
-    {# example.com?near=90210 #}
-    
-    {% set target = craft.request.getParam('near') %}
+    {% set target = craft.request.getParam('near') %}  {# example.com?near=90210 #}
     {% set params = {
         target: target,
         range: 100
     } %}
-
+    
     {% set entries = craft.entries.myFieldHandle(params).order('distance').find() %}
-
+    
     <h1>Showing results for "{{ target }}"...</h1>
     {% for entry in entries %}
         <h2>{{ entry.title }}</h2>
