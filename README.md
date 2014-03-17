@@ -1,17 +1,19 @@
+_The smart way to use Google Maps in your Craft site_
+
 ![](smartmap/resources/images/map-example.png)
 
 # Smart Map
 
 Smart Map is a plugin which allows you to easily manage geographic points. With Smart Map, you can:
 
-- Display locations on a dynamic map
-- Display locations on a static map
+- Automatically calculate latitude & longitude
+- Display your locations on a dynamic or static map
 - Search entries to find the closest location
 - ... and more!
 
 Once you have installed the Smart Map plugin, simply create a new field using the "Address (Smart Map)" field type, and add it to a section. You'll see the magic once you start editing entries in that section!
 
-## Using a "Smart Map Address" field
+## Using an Address field
 
 As you begin entering an address, a list of possible matches will appear. You can simply click on the address which matches the one you are entering, and the remaining fields will be filled in automatically.
 
@@ -21,34 +23,24 @@ You may see an address option which is very close to correct, but perhaps some o
 
 ![](smartmap/resources/images/fieldtype-example-2.png)
 
-It's the latitude and longitude that are so important to Smart Map... This information is used to plot each address on a map. It is also used when searching through existing addresses, to determine which of them is closest to your target.
+It's the latitude and longitude that are so important... This information is used to plot each address on a map. It is also used when searching through existing addresses, to determine which of them is closest to your target.
 
 ---------------------------------------
 
-## Linking directly to a Google Map page
+## Using your Address field values in a template
 
-_* From this example, replace "myAddressField" with the name of your Smart Map Address field_
-
-    <a href="{{ craft.smartMap.linkToGoogle(entry.myAddressField) }}" target="_blank">Open Google Map in new page</a>
-
----------------------------------------
-
-## Using your Smart Map field values in a template
-
-_* From this example, replace "myAddressField" with the name of your Smart Map Address field_
-
-How to display your Smart Map Address values:
+How to display your Address values:
 
     {% for entry in craft.entries.section('myLocations').find() %}
         <h1>{{ entry.title }}</h1>
         <div>
-            {{ entry.myAddressField.street1 }}<br />
-            {{ entry.myAddressField.street2 }}<br />
-            {{ entry.myAddressField.city }}, {{ entry.myAddressField.state }} {{ entry.myAddressField.zip }}<br>
+            {{ entry.myFieldHandle.street1 }}<br />
+            {{ entry.myFieldHandle.street2 }}<br />
+            {{ entry.myFieldHandle.city }}, {{ entry.myFieldHandle.state }} {{ entry.myFieldHandle.zip }}<br>
         </div>
         <div>
-            Latitude: {{ entry.myAddressField.lat }}<br />
-            Longitude: {{ entry.myAddressField.lng }}
+            Latitude: {{ entry.myFieldHandle.lat }}<br />
+            Longitude: {{ entry.myFieldHandle.lng }}
         </div>
     {% endfor %}
 
@@ -62,31 +54,30 @@ The code above will render an address like this:
 
 Include this in your "craft.entries" call:
 
-    .myAddressField(params).order('distance')
+    .myFieldHandle(params).order('distance')
 
 This will tell Craft to:
- - Filter your Smart Map field with the parameter you specify.
+ - Filter your Address field with the parameter you specify.
  - Order the results by closest distance from your specified target.
 
-_* From this example, replace "myAddressField" with the name of your Smart Map Address field_
-
-
-    {% set target = craft.request.getParam('find') %} {# example.com?find=90210 #}
+    {# http://example.com?near=90210 #}
+    
+    {% set target = craft.request.getParam('near') %}
     {% set params = {
         target: target,
         range: 100
     } %}
 
-    {% set entries = craft.entries.myAddressField(params).order('distance').find() %}
+    {% set entries = craft.entries.myFieldHandle(params).order('distance').find() %}
 
     <h1>Showing results for "{{ target }}"...</h1>
     {% for entry in entries %}
         <h2>{{ entry.title }}</h2>
         <div>
-            {{ entry.myAddressField.street1 }}<br />
-            {{ entry.myAddressField.street2 }}<br />
-            {{ entry.myAddressField.city }}, {{ entry.myAddressField.state }} {{ entry.myAddressField.zip }}<br>
-            <strong>{{ entry.myAddressField.distance | number_format(1) }} miles away</strong>
+            {{ entry.myFieldHandle.street1 }}<br />
+            {{ entry.myFieldHandle.street2 }}<br />
+            {{ entry.myFieldHandle.city }}, {{ entry.myFieldHandle.state }} {{ entry.myFieldHandle.zip }}<br>
+            <strong>{{ entry.myFieldHandle.distance | number_format(1) }} miles away</strong>
         </div>
     {% else %}
         <h2>No results found</h2>
@@ -196,6 +187,12 @@ The Twig tag for rendering a static map is _almost exactly the same_ as the tag 
     {{ craft.smartMap.img(locations, options) }}
 
 Otherwise, everything else about these two tags is identical. They both take locations and options in the same order... but one renders a dynamic map while the other renders a static map.
+
+---------------------------------------
+
+## Linking directly to a Google Map page
+
+    <a href="{{ craft.smartMap.linkToGoogle(entry.myFieldHandle) }}" target="_blank">Open Google Map in new page</a>
 
 ---------------------------------------
 
