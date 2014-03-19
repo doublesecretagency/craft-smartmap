@@ -1,4 +1,26 @@
 // Smart Map JS object
+var smartMapNEW = {
+    maps: [],
+    //addMap: function (mapModel) {},
+    // Final rendering of all maps
+    renderMaps: function () {
+        for (i in smartMapNEW.maps) {
+            var map = smartMapNEW.maps[i];
+
+            var mapEl = document.getElementById(map.id);
+        }
+        smartMapNEW.map = new google.maps.Map(mapEl, {
+            zoom: map.zoom,
+            center: smartMapNEW.getLatLng(map.center)
+        });
+    },
+    // Get map options
+    getLatLng: function (coords) {
+        return new google.maps.LatLng(coords.lat, coords.lng);
+    }
+}
+
+// Smart Map JS object
 var smartMap = {
     // Default values
     map: null,

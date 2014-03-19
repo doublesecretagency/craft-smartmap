@@ -23,6 +23,8 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         // Decipher map info
         $map = craft()->smartMap->markerCoords($markers, $options);
 
+        $uniqueId = md5(microtime());
+
         // Initialize JS, starting with center
         $js = 'smartMap.center = '.json_encode($map['center']).';'.PHP_EOL;
 
@@ -30,7 +32,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
             $id = $options['id'];
             $js .= 'smartMap.id = "'.$options['id'].'";'.PHP_EOL;
         } else {
-            $id = 'smartmap-mapcanvas';
+            $id = 'smartmap-mapcanvas-'.$uniqueId;
         }
 
         $js .= 'smartMap.zoom = '.(array_key_exists('zoom', $options) ? $options['zoom'] : craft()->smartMap->defaultZoom).';'.PHP_EOL;
@@ -56,7 +58,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         $css .= (array_key_exists('width', $options)  ? 'width:'.$options['width'].'px;'   : '');
         $css .= (array_key_exists('height', $options) ? 'height:'.$options['height'].'px;' : '');
 
-        return $this->_safeOutput('<div id="'.$id.'" class="smartmap-mapcanvas" style="'.$css.'"">Loading map...</div>');
+        return $this->_safeOutput('<div id="'.$id.'" class="smartmap-mapcanvas" style="'.$css.'">Loading map...</div>');
 
     }
 
