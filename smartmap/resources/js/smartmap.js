@@ -1,24 +1,59 @@
 // Smart Map JS object
 var smartMapNEW = {
     maps: [],
+    _renderedMaps: [],
     //addMap: function (mapModel) {},
     // Final rendering of all maps
     renderMaps: function () {
-        for (i in smartMapNEW.maps) {
-            var map = smartMapNEW.maps[i];
-
-            var mapEl = document.getElementById(map.id);
+        var map;
+        for (mapId in smartMapNEW.maps) {
+            map = smartMapNEW.maps[mapId];
+            smartMapNEW._drawMap(mapId, map);
+            smartMapNEW._drawMarkers(mapId, map);
         }
-        smartMapNEW.map = new google.maps.Map(mapEl, {
+    },
+    // Draw individual map
+    _drawMap: function (mapId, map) {
+        var mapEl = document.getElementById('smartmap-mapcanvas-'+mapId);
+        smartMapNEW._renderedMaps[mapId] = new google.maps.Map(mapEl, {
             zoom: map.zoom,
-            center: smartMapNEW.getLatLng(map.center)
+            center: smartMapNEW._getLatLng(map.center)
+        });
+    },
+    // Draw all markers for specified map
+    _drawMarkers: function (mapId, map) {
+        var marker;
+        var googleMap = smartMapNEW._renderedMaps[mapId];
+        for (i in map['markers']) {
+            marker = map['markers'][i];
+            smartMapNEW._drawMarker(googleMap, marker);
+        }
+    },
+    // Draw individual marker
+    _drawMarker: function (googleMap, marker) {
+        var coords = {
+            'lat': marker['lat'],
+            'lng': marker['lng'],
+        }
+        return new google.maps.Marker({
+            position: smartMapNEW._getLatLng(coords),
+            map: googleMap,
+            title: marker['title']
         });
     },
     // Get map options
-    getLatLng: function (coords) {
+    _getLatLng: function (coords) {
         return new google.maps.LatLng(coords.lat, coords.lng);
+    },
+    // 
+    _: function () {
+        return;
     }
 }
+
+// NEW
+// =========================================================== //
+// OLD
 
 // Smart Map JS object
 var smartMap = {
@@ -54,7 +89,10 @@ var smartMap = {
     },
     // Initialize map object
     init: function () {
+        console.log(smartMap.id);
+        console.log(smartMap.getEl(smartMap.id));
         smartMap.map = new google.maps.Map(smartMap.getEl(smartMap.id), smartMap.getOptions());
+        console.log('still broken');
     },
     // Get map element
     getEl: function (id) {
