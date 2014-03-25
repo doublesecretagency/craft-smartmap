@@ -4,6 +4,7 @@ div.smartmap-field {
 }
 div.smartmap-matches {
 	display: none;
+	z-index: 1000;
 	position: absolute;
 	top: 0px;
 	left: 610px;
@@ -13,6 +14,11 @@ div.smartmap-matches {
 	background-color: #ffffff;
 	border: 2px solid #cccccc;
 }
+/* Fix for Craft 1.4 */
+#fields.pane div.smartmap-matches {
+	left: 536px;
+}
+/* End fix */
 div.smartmap-matches-intro {
 	margin-left: 9px;
 }

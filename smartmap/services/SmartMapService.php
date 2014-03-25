@@ -82,7 +82,7 @@ class SmartMapService extends BaseApplicationComponent
     // ==================================================== //
 
     // Modify fieldtype query
-    public function modifyQuery(DbCommand $query, $params)
+    public function modifyQuery(DbCommand $query, $params = array())
     {
         // Join with plugin table
         $query->join(SmartMap_AddressRecord::TABLE_NAME, 'elements.id='.craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.elementId');
@@ -182,9 +182,14 @@ class SmartMapService extends BaseApplicationComponent
     // ==================================================== //
 
     // Parse query filter
-    private function _parseFilter($params)
+    private function _parseFilter($params = array())
     {
-        if (!array_key_exists('target', $params)) {
+
+        if (!is_array($params)) {
+            $params = array();
+            $api = MapApi::LatLngArray;
+            $coords = $this->_defaultCoords();
+        } else if (!array_key_exists('target', $params)) {
             $api = MapApi::LatLngArray;
             $coords = $this->_defaultCoords();
         } else if (is_array($params['target'])) {
@@ -233,7 +238,7 @@ class SmartMapService extends BaseApplicationComponent
     }
 
     // Search by coordinates
-    private function _searchCoords(&$query, $params)
+    private function _searchCoords(&$query, $params = array())
     {
         $filter = $this->_parseFilter($params);
         // Implement haversine formula
