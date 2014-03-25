@@ -31,7 +31,7 @@ class SmartMapService extends BaseApplicationComponent
     // Automatically detect & set current location
     public function currentLocation()
     {
-        $ip = ('127.0.0.1' == $_SERVER['REMOTE_ADDR'] ? '' : $_SERVER['REMOTE_ADDR']);
+        $ip = ('127.0.0.1' == $_SERVER['REMOTE_ADDR'] || '::1' == $_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
         $cookieName = $this->_hereCookieName;
         if (array_key_exists($cookieName, $_COOKIE)) {
             $this->here = json_decode($_COOKIE[$cookieName], true);
