@@ -13,19 +13,19 @@ class SmartMapVariable
     // Display a dynamic Google map
     public function map($markers = false, $options = array())
     {
-        return craft()->smartMap_variables->googleMap($markers, $options);
+        return craft()->smartMap_variables->dynamicMap($markers, $options);
     }
 
     // Display a static map image
     public function img($markers = false, $options = array())
     {
-        return craft()->smartMap_variables->staticImg($markers, $options);
+        return craft()->smartMap_variables->staticMap($markers, $options);
     }
 
     // Render the source for a static map image
     public function imgSrc($markers = false, $options = array())
     {
-        return craft()->smartMap_variables->staticImgSource($markers, $options);
+        return craft()->smartMap_variables->staticMapSrc($markers, $options);
     }
 
     // Renders details about "my" current location

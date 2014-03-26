@@ -4,13 +4,36 @@ namespace Craft;
 class SmartMap_VariablesService extends BaseApplicationComponent
 {
 
+    private $_mapCounter = 0;
+    private $_allMapsInitialized = false;
+
     // Create dynamic Google Map of locations
-    public function googleMap($markers = false, $options = array())
+    public function dynamicMap($markers = false, $options = array())
     {
+
+        if (!$this->_allMapsInitialized) {
+            $this->_initializeAllMaps();
+        }
+
         // If solo marker, process as an array
         if ($markers && !is_array($markers)) {
-            return $this->googleMap(array($markers), $options);
+            return $this->dynamicMap(array($markers), $options);
         }
+
+        // Render JS of map
+        $mapId = $this->_mapJs($markers, $options);
+
+        // Render width/height of map
+        $style = '';
+        $style .= (array_key_exists('width', $options)  ? 'width:'.$options['width'].'px;'   : '');
+        $style .= (array_key_exists('height', $options) ? 'height:'.$options['height'].'px;' : '');
+
+        return $this->_safeOutput(PHP_EOL.'<div id="'.$mapId.'" class="smartmap-mapcanvas" style="'.$style.'">Loading map...</div>');
+
+    }
+
+    // Initialize collection of all maps
+    private function _initializeAllMaps() {
 
         //craft()->smartMap->checkApiKey();
 
@@ -18,59 +41,108 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
         craft()->templates->includeJsResource('smartmap/js/smartmap.js');
         craft()->templates->includeCssResource('smartmap/css/smartmap.css');
-        craft()->templates->includeJs('smartMap.searchUrl = "'.UrlHelper::getActionUrl('smartMap/search').'";');
+
+        // All maps JS
+        $allMapsJs = 'smartMap.maps = {};'.PHP_EOL;
+        //$allMapsJs .= 'smartMap.searchUrl = "'.UrlHelper::getActionUrl('smartMap/search').'";'.PHP_EOL;
+        craft()->templates->includeJs($allMapsJs);
+
+        $this->_allMapsInitialized = true;
+    }
+
+    // JS of individual map
+    private function _mapJs($markers, $options) {
+
+        // Generate unique map ID
+        $uniqueId = ++$this->_mapCounter;
+
+        $js = '';
 
         // Decipher map info
         $map = craft()->smartMap->markerCoords($markers, $options);
 
-        $uniqueId = md5(microtime());
-
-        // Initialize JS, starting with center
-        $js = 'smartMap.center = '.json_encode($map['center']).';'.PHP_EOL;
-
         if (array_key_exists('id', $options)) {
-            $id = $options['id'];
-            $js .= 'smartMap.id = "'.$options['id'].'";'.PHP_EOL;
+            $mapId = $options['id'];
+            $js .= 'id: "'.$options['id'].'";'.PHP_EOL;
         } else {
-            $id = 'smartmap-mapcanvas-'.$uniqueId;
+            $mapId = 'smartmap-mapcanvas-'.$uniqueId;
         }
 
-        $js .= 'smartMap.zoom = '.(array_key_exists('zoom', $options) ? $options['zoom'] : craft()->smartMap->defaultZoom).';'.PHP_EOL;
+        $mapOptions['center'] = json_encode($map['center']);
+        $mapOptions['zoom'] = (array_key_exists('zoom', $options) ? $options['zoom'] : craft()->smartMap->defaultZoom);
 
-        $js .= 'smartMap.init();'.PHP_EOL;
-
-        $template = (array_key_exists('markerInfo', $options) ? $options['markerInfo'] : false);
+        $renderMap = '';
+        foreach ($mapOptions as $option => $value) {
+            if ($renderMap) {$renderMap .= ', ';}
+            $renderMap .= "$option: $value";
+        }
+        $js .= '
+smartMap.drawMap("'.$mapId.'", {'.$renderMap.'});';
 
         // Add map markers
         if ($map['markers']) {
+            $js .= '
+smartMap.drawMarkers("'.$mapId.'", '.json_encode($map['markers']).');';
+        }
+
+        //$template = (array_key_exists('markerInfo', $options) ? $options['markerInfo'] : false);
+
+        /*
+        // Add map markers
+        if ($map['markers']) {
             foreach ($map['markers'] as $i => $m) {
-                $js .= $this->_addMarker($i, $m);
-                $js .= $this->_addMarkerInfo($i, $markers[$i], $template);
+                $js .= $this->_dynamicMapMarker($i, $m);
+                $js .= $this->_dynamicMapMarkerInfo($i, $markers[$i], $template);
                 //if (array_key_exists('click', $options)) {
                 //  $js .= 'smartMap.markerClickEvent(marker, '.$options['click'].');'.PHP_EOL;
                 //}
             }
         }
+        */
         
         craft()->templates->includeJs($js);
 
-        $css = '';
-        $css .= (array_key_exists('width', $options)  ? 'width:'.$options['width'].'px;'   : '');
-        $css .= (array_key_exists('height', $options) ? 'height:'.$options['height'].'px;' : '');
-
-        return $this->_safeOutput('<div id="'.$id.'" class="smartmap-mapcanvas" style="'.$css.'">Loading map...</div>');
-
+        return $mapId;
     }
 
-    // Create <img> of static map
-    public function staticImg($markers, $options = array())
+    /*
+    // Add marker
+    private function _dynamicMapMarker($i, $m)
     {
-        $src = $this->staticImgSource($markers, $options);
+        $title = preg_replace('/"/', '\"', $m['title']);
+        unset($m['title']);
+        return 'smartMap.marker['.$i.'] = smartMap._drawMarker('.json_encode($m).', "'.$title.'");'.PHP_EOL;
+    }
+    // Add marker info bubble (if specified)
+    //  * WARNING: Marker info bubbles are an undocumented feature of *
+    //  * the Smart Map plugin. This feature may change at any time.  *
+    private function _dynamicMapMarkerInfo($i, $entry, $template)
+    {
+        if ($template) {
+            $segments = craft()->request->getSegments();
+            array_unshift($segments, '');
+            $html = craft()->templates->render($template, array(
+                'i' => $i,
+                'segment' => $segments,
+            ));
+            $infoWindow = craft()->templates->renderObjectTemplate($html, $entry);
+            $infoWindow = json_encode($infoWindow);
+            return "smartMap.addInfoWindow($i, $infoWindow)".PHP_EOL;
+        } else {
+            return '';
+        }
+    }
+    */
+
+    // Create <img> of static map
+    public function staticMap($markers, $options = array())
+    {
+        $src = $this->staticMapSrc($markers, $options);
         return $this->_safeOutput('<img src="'.$src.'" />');
     }
 
     // Get source of static map image
-    public function staticImgSource($markers, $options = array())
+    public function staticMapSrc($markers, $options = array())
     {
 
         //$filter = SmartMap_FilterCriteriaModel::populateModel($coords, $options = array());
@@ -110,33 +182,6 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     {
         $q = $address['street1'].', '.$address['city'].', '.$address['state'].', '.$address['zip'];
         return 'http://maps.google.com/?q='.$q;
-    }
-
-    // Add marker
-    private function _addMarker($i, $m)
-    {
-        $title = preg_replace('/"/', '\"', $m['title']);
-        unset($m['title']);
-        return 'smartMap.marker['.$i.'] = smartMap.addMarker('.json_encode($m).', "'.$title.'");'.PHP_EOL;
-    }
-    // Add marker info bubble (if specified)
-    //  * WARNING: Marker info bubbles are an undocumented feature of *
-    //  * the Smart Map plugin. This feature may change at any time.  *
-    private function _addMarkerInfo($i, $entry, $template)
-    {
-        if ($template) {
-            $segments = craft()->request->getSegments();
-            array_unshift($segments, '');
-            $html = craft()->templates->render($template, array(
-                'i' => $i,
-                'segment' => $segments,
-            ));
-            $infoWindow = craft()->templates->renderObjectTemplate($html, $entry);
-            $infoWindow = json_encode($infoWindow);
-            return "smartMap.addInfoWindow($i, $infoWindow)".PHP_EOL;
-        } else {
-            return '';
-        }
     }
     
     // ============================================================== //
