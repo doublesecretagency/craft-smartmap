@@ -13,7 +13,8 @@ class SmartMapPlugin extends BasePlugin
 		$this->_loadEnums();
 		// Plugin Settings
     	craft()->smartMap->settings  = $this->getSettings();
-    	craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];
+    	craft()->smartMap->mapApiKey = '';
+    	//craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];
 		// Events
 		craft()->on('content.saveContent', function(Event $event) {
 			craft()->smartMap->contentSaved($event->params['content'], $event->params['isNewContent']);
@@ -43,7 +44,8 @@ class SmartMapPlugin extends BasePlugin
 
     public function hasCpSection()
     {
-        return craft()->smartMap->settings['showDocs'];
+        return false;
+        //return craft()->smartMap->settings['showDocs'];
     }
 
 	public function getSettingsHtml()
@@ -56,8 +58,8 @@ class SmartMapPlugin extends BasePlugin
 	protected function defineSettings()
 	{
 		return array(
-			'showDocs' => array(AttributeType::Bool, 'label' => 'Enable documentation?', 'default' => 'on'),
-			'apiKey'   => array(AttributeType::String, 'required' => true, 'label' => 'API Key'),
+			//'showDocs' => array(AttributeType::Bool, 'label' => 'Enable documentation?', 'default' => 'on'),
+			//'apiKey'   => array(AttributeType::String, 'required' => true, 'label' => 'API Key'),
 		);
 	}
 
