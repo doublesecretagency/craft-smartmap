@@ -39,13 +39,20 @@
 			id: handle~'-state',
 			name: handle~'[state]',
 			value: state,
-			size: 3,
 		}) }}
 		{{ forms.textField({
 			placeholder: "Zip Code"|t,
 			id: handle~'-zip',
 			name: handle~'[zip]',
 			value: zip,
+		}) }}
+	</div>
+	<div class="smartmap-country">
+		{{ forms.textField({
+			placeholder: "Country"|t,
+			id: handle~'-country',
+			name: handle~'[country]',
+			value: country,
 		}) }}
 	</div>
 	<div class="smartmap-coordinates">

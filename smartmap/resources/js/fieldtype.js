@@ -37,7 +37,8 @@ function findCoords(handle) {
 		'street2' : $('#'+handle+'-street2').val(),
 		'city'    : $('#'+handle+'-city').val(),
 		'state'   : $('#'+handle+'-state').val(),
-		'zip'     : $('#'+handle+'-zip').val()
+		'zip'     : $('#'+handle+'-zip').val(),
+		'country' : $('#'+handle+'-country').val()
 	}
 
 	addressOptions[handle] = [];
@@ -47,6 +48,7 @@ function findCoords(handle) {
 	checkAddress += (address[handle].city    ? ', '+address[handle].city    : '');
 	checkAddress += (address[handle].state   ? ', '+address[handle].state   : '');
 	checkAddress += (address[handle].zip     ? ', '+address[handle].zip     : '');
+	checkAddress += (address[handle].country ? ', '+address[handle].country : '');
 
 	geocoder.geocode({'address': checkAddress}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
@@ -93,7 +95,7 @@ function deconstructAddress(address) {
 				zip = components[c]['short_name'];
 				break;
 			case 'country':
-				country = components[c]['short_name'];
+				country = components[c]['long_name'];
 				break;
 		}
 	}
@@ -103,6 +105,7 @@ function deconstructAddress(address) {
 		'city'    : (typeof subcity === 'undefined' ? city : subcity),
 		'state'   : state,
 		'zip'     : zip,
+		'country' : country,
 		'lat'     : address.geometry.location.lat(),
 		'lng'     : address.geometry.location.lng()
 	}
@@ -123,6 +126,7 @@ function loadAddress(handle, i) {
 	$('#'+handle+'-city').val(selected.city);
 	$('#'+handle+'-state').val(selected.state);
 	$('#'+handle+'-zip').val(selected.zip);
+	$('#'+handle+'-country').val(selected.country);
 	$('#'+handle+'-lat').val(selected.lat);
 	$('#'+handle+'-lng').val(selected.lng);
 

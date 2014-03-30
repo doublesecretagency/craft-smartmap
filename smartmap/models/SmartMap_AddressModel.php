@@ -22,6 +22,7 @@ class SmartMap_AddressModel extends BaseModel // Change name to "LocationModel" 
             'city'      => AttributeType::String,
             'state'     => AttributeType::String,
             'zip'       => AttributeType::String,
+            'country'   => AttributeType::String,
             'lat'       => $coordColumn,
             'lng'       => $coordColumn,
         );

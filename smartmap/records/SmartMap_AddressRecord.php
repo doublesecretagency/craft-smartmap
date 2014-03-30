@@ -29,6 +29,7 @@ class SmartMap_AddressRecord extends BaseRecord
             'city'      => AttributeType::String,
             'state'     => AttributeType::String,
             'zip'       => AttributeType::String,
+            'country'   => AttributeType::String,
             'lat'       => $coordColumn,
             'lng'       => $coordColumn,
         );

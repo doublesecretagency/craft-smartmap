@@ -143,6 +143,7 @@ class SmartMapService extends BaseApplicationComponent
         if (!$attr['city'])    {$attr['city']    = null;}
         if (!$attr['state'])   {$attr['state']   = null;}
         if (!$attr['zip'])     {$attr['zip']     = null;}
+        if (!$attr['country']) {$attr['country'] = null;}
         if (!$attr['lat'])     {$attr['lat']     = null;}
         if (!$attr['lng'])     {$attr['lng']     = null;}
 

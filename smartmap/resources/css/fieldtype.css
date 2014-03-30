@@ -46,22 +46,43 @@ div.smartmap-street-address div.field {
 }
 
 div.smartmap-city-state-zip {
-	margin-top: 4px;
+	padding-top: 4px;
 }
 div.smartmap-city-state-zip div.field {
 	float: left;
-	margin: 0px 7px 0px 0px;
+	margin: 0px;
+}
+div.smartmap-city-state-zip div.field:nth-child(1) {
+	width: 50%;
+	margin-right: 1%;
+}
+div.smartmap-city-state-zip div.field:nth-child(2) {
+	width: 14%;
+	margin-right: 1%;
+}
+div.smartmap-city-state-zip div.field:nth-child(3) {
+	width: 34%;
+	margin-right: 0%;
+}
+
+div.smartmap-country {
+	clear: both;
+	padding-top: 4px;
 }
 
 div.smartmap-coordinates {
 	clear: both;
-	padding-top: 14px;
+	padding-top: 4px;
 }
 div.smartmap-coordinates div.field {
 	float: left;
-	width: 49.5%;
 	margin: 0px;
 }
-div.smartmap-coordinates div.field:first-child {
+div.smartmap-coordinates div.field:nth-child(1) {
+	width: 50%;
 	margin-right: 1%;
+}
+div.smartmap-coordinates div.field:nth-child(2) {
+	width: 49%;
+	margin-right: 0%;
 }
