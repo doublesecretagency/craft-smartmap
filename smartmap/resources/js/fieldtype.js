@@ -32,6 +32,9 @@ function openNoResults(handle) {
     $('#'+handle+' .smartmap-no-results').show();
 }
 function closeMatches(handle) {
+    if (typeof handle == 'object') {
+        handle = $(handle).parents('.smartmap-field').attr('id');
+    }
     $('#'+handle+' .smartmap-matches').hide();
 }
 function openMatches(handle) {
@@ -85,6 +88,8 @@ function deconstructAddress(address) {
 
     components = address.address_components;
 
+    var number, street, subcity, city, state, zip, country;
+
     for (c in components) {
 
         //console.log(components[c]['types'][0]+':',components[c]['short_name']);
@@ -115,7 +120,7 @@ function deconstructAddress(address) {
     }
 
     addressOptions[handle][i] = {
-        'street1' : number+' '+street,
+        'street1' : ((number ? number : '')+' '+(street ? street : '')).trim(),
         'city'    : (typeof subcity === 'undefined' ? city : subcity),
         'state'   : state,
         'zip'     : zip,
@@ -134,18 +139,17 @@ function loadAddress(handle, i) {
 
     //console.log('loadAddress('+handle+'):',i);
 
-    var selected = addressOptions[handle][i];
+    var address = addressOptions[handle][i];
 
-    $('#'+handle+'-street1').val(selected.street1);
-    $('#'+handle+'-city').val(selected.city);
-    $('#'+handle+'-state').val(selected.state);
-    $('#'+handle+'-zip').val(selected.zip);
-    $('#'+handle+'-country').val(selected.country);
-    $('#'+handle+'-lat').val(selected.lat);
-    $('#'+handle+'-lng').val(selected.lng);
+    $('#'+handle+'-street1').val(address.street1 ? address.street1 : '');
+    $('#'+handle+'-city').val(address.city ? address.city : '');
+    $('#'+handle+'-state').val(address.state ? address.state : '');
+    $('#'+handle+'-zip').val(address.zip ? address.zip : '');
+    $('#'+handle+'-country').val(address.country ? address.country : '');
+    $('#'+handle+'-lat').val(address.lat ? address.lat : '');
+    $('#'+handle+'-lng').val(address.lng ? address.lng : '');
 
     setTimeout(function () {
-        console.log('#'+handle+' .smartmap-matches');
         $('#'+handle+' .smartmap-matches').hide();
     }, 250);
 

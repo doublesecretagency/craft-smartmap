@@ -19,7 +19,7 @@ div.smartmap-matches {
     top: 3px;
     left: 4px;
     width: 96%;
-    height: 100px;
+    min-width: 320px;
     padding: 12px 3px 0;
     background-color: #ffffff;
     border: 2px solid #cccccc;
@@ -27,11 +27,6 @@ div.smartmap-matches {
     -moz-box-shadow:    1px 2px 5px 0px rgba(50, 50, 50, 0.75);
     box-shadow:         1px 2px 5px 0px rgba(50, 50, 50, 0.75);
 }
-/* Fix for Craft 1.4 */
-#fields.pane div.smartmap-matches {
-    /*left: 536px;*/
-}
-/* End fix */
 div.smartmap-matches-intro {
     margin-left: 9px;
 }
@@ -42,7 +37,8 @@ div.smartmap-matches-intro span {
     font-weight: bold;
 }
 ul.smartmap-matches-options {
-    max-height: 68px;
+    min-height: 68px;
+    max-height: 210px;
     overflow: scroll;
     margin-top: 5px;
     margin-left: 0px;
