@@ -1,6 +1,8 @@
 // Smart Map JS object
 var smartMap = {
-    maps: [],
+    // Default values
+    maps: {},
+    searchUrl: '',
     _renderedMaps: [],
     //addMap: function (mapModel) {},
     // Draw individual map
@@ -14,27 +16,50 @@ var smartMap = {
     // Draw all markers for specified map
     drawMarkers: function (mapId, markers) {
         var marker;
-        var googleMap = smartMap._renderedMaps[mapId];
+        var mapCanvas = smartMap._renderedMaps[mapId];
         for (i in markers) {
             marker = markers[i];
-            smartMap._drawMarker(googleMap, marker);
+            smartMap._drawMarker(mapCanvas, marker);
         }
     },
     // Draw individual marker
-    _drawMarker: function (googleMap, marker) {
+    _drawMarker: function (mapCanvas, marker) {
         var coords = {
             'lat': marker['lat'],
             'lng': marker['lng'],
         }
         return new google.maps.Marker({
             position: smartMap._getLatLng(coords),
-            map: googleMap,
+            map: mapCanvas,
             title: marker['title']
         });
     },
     // Get map options
     _getLatLng: function (coords) {
         return new google.maps.LatLng(coords.lat, coords.lng);
+    },
+    // Conduct search via AJAX
+    search: function (data) {
+        if (typeof jQuery != 'function') {
+            console.error('Sorry, jQuery is required to use smartMap.search');
+            return;
+        }
+        if (typeof data != 'object') {
+            data = {};
+        }
+        jQuery.post(smartMap.searchUrl, data, function (response) {
+            if (typeof response == 'string') {
+                alert(response);
+            } else if (typeof response == 'object') {
+                var mapId = (data.id ? data.id : 'smartmap-mapcanvas-1');
+                var mapCanvas = smartMap._renderedMaps[mapId];
+                smartMap.drawMarkers(mapId, response.markers);
+                mapCanvas.panTo(response.center);
+                if (data.zoom) {
+                    mapCanvas.setZoom(data.zoom);
+                }
+            }
+        });
     }
 }
 
@@ -49,54 +74,6 @@ var smartMapOLD = {
     map: null,
     marker: {},
     infoWindow: {},
-    id: 'smartmap-mapcanvas',
-    searchUrl: '',
-    zoom: 8,
-    center: {
-        // Point Nemo
-        lat: -48.876667,
-        lng: -123.393333
-    },
-    // Conduct search via AJAX
-    search: function (data) {
-        jQuery.post(smartMapOLD.searchUrl, data, function (response) {
-            if (typeof response == 'string') {
-                alert(response);
-            } else if (typeof response == 'object') {
-                var marker;
-                for (i in response.markers) {
-                    marker = response.markers[i];
-                    smartMapOLD.addMarker(marker, marker.title);
-                }
-                smartMapOLD.map.panTo(response.center);
-                if (data.zoom) {
-                    smartMapOLD.map.setZoom(data.zoom);
-                }
-            }
-        });
-    },
-    // Initialize map object
-    init: function () {
-        console.log(smartMapOLD.id);
-        console.log(smartMapOLD.getEl(smartMapOLD.id));
-        smartMapOLD.map = new google.maps.Map(smartMapOLD.getEl(smartMapOLD.id), smartMapOLD.getOptions());
-        console.log('still broken');
-    },
-    // Get map element
-    getEl: function (id) {
-        return document.getElementById(id);
-    },
-    // Get map options
-    getOptions: function () {
-        return {
-            zoom: smartMapOLD.zoom,
-            center: smartMapOLD.getLatLng(smartMapOLD.center)
-        };
-    },
-    // Get map options
-    getLatLng: function (coords) {
-        return new google.maps.LatLng(coords.lat, coords.lng);
-    },
     // Add new map marker
     addMarker: function (coords, title) {
         return new google.maps.Marker({

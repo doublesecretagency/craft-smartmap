@@ -33,7 +33,8 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     }
 
     // Initialize collection of all maps
-    private function _initializeAllMaps() {
+    private function _initializeAllMaps()
+    {
 
         //craft()->smartMap->checkApiKey();
 
@@ -43,15 +44,15 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         craft()->templates->includeCssResource('smartmap/css/smartmap.css');
 
         // All maps JS
-        $allMapsJs = 'smartMap.maps = {};'.PHP_EOL;
-        //$allMapsJs .= 'smartMap.searchUrl = "'.UrlHelper::getActionUrl('smartMap/search').'";'.PHP_EOL;
+        $allMapsJs = 'smartMap.searchUrl = "'.UrlHelper::getActionUrl('smartMap/search').'";'.PHP_EOL;
         craft()->templates->includeJs($allMapsJs);
 
         $this->_allMapsInitialized = true;
     }
 
     // JS of individual map
-    private function _mapJs($markers, $options) {
+    private function _mapJs($markers, $options)
+    {
 
         // Generate unique map ID
         $uniqueId = ++$this->_mapCounter;
