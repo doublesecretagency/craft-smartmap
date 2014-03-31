@@ -1,81 +1,80 @@
 {% import "_includes/forms" as forms %}
 
 <div class="smartmap-field" id="{{ handle }}">
-	<!-- div class="google-map-link">Open in Google Maps -&gt;</div -->
-	<div class="smartmap-matches">
-		<div class="smartmap-matches-intro">
-			Found the following matches: (Click to auto-fill)
-		</div>
-		<ul class="smartmap-matches-options" id="{{ handle }}-options">
-		</ul>
-	</div>
-	<div class="smartmap-street-address">
-		{{ forms.textField({
-			placeholder: "Street Address"|t,
-			id: handle~'-street1',
-			name: handle~'[street1]',
-			value: street1,
-		}) }}
-		{#
-			errors: street1.getErrors()
-			errors: value.getErrors('street1')
-		#}
-		{{ forms.textField({
-			placeholder: "Apartment or Suite"|t,
-			id: handle~'-street2',
-			name: handle~'[street2]',
-			value: street2,
-		}) }}
-	</div>
-	<div class="smartmap-city-state-zip">
-		{{ forms.textField({
-			placeholder: "City"|t,
-			id: handle~'-city',
-			name: handle~'[city]',
-			value: city,
-		}) }}
-		{{ forms.textField({
-			placeholder: "State"|t,
-			id: handle~'-state',
-			name: handle~'[state]',
-			value: state,
-		}) }}
-		{{ forms.textField({
-			placeholder: "Zip Code"|t,
-			id: handle~'-zip',
-			name: handle~'[zip]',
-			value: zip,
-		}) }}
-	</div>
-	<div class="smartmap-country">
-		{{ forms.textField({
-			placeholder: "Country"|t,
-			id: handle~'-country',
-			name: handle~'[country]',
-			value: country,
-		}) }}
-	</div>
-	<div class="smartmap-coordinates">
-		{#
-		 - Manually calculates when clicking "Calculate"
-		 - Automatically calculates on blur of any field,
-		     as long as these fields are not empty:
-		     "street1", "city", "state", "zip"
-		#}
-		<!-- div class="heading"><a href="javascript:findCoords('{{ handle }}')">Calculate location coordinates</a></div -->
-		{{ forms.textField({
-			placeholder: "Latitude"|t,
-			id: handle~'-lat',
-			name: handle~'[lat]',
-			value: (lat ? lat : null),
-		}) }}
-		{{ forms.textField({
-			placeholder: "Longitude"|t,
-			id: handle~'-lng',
-			name: handle~'[lng]',
-			value: (lng ? lng : null),
-		}) }}
-	</div>
+    <!-- div class="google-map-link">Open in Google Maps -&gt;</div -->
+    <div class="smartmap-no-results">No matches</div>
+    <div class="smartmap-matches">
+        <div class="smartmap-matches-intro">Select the closest match: <span onclick="closeMatches('fields-{{ handle }}')">X</span></div>
+        <ul class="smartmap-matches-options" id="{{ handle }}-options">
+        </ul>
+    </div>
+    <div class="smartmap-street-address">
+        {{ forms.textField({
+            placeholder: "Street Address"|t,
+            id: handle~'-street1',
+            name: handle~'[street1]',
+            value: street1,
+        }) }}
+        {#
+            errors: street1.getErrors()
+            errors: value.getErrors('street1')
+        #}
+        {{ forms.textField({
+            placeholder: "Apartment or Suite"|t,
+            id: handle~'-street2',
+            name: handle~'[street2]',
+            value: street2,
+        }) }}
+    </div>
+    <div class="smartmap-city-state-zip">
+        {{ forms.textField({
+            placeholder: "City"|t,
+            id: handle~'-city',
+            name: handle~'[city]',
+            value: city,
+        }) }}
+        {{ forms.textField({
+            placeholder: "State"|t,
+            id: handle~'-state',
+            name: handle~'[state]',
+            value: state,
+        }) }}
+        {{ forms.textField({
+            placeholder: "Zip Code"|t,
+            id: handle~'-zip',
+            name: handle~'[zip]',
+            value: zip,
+        }) }}
+    </div>
+    <div class="smartmap-country">
+        {{ forms.textField({
+            placeholder: "Country"|t,
+            id: handle~'-country',
+            name: handle~'[country]',
+            value: country,
+        }) }}
+    </div>
+    <div class="smartmap-coordinates">
+        {#
+         - Manually calculates when clicking "Calculate"
+         - Automatically calculates on blur of any field,
+             as long as these fields are not empty:
+             "street1", "city", "state", "zip"
+        #}
+        <!-- div class="heading"><a href="javascript:findCoords('{{ handle }}')">Calculate location coordinates</a></div -->
+        {{ forms.textField({
+            placeholder: "Latitude"|t,
+            id: handle~'-lat',
+            name: handle~'[lat]',
+            value: (lat ? lat : null),
+        }) }}
+        {{ forms.textField({
+            placeholder: "Longitude"|t,
+            id: handle~'-lng',
+            name: handle~'[lng]',
+            value: (lng ? lng : null),
+        }) }}
+    </div>
 </div>
 
 <div class="clear"></div>

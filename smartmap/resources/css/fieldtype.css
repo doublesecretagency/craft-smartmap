@@ -1,88 +1,107 @@
 
 div.smartmap-field {
-	position: relative;
+    position: relative;
+}
+div.smartmap-no-results {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    top: -23px;
+    left: 0px;
+    width: 100%;
+    color: #d1202a;
+    text-align: right;
 }
 div.smartmap-matches {
-	display: none;
-	z-index: 1000;
-	position: absolute;
-	top: 0px;
-	left: 610px;
-	width: 370px;
-	min-height: 100px;
-	padding: 12px 3px 0;
-	background-color: #ffffff;
-	border: 2px solid #cccccc;
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    width: 96%;
+    height: 100px;
+    padding: 12px 3px 0;
+    background-color: #ffffff;
+    border: 2px solid #cccccc;
+    -webkit-box-shadow: 1px 2px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    1px 2px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         1px 2px 5px 0px rgba(50, 50, 50, 0.75);
 }
 /* Fix for Craft 1.4 */
 #fields.pane div.smartmap-matches {
-	left: 536px;
+    /*left: 536px;*/
 }
 /* End fix */
 div.smartmap-matches-intro {
-	margin-left: 9px;
+    margin-left: 9px;
+}
+div.smartmap-matches-intro span {
+    float: right;
+    cursor: pointer;
+    margin-right: 9px;
+    font-weight: bold;
 }
 ul.smartmap-matches-options {
-	max-height: 154px;
-	overflow: scroll;
-	margin-top: 5px;
-	margin-left: 0px;
+    max-height: 68px;
+    overflow: scroll;
+    margin-top: 5px;
+    margin-left: 0px;
 }
 ul.smartmap-matches-options li span {
-	display: inline-block;
-	color: #0d78f2;
-	padding: 1px 8px;
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	border-radius: 8px;
-	cursor: pointer;
+    display: inline-block;
+    color: #0d78f2;
+    padding: 1px 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 ul.smartmap-matches-options li span:hover {
-	background-color: #FFE796;
+    background-color: #FFE796;
 }
 
 div.smartmap-street-address div.field {
-	margin: 4px 0;
+    margin: 4px 0;
 }
 
 div.smartmap-city-state-zip {
-	padding-top: 4px;
+    padding-top: 4px;
 }
 div.smartmap-city-state-zip div.field {
-	float: left;
-	margin: 0px;
+    float: left;
+    margin: 0px;
 }
 div.smartmap-city-state-zip div.field:nth-child(1) {
-	width: 50%;
-	margin-right: 1%;
+    width: 50%;
+    margin-right: 1%;
 }
 div.smartmap-city-state-zip div.field:nth-child(2) {
-	width: 14%;
-	margin-right: 1%;
+    width: 14%;
+    margin-right: 1%;
 }
 div.smartmap-city-state-zip div.field:nth-child(3) {
-	width: 34%;
-	margin-right: 0%;
+    width: 34%;
+    margin-right: 0%;
 }
 
 div.smartmap-country {
-	clear: both;
-	padding-top: 4px;
+    clear: both;
+    padding-top: 4px;
 }
 
 div.smartmap-coordinates {
-	clear: both;
-	padding-top: 4px;
+    clear: both;
+    padding-top: 4px;
 }
 div.smartmap-coordinates div.field {
-	float: left;
-	margin: 0px;
+    float: left;
+    margin: 0px;
 }
 div.smartmap-coordinates div.field:nth-child(1) {
-	width: 50%;
-	margin-right: 1%;
+    width: 50%;
+    margin-right: 1%;
 }
 div.smartmap-coordinates div.field:nth-child(2) {
-	width: 49%;
-	margin-right: 0%;
+    width: 49%;
+    margin-right: 0%;
 }
