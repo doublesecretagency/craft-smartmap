@@ -88,8 +88,6 @@ class SmartMapService extends BaseApplicationComponent
         $query->join(SmartMap_AddressRecord::TABLE_NAME, 'elements.id='.craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.elementId');
         // Search by comparing coordinates
         $this->_searchCoords($query, $params);
-        // Return modified query
-        return $query;
     }
 
 

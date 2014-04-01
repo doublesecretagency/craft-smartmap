@@ -12,7 +12,9 @@ class SmartMap_AddressFieldType extends BaseFieldType
     // Modify SQL query
     public function modifyElementsQuery(DbCommand $query, $params)
     {
-        return craft()->smartMap->modifyQuery($query, $params);
+        if ($params !== null) {
+            craft()->smartMap->modifyQuery($query, $params);
+        }
     }
 
     // Render HTML for field input
