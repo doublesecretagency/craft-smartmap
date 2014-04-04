@@ -10,6 +10,7 @@ var smartMap = {
         var mapEl = document.getElementById(mapId);
         smartMap._renderedMaps[mapId] = new google.maps.Map(mapEl, {
             zoom: map.zoom,
+            scrollwheel: map.scrollwheel,
             center: smartMap._getLatLng(map.center)
         });
     },

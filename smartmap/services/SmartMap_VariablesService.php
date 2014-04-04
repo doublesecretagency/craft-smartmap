@@ -62,16 +62,31 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         // Decipher map info
         $map = craft()->smartMap->markerCoords($markers, $options);
 
+        // "id" option
         if (array_key_exists('id', $options)) {
             $mapId = $options['id'];
-            $js .= 'id: "'.$options['id'].'";'.PHP_EOL;
         } else {
             $mapId = 'smartmap-mapcanvas-'.$uniqueId;
         }
 
+        // "center" option
         $mapOptions['center'] = json_encode($map['center']);
-        $mapOptions['zoom'] = (array_key_exists('zoom', $options) ? $options['zoom'] : craft()->smartMap->defaultZoom);
 
+        // "zoom" option
+        if (array_key_exists('zoom', $options) && is_int($options['zoom'])) {
+            $mapOptions['zoom'] = $options['zoom'];
+        } else {
+            $mapOptions['zoom'] = craft()->smartMap->defaultZoom;
+        }
+
+        // "scrollZoom" option
+        if (array_key_exists('scrollZoom', $options) && is_bool($options['scrollZoom'])) {
+            $mapOptions['scrollwheel'] = ($options['scrollZoom'] ? 'true' : 'false');
+        } else {
+            $mapOptions['scrollwheel'] = 'false';
+        }
+
+        // Render map JS
         $renderMap = '';
         foreach ($mapOptions as $option => $value) {
             if ($renderMap) {$renderMap .= ', ';}
