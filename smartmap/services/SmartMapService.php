@@ -294,9 +294,15 @@ class SmartMapService extends BaseApplicationComponent
     // Decipher map center & markers based on locations
     public function markerCoords($locations, $options = array())
     {
+
+        // If one location, process as an array
         if ($locations && !is_array($locations)) {
-            // If one location, process as an array
             return $this->markerCoords(array($locations), $options);
+        }
+
+        // If ElementCriteriaModel, convert to normal array
+        if (is_object($locations[0]) && is_a($locations[0], 'Craft\\ElementCriteriaModel')) {
+            return $this->markerCoords($locations[0]->find(), $options);
         }
 
         // Initialize variables
