@@ -8,7 +8,7 @@ _The smart way to use Google Maps in your Craft site_
 
 In order to keep things clean and legible, we've moved the documentation into the [GitHub wiki](https://github.com/lindseydiloreto/craft-smartmap/wiki).
 
-## Feedback
+## Feedback?
 
 Contact me on Twitter: [@LindseyDiLoreto](https://twitter.com/LindseyDiLoreto)
 
