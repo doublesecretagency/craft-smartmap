@@ -39,7 +39,21 @@ function closeMatches(handle) {
 }
 function openMatches(handle) {
     closeNoResults(handle);
-    $('#'+handle+' .smartmap-matches').show();
+    var $el = $('#'+handle+' .smartmap-matches');
+    $el.show();
+    // Close when pressing "esc"
+    $(document).on('keydown', function (e) {
+        if (e.keyCode === 27) {
+            closeMatches(handle);
+        }
+    });
+    // Close when clicking outside
+    $(document).on('click', function (e) {
+        var ancestors = $(e.target).closest($el).length;
+        if (0 === ancestors) {
+            closeMatches(handle);
+        }
+    });
 }
 
 function findCoords(handle) {
