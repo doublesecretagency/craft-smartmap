@@ -36,12 +36,31 @@ class SmartMapService extends BaseApplicationComponent
         if (array_key_exists($cookieName, $_COOKIE)) {
             $this->here = json_decode($_COOKIE[$cookieName], true);
         } else {
-            $api = new \Guzzle\Http\Client('http://freegeoip.net');
-            $this->here = $api->get('/json/'.$ip)->send()->json();
-            $data = json_encode($this->here);
-            $expires = $this->_hereCookieExpires;
-            setcookie($cookieName, $data, $expires);
+            $api = 'http://freegeoip.net';
+            if ($this->_checkApiAvailable($api)) {
+                $client = new \Guzzle\Http\Client($api);
+                $this->here = $client->get('/json/'.$ip)->send()->json();
+                $expires = $this->_hereCookieExpires;
+            } else {
+                $this->here = array();
+                $expires = time()+(60*2); // For two minutes
+            }
+            setcookie($cookieName, json_encode($this->here), $expires, '/');
         }
+    }
+
+    // Check that API is available
+    private function _checkApiAvailable($api)
+    {
+        $ch = curl_init($api);
+        curl_setopt_array($ch, array(
+            CURLOPT_NOBODY => true,
+            CURLOPT_FOLLOWLOCATION => true,
+        ));
+        curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return (200 == $status);
     }
 
     // TEMP: Until P&T "distance" fix
@@ -295,6 +314,13 @@ class SmartMapService extends BaseApplicationComponent
     public function markerCoords($locations, $options = array())
     {
 
+        if (!$locations || empty($locations)) {
+            return array(
+                'center'  => $this->_defaultCoords(),
+                'markers' => array(),
+            );
+        }
+
         // If one location, process as an array
         if ($locations && !is_array($locations)) {
             return $this->markerCoords(array($locations), $options);
@@ -479,17 +505,22 @@ class SmartMapService extends BaseApplicationComponent
     // Use default coordinates
     public function _defaultCoords()
     {
-        $coords = array(
-            // Current location
-            'lat' => $this->here['latitude'],
-            'lng' => $this->here['longitude'],
+        $defaultCoords = array(
+            // Point Nemo
+            'lat' => -48.876667,
+            'lng' => -123.393333,
         );
-        if (!$coords['lat'] && !$coords['lng']) {
+        if (array_key_exists('latitude', $this->here) && array_key_exists('longitude', $this->here)) {
             $coords = array(
-                // Point Nemo
-                'lat' => -48.876667,
-                'lng' => -123.393333,
+                // Current location
+                'lat' => $this->here['latitude'],
+                'lng' => $this->here['longitude'],
             );
+        } else {
+            $coords = $defaultCoords;
+        }
+        if (!$coords['lat'] && !$coords['lng']) {
+            $coords = $defaultCoords;
         }
         return $coords;
     }
