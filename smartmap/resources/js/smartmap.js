@@ -4,6 +4,8 @@ var smartMap = {
     maps: {},
     searchUrl: '',
     _renderedMaps: [],
+    _renderedMarkers: [],
+    _renderedInfoWindows: [],
     //addMap: function (mapModel) {},
     // Draw individual map
     drawMap: function (mapId, map) {
@@ -14,26 +16,41 @@ var smartMap = {
             center: smartMap._getLatLng(map.center)
         });
     },
-    // Draw all markers for specified map
+    // Draw all markers
     drawMarkers: function (mapId, markers) {
-        var marker;
-        var mapCanvas = smartMap._renderedMaps[mapId];
-        for (i in markers) {
-            marker = markers[i];
-            smartMap._drawMarker(mapCanvas, marker);
+        for (var i in markers) {
+            smartMap.drawMarker(mapId, i, markers[i]);
         }
     },
     // Draw individual marker
-    _drawMarker: function (mapCanvas, marker) {
+    drawMarker: function (mapId, i, marker) {
+        var mapCanvas = smartMap._renderedMaps[mapId];
         var coords = {
             'lat': marker['lat'],
             'lng': marker['lng'],
         }
-        return new google.maps.Marker({
+        smartMap._renderedMarkers[i] = new google.maps.Marker({
             position: smartMap._getLatLng(coords),
             map: mapCanvas,
             title: marker['title']
         });
+    },
+    // Draw individual marker info
+    drawMarkerInfo: function (mapId, i, infoWindowHtml) {
+        var mapCanvas = smartMap._renderedMaps[mapId];
+        var marker = smartMap._renderedMarkers[i];
+        smartMap._renderedInfoWindows[i] = new google.maps.InfoWindow({'content':infoWindowHtml});
+        google.maps.event.addListener(marker, 'click', function() {
+            for (var key in smartMap._renderedInfoWindows) {
+                smartMap._renderedInfoWindows[key].close();
+            }
+            smartMap._renderedInfoWindows[i].open(mapCanvas, marker);
+        });
+    },
+    // Zoom in on a marker
+    zoomOnMarker: function (mapId, i, zoom) {
+        smartMap._renderedMaps[mapId].setZoom(zoom);
+        smartMap._renderedMaps[mapId].panTo(smartMap._renderedMarkers[i].position);
     },
     // Get map options
     _getLatLng: function (coords) {
@@ -63,46 +80,3 @@ var smartMap = {
         });
     }
 }
-
-// NEW
-// =========================================================== //
-// OLD
-
-/*
-// Smart Map JS object
-var smartMapOLD = {
-    // Default values
-    map: null,
-    marker: {},
-    infoWindow: {},
-    // Add new map marker
-    addMarker: function (coords, title) {
-        return new google.maps.Marker({
-            position: smartMapOLD.getLatLng(coords),
-            map: smartMapOLD.map,
-            title: title
-        });
-    },
-    // Add new info window
-    addInfoWindow: function (i, content) {
-        smartMapOLD.infoWindow[i] = new google.maps.InfoWindow({'content':content});
-        google.maps.event.addListener(smartMapOLD.marker[i], 'click', function() {
-            for (var key in smartMapOLD.infoWindow) {
-                smartMapOLD.infoWindow[key].close();
-            }
-            smartMapOLD.infoWindow[i].open(smartMapOLD.map, smartMapOLD.marker[i]);
-        });
-    },
-    /*
-    // Zoom in on a marker
-    zoomOnMarker: function (i, zoom) {
-        smartMapOLD.map.setZoom(zoom);
-        smartMapOLD.map.panTo(smartMapOLD.marker[i].position);
-    },
-    / /
-    // Set marker click event
-    markerClickEvent: function (marker, callback) {
-        //google.maps.event.addListener(marker, 'click', callback);
-    }
-}
-*/

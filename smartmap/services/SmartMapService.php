@@ -356,9 +356,10 @@ class SmartMapService extends BaseApplicationComponent
                                 $lat = $address['lat'];
                                 $lng = $address['lng'];
                                 $markers[] = array(
-                                    'lat'   => (float) $lat,
-                                    'lng'   => (float) $lng,
-                                    'title' => $loc->title
+                                    'lat'     => (float) $lat,
+                                    'lng'     => (float) $lng,
+                                    'title'   => $loc->title,
+                                    'element' => $loc
                                 );
                                 $allLats[] = $lat;
                                 $allLngs[] = $lng;
@@ -377,9 +378,10 @@ class SmartMapService extends BaseApplicationComponent
                         $title = (array_key_exists('title',$loc) ? $loc['title'] : '');
                     }
                     $markers[] = array(
-                        'lat'   => $lat,
-                        'lng'   => $lng,
-                        'title' => $title
+                        'lat'     => $lat,
+                        'lng'     => $lng,
+                        'title'   => $title,
+                        'element' => $loc
                     );
                     $allLats[] = $lat;
                     $allLngs[] = $lng;
