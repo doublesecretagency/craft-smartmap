@@ -53,10 +53,11 @@ class SmartMapService extends BaseApplicationComponent
     private function _checkApiAvailable($api)
     {
         $ch = curl_init($api);
-        curl_setopt_array($ch, array(
-            CURLOPT_NOBODY => true,
-            CURLOPT_FOLLOWLOCATION => true,
-        ));
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
+            // Cannot be activated when safe_mode is enabled or an open_basedir is set
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        }
         curl_exec($ch);
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
