@@ -178,8 +178,19 @@ smartMap.drawMarkerInfo("'.$mapId.'", '.$i.', '.$infoWindowHtml.');';
     // Get a link to open the Google map
     public function linkToGoogle($address)
     {
-        $q = $address['street1'].', '.$address['city'].', '.$address['state'].', '.$address['zip'];
-        return 'http://maps.google.com/?q='.$q;
+        $q = '';
+        $components = array('street1','city','state','zip');
+        foreach ($components as $key) {
+            if (array_key_exists($key, $address)) {
+                if ($q) {$q .= ', ';}
+                $q .= $address[$key];
+            }
+        }
+        if ($q) {
+            return 'http://maps.google.com/?q='.$q;
+        } else {
+            return '#';
+        }
     }
     
     // ============================================================== //

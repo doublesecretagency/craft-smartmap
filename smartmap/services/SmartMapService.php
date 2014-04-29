@@ -315,6 +315,14 @@ class SmartMapService extends BaseApplicationComponent
     public function markerCoords($locations, $options = array())
     {
 
+        // Not sure how a UserModel got here. :/
+        if (is_a($locations, 'Craft\\UserModel')) {
+            return array(
+                'center'  => $this->_defaultCoords(),
+                'markers' => array(),
+            );
+        }
+
         if (!$locations || empty($locations)) {
             return array(
                 'center'  => $this->_defaultCoords(),
