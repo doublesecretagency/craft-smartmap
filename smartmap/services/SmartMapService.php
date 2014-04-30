@@ -18,9 +18,6 @@ class SmartMapService extends BaseApplicationComponent
 
     public $defaultZoom = 11;
 
-    public $content;
-    public $isNewContent;
-
     function init()
     {
         parent::init();
@@ -112,35 +109,24 @@ class SmartMapService extends BaseApplicationComponent
 
 
     // ==================================================== //
-    // CALLED VIA SmartMapPlugin::init()
-    // ==================================================== //
-
-    // Once the content has been saved...
-    public function contentSaved(ContentModel $content, $isNewContent)
-    {
-        $this->content = $content;
-        $this->isNewContent = $isNewContent;
-    }
-
-
-    // ==================================================== //
     // CALLED VIA FIELDTYPE
     // ==================================================== //
 
     // Save field to plugin table
     public function saveAddressField(BaseFieldType $fieldType)
     {
-        // Get elementId and handle
-        $elementId = $fieldType->element->id;
+        // Get handle, elementId, and content
         $handle    = $fieldType->model->handle;
-
-        // Check if attribute exists
-        if (!$this->content->getAttribute($handle)) {
-            return false;
-        }
+        $elementId = $fieldType->element->id;
+        $content   = $fieldType->element->getContent();
 
         // Set specified attributes
-        $attr = $this->content[$handle];
+        $attr = $content->getAttribute($handle);
+
+        // Return false if attribute doesn't exist
+        if (!$attr) {
+            return false;
+        }
 
         // Attempt to load existing record
         $addressRecord = SmartMap_AddressRecord::model()->findByAttributes(array(
@@ -314,14 +300,6 @@ class SmartMapService extends BaseApplicationComponent
     // Decipher map center & markers based on locations
     public function markerCoords($locations, $options = array())
     {
-
-        // Not sure how a UserModel got here. :/
-        if (is_a($locations, 'Craft\\UserModel')) {
-            return array(
-                'center'  => $this->_defaultCoords(),
-                'markers' => array(),
-            );
-        }
 
         if (!$locations || empty($locations)) {
             return array(

@@ -15,10 +15,6 @@ class SmartMapPlugin extends BasePlugin
     	craft()->smartMap->settings  = $this->getSettings();
     	craft()->smartMap->mapApiKey = '';
     	//craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];
-		// Events
-		craft()->on('content.saveContent', function(Event $event) {
-			craft()->smartMap->contentSaved($event->params['content'], $event->params['isNewContent']);
-		});
 	}
 
 	public function getName()
@@ -28,7 +24,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '1.2.1';
+		return '1.2.2';
 	}
 
 	public function getDeveloper()
