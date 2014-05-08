@@ -104,14 +104,20 @@ smartMap.drawMap("'.$mapId.'", {'.$renderMap.'});';
         // Add map markers
         if ($map['markers'] && is_array($map['markers'])) {
             foreach ($map['markers'] as $i => $m) {
-                $element = $m['element'];
-                unset($m['element']);
+                if (array_key_exists('element', $m)) {
+                    $element = $m['element'];
+                    unset($m['element']);
+                } else {
+                    $element = false;
+                }
                 $js .= '
 smartMap.drawMarker("'.$mapId.'", '.$i.', '.json_encode($m).');';
-                if (array_key_exists('markerInfo', $options)) {
-                    $infoWindowHtml = $this->_infoWindowHtml($mapId, $i, $element, $options['markerInfo']);
-                    $js .= '
-smartMap.drawMarkerInfo("'.$mapId.'", '.$i.', '.$infoWindowHtml.');';
+                if ($element) {
+                    if (array_key_exists('markerInfo', $options)) {
+                        $infoWindowHtml = $this->_infoWindowHtml($mapId, $i, $element, $options['markerInfo']);
+                        $js .= '
+    smartMap.drawMarkerInfo("'.$mapId.'", '.$i.', '.$infoWindowHtml.');';
+                    }
                 }
             }
         }

@@ -326,52 +326,64 @@ class SmartMapService extends BaseApplicationComponent
 
         // If locations are specified
         if (!empty($locations)) {
-            // Find all Smart Map Address field handles
-            foreach (craft()->fields->getAllFields() as $field) {
-                if ($field->type == 'SmartMap_Address') {
-                    $handles[] = $field->handle;
+            // If location is a pair of coordinates
+            if (!craft()->smartMap->isAssoc($locations) && count($locations) == 2) {
+                $lat = $locations[0];
+                $lng = $locations[1];
+                $allLats[] = $lat;
+                $allLngs[] = $lng;
+                $markers[] = array(
+                    'lat' => $lat,
+                    'lng' => $lng,
+                );
+            } else {
+                // Find all Smart Map Address field handles
+                foreach (craft()->fields->getAllFields() as $field) {
+                    if ($field->type == 'SmartMap_Address') {
+                        $handles[] = $field->handle;
+                    }
                 }
-            }
-            // Loop through locations
-            foreach ($locations as $loc) {
-                if (is_object($loc)) {
-                    // If location is an object
-                    if (!empty($handles)) {
-                        foreach ($handles as $handle) {
-                            $address = $loc->{$handle};
-                            if (!empty($address)) {
-                                $lat = $address['lat'];
-                                $lng = $address['lng'];
-                                $markers[] = array(
-                                    'lat'     => (float) $lat,
-                                    'lng'     => (float) $lng,
-                                    'title'   => $loc->title,
-                                    'element' => $loc
-                                );
-                                $allLats[] = $lat;
-                                $allLngs[] = $lng;
+                // Loop through locations
+                foreach ($locations as $loc) {
+                    if (is_object($loc)) {
+                        // If location is an object
+                        if (!empty($handles)) {
+                            foreach ($handles as $handle) {
+                                $address = $loc->{$handle};
+                                if (!empty($address)) {
+                                    $lat = $address['lat'];
+                                    $lng = $address['lng'];
+                                    $markers[] = array(
+                                        'lat'     => (float) $lat,
+                                        'lng'     => (float) $lng,
+                                        'title'   => $loc->title,
+                                        'element' => $loc
+                                    );
+                                    $allLats[] = $lat;
+                                    $allLngs[] = $lng;
+                                }
                             }
                         }
+                    } else if (is_array($loc)) {
+                        // Else, if location is an array
+                        if (!craft()->smartMap->isAssoc($loc) && count($loc) == 2) {
+                            $lat = $loc[0];
+                            $lng = $loc[1];
+                            $title = '';
+                        } else {
+                            $lat = craft()->smartMap->findKeyInArray($loc, array('latitude','lat'));
+                            $lng = craft()->smartMap->findKeyInArray($loc, array('longitude','lng','lon','long'));
+                            $title = (array_key_exists('title',$loc) ? $loc['title'] : '');
+                        }
+                        $markers[] = array(
+                            'lat'     => $lat,
+                            'lng'     => $lng,
+                            'title'   => $title,
+                            'element' => $loc
+                        );
+                        $allLats[] = $lat;
+                        $allLngs[] = $lng;
                     }
-                } else if (is_array($loc)) {
-                    // Else, if location is an array
-                    if (!craft()->smartMap->isAssoc($loc) && count($loc) == 2) {
-                        $lat = $loc[0];
-                        $lng = $loc[1];
-                        $title = '';
-                    } else {
-                        $lat = craft()->smartMap->findKeyInArray($loc, array('latitude','lat'));
-                        $lng = craft()->smartMap->findKeyInArray($loc, array('longitude','lng','lon','long'));
-                        $title = (array_key_exists('title',$loc) ? $loc['title'] : '');
-                    }
-                    $markers[] = array(
-                        'lat'     => $lat,
-                        'lng'     => $lng,
-                        'title'   => $title,
-                        'element' => $loc
-                    );
-                    $allLats[] = $lat;
-                    $allLngs[] = $lng;
                 }
             }
         }
