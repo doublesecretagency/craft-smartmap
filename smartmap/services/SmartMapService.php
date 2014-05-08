@@ -327,7 +327,7 @@ class SmartMapService extends BaseApplicationComponent
         // If locations are specified
         if (!empty($locations)) {
             // If location is a pair of coordinates
-            if (!craft()->smartMap->isAssoc($locations) && count($locations) == 2) {
+            if (!craft()->smartMap->isAssoc($locations) && count($locations) == 2 && !is_object($locations[0])) {
                 $lat = $locations[0];
                 $lng = $locations[1];
                 $allLats[] = $lat;
@@ -366,7 +366,7 @@ class SmartMapService extends BaseApplicationComponent
                         }
                     } else if (is_array($loc)) {
                         // Else, if location is an array
-                        if (!craft()->smartMap->isAssoc($loc) && count($loc) == 2) {
+                        if (!craft()->smartMap->isAssoc($loc) && count($loc) == 2 && !is_object($loc[0])) {
                             $lat = $loc[0];
                             $lng = $loc[1];
                             $title = '';
