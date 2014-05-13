@@ -28,7 +28,11 @@ class SmartMapService extends BaseApplicationComponent
     // Automatically detect & set current location
     public function currentLocation()
     {
-        $ip = ('127.0.0.1' == $_SERVER['REMOTE_ADDR'] || '::1' == $_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $ipPattern = '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/';
+        if (('127.0.0.1' == $ip) || (!preg_match($ipPattern, $ip))) {
+            $ip = '';
+        }
         $cookieName = $this->_hereCookieName;
         if (array_key_exists($cookieName, $_COOKIE)) {
             $this->here = json_decode($_COOKIE[$cookieName], true);
