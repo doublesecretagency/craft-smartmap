@@ -30,7 +30,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         $style .= (array_key_exists('width', $options)  ? 'width:'.$options['width'].'px;'   : '');
         $style .= (array_key_exists('height', $options) ? 'height:'.$options['height'].'px;' : '');
 
-        return $this->_safeOutput(PHP_EOL.'<div id="'.$mapId.'" class="smartmap-mapcanvas" style="'.$style.'">Loading map...</div>');
+        return TemplateHelper::getRaw(PHP_EOL.'<div id="'.$mapId.'" class="smartmap-mapcanvas" style="'.$style.'">Loading map...</div>');
 
     }
 
@@ -142,7 +142,7 @@ smartMap.drawMarker("'.$mapId.'", '.$i.', '.json_encode($m).');';
     public function staticMap($markers, $options = array())
     {
         $src = $this->staticMapSrc($markers, $options);
-        return $this->_safeOutput('<img src="'.$src.'" />');
+        return TemplateHelper::getRaw('<img src="'.$src.'" />');
     }
 
     // Get source of static map image
@@ -197,18 +197,6 @@ smartMap.drawMarker("'.$mapId.'", '.$i.', '.json_encode($m).');';
         } else {
             return '#';
         }
-    }
-    
-    // ============================================================== //
-
-    // Marks html content as safe for output within templates
-    //  - Courtesy of Selvin Ortiz (https://github.com/selvinortiz/spamguard/blob/master/bridge/Bridge.php)
-    private function _safeOutput($content, $charset = null)
-    {
-        if (is_null($charset)) {
-            $charset = craft()->templates->getTwig()->getCharset();
-        }
-        return new \Twig_Markup($content, (string) $charset);
     }
 
 }
