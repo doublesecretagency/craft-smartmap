@@ -34,6 +34,13 @@ class SmartMapVariable
         return craft()->smartMap->here;
     }
 
+    // Includes front-end Javascript
+    public function js()
+    {
+        craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
+        craft()->templates->includeJsResource('smartmap/js/smartmap.js');
+    }
+
     // FOR INTERNAL USE ONLY
     public function settings()
     {

@@ -7,6 +7,87 @@ var smartMap = {
     _renderedMarkers: [],
     _renderedInfoWindows: [],
     //addMap: function (mapModel) {},
+
+    // DETERMINING COORDS
+
+    // Get closest matches for address
+    getMatches: function (address, callback) {
+        var output = {
+            results : [],
+            error   : null
+        };
+        //'123 Main Street, Los Angeles, CA 90000, USA';
+        checkAddress  = (address.street1 ?      address.street1 : '');
+        checkAddress += (address.city    ? ', '+address.city    : '');
+        checkAddress += (address.state   ? ', '+address.state   : '');
+        checkAddress += (address.zip     ? ', '+address.zip     : '');
+        checkAddress += (address.country ? ', '+address.country : '');
+        // Get results
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({'address': checkAddress}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                for (i in results) {
+                    output.results.push(smartMap._cleanupAddress(results[i]));
+                }
+            } else {
+                if ('ZERO_RESULTS' == status) {
+                    output.error = 'No results were found.';
+                } else {
+                    output.error = 'Geocode was not successful for the following reason: '+status;
+                }
+            }
+            callback(output);
+        });
+
+    },
+    // Clean up address
+    _cleanupAddress: function (address) {
+        var number, street, subcity, city, state, zip, country;
+        var c = address.address_components;
+        for (i in c) {
+            //console.log(c[i]['types'][0]+':',c[i]['short_name']);
+            switch (c[i]['types'][0]) {
+                case 'street_number':
+                    number  = c[i]['short_name'];
+                    break;
+                case 'route':
+                    street  = c[i]['short_name'];
+                    break;
+                case 'sublocality':
+                    subcity = c[i]['short_name'];
+                    break;
+                case 'locality':
+                    city    = c[i]['short_name'];
+                    break;
+                case 'administrative_area_level_1':
+                    state   = c[i]['short_name'];
+                    break;
+                case 'postal_code':
+                    zip     = c[i]['short_name'];
+                    break;
+                case 'country':
+                    country = c[i]['long_name'];
+                    break;
+            }
+        }
+        return {
+            'formatted' : address.formatted_address,
+            'address'   : {
+                'street1' : ((number ? number : '')+' '+(street ? street : '')).trim(),
+                'city'    : (typeof subcity === 'undefined' ? city : subcity),
+                'state'   : state,
+                'zip'     : zip,
+                'country' : country
+            },
+            'coords'    : {
+                'lat'     : address.geometry.location.lat(),
+                'lng'     : address.geometry.location.lng()
+            },
+        };
+    },
+
+    // DRAWING MAPS & MARKERS
+
     // Draw individual map
     drawMap: function (mapId, map) {
         var mapEl = document.getElementById(mapId);
@@ -56,6 +137,9 @@ var smartMap = {
     _getLatLng: function (coords) {
         return new google.maps.LatLng(coords.lat, coords.lng);
     },
+
+    // SEARCH
+
     // Conduct search via AJAX
     search: function (data) {
         if (typeof jQuery != 'function') {
