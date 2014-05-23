@@ -14,7 +14,7 @@ var zip;
 var coords;
 var handle;
 
-$('.smartmap-field input').on('blur', function () {
+$(document).on('blur', '.smartmap-field input', function () {
     handle = $(this).closest('.smartmap-field').attr('id');
     findCoords(handle);
     return true;
