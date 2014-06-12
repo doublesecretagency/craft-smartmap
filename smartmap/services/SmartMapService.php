@@ -353,18 +353,20 @@ class SmartMapService extends BaseApplicationComponent
                         // If location is an object
                         if (!empty($handles)) {
                             foreach ($handles as $handle) {
-                                $address = $loc->{$handle};
-                                if (!empty($address)) {
-                                    $lat = $address['lat'];
-                                    $lng = $address['lng'];
-                                    $markers[] = array(
-                                        'lat'     => (float) $lat,
-                                        'lng'     => (float) $lng,
-                                        'title'   => $loc->title,
-                                        'element' => $loc
-                                    );
-                                    $allLats[] = $lat;
-                                    $allLngs[] = $lng;
+                                if (isset($loc->{$handle})) {
+                                    $address = $loc->{$handle};
+                                    if (!empty($address)) {
+                                        $lat = $address['lat'];
+                                        $lng = $address['lng'];
+                                        $markers[] = array(
+                                            'lat'     => (float) $lat,
+                                            'lng'     => (float) $lng,
+                                            'title'   => $loc->title,
+                                            'element' => $loc
+                                        );
+                                        $allLats[] = $lat;
+                                        $allLngs[] = $lng;
+                                    }
                                 }
                             }
                         }
@@ -396,7 +398,7 @@ class SmartMapService extends BaseApplicationComponent
         if (array_key_exists('center', $options)) {
             // Center is specified in options
             $center = $options['center'];
-        } else if (empty($locations)) {
+        } else if (empty($locations) || empty($allLats) || empty($allLngs)) {
             // Error was triggered
             $markers = array();
             if (array_key_exists('target', $options)) {

@@ -10,6 +10,12 @@ class SmartMapVariable
         return craft()->smartMap_variables->linkToGoogle($address);
     }
 
+    // Link to directions on a Google map
+    public function directions($address, $title = null)
+    {
+        return craft()->smartMap_variables->linkToDirections($address, $title);
+    }
+
     // Display a dynamic Google map
     public function map($markers = false, $options = array())
     {

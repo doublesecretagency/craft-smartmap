@@ -199,4 +199,26 @@ smartMap.drawMarker("'.$mapId.'", '.$i.', '.json_encode($m).');';
         }
     }
 
+    // Get a link to open directions on a Google map
+    public function linkToDirections($address, $title = null)
+    {
+        if (array_key_exists('lat', $address) && array_key_exists('lng', $address)) {
+            $coords = $address['lat'].','.$address['lng'];
+        } else {
+            return '#no-address-coordinates';
+        }
+
+        if (!$title) {
+            $components = array('street1','city','state','zip');
+            foreach ($components as $key) {
+                if (array_key_exists($key, $address)) {
+                    if ($title) {$title .= ', ';}
+                    $title .= $address[$key];
+                }
+            }
+        }
+
+        return 'http://maps.google.com/maps?daddr='.rawurlencode($title).'@'.$coords;
+    }
+
 }
