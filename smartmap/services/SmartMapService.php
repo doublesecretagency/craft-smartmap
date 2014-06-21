@@ -37,6 +37,12 @@ class SmartMapService extends BaseApplicationComponent
         if (array_key_exists($cookieName, $_COOKIE)) {
             $this->here = json_decode($_COOKIE[$cookieName], true);
         } else {
+            /*
+                Instead of pre-pinging the freegeoip.net server,
+                simply try & catch the exception that is thrown
+                when it is unavailable.
+                http://craftcms.stackexchange.com/questions/253/error-handling-in-plugins-templates
+            */
             $api = 'http://freegeoip.net';
             if ($this->_checkApiAvailable($api)) {
                 $client = new \Guzzle\Http\Client($api);
