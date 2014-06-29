@@ -14,4 +14,12 @@ class SmartMapController extends BaseController
 		$this->returnJson($response);
 	}
 
+	// Get location information for debugging
+	public function actionDebug()
+	{
+		$this->renderTemplate('smartmap/_debug', array(
+			'my' => craft()->smartMap->here
+		));
+	}
+
 }
