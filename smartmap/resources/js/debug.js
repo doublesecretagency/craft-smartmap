@@ -2,26 +2,31 @@
 // Draw map with markers
 function drawMap() {
 
-    // Get current PHP coords
-    var php = {
-        'lat': $('td#php-latitude').text(),
-        'lng': $('td#php-longitude').text()
-    }
-
     // Get current JS coords
     var js = {
-        'lat': $('td#js-latitude').text(),
-        'lng': $('td#js-longitude').text()
+        'lat': $('td#js-latitude').text().trim(),
+        'lng': $('td#js-longitude').text().trim()
     }
 
-    // Average coordinates
-    var avgLat = avgCoords(php.lat, js.lat);
-    var avgLng = avgCoords(php.lng, js.lng);
+    // Get current PHP coords
+    var php = {
+        'lat': $('td#php-latitude').text().trim(),
+        'lng': $('td#php-longitude').text().trim()
+    }
 
-    // Ensure avg. coords could be calculated
-    if (!avgLat || !avgLng) {
+    // Set whether coordinates exist
+    var coordsJs = Boolean(js.lat && js.lng);
+    var coordsPhp = Boolean(php.lat && php.lng);
+
+    // Determine map center
+    var center;
+    if (coordsJs) {
+        center = new google.maps.LatLng(js.lat, js.lng);
+    } else if (coordsPhp) {
+        center = new google.maps.LatLng(php.lat, php.lng);
+    } else {
+        center = new google.maps.LatLng(0, 0);
         alert('Unable to determine map center.');
-        return;
     }
 
     // Draw map
@@ -29,21 +34,11 @@ function drawMap() {
     var myMap = new google.maps.Map(el, {
         zoom: 13,
         scrollwheel: false,
-        center: new google.maps.LatLng(avgLat, avgLng)
+        center: center
     });
 
-    // Place PHP marker
-    if (php.lat && php.lng) {
-        new google.maps.Marker({
-            position: new google.maps.LatLng(php.lat, php.lng),
-            map: myMap,
-            title: 'PHP',
-            icon: '//www.googlemapsmarkers.com/v1/P/FF695F/'
-        });
-    }
-
     // Place JS marker
-    if (js.lat && js.lng) {
+    if (coordsJs) {
         new google.maps.Marker({
             position: new google.maps.LatLng(js.lat, js.lng),
             map: myMap,
@@ -51,22 +46,16 @@ function drawMap() {
             icon: '//www.googlemapsmarkers.com/v1/J/C6CEF2/'
         });
     }
-    
-}
-
-// Calculate average of coordinates
-function avgCoords(php, js) {
-    php = parseFloat(php);
-    js  = parseFloat(js);
-    if (isNaN(php) && isNaN(js)) {
-        return false;
-    } else if (isNaN(php)) {
-        return js;
-    } else if (isNaN(js)) {
-        return php;
-    } else {
-        return (php + js) / 2;
+    // Place PHP marker
+    if (coordsPhp) {
+        new google.maps.Marker({
+            position: new google.maps.LatLng(php.lat, php.lng),
+            map: myMap,
+            title: 'PHP',
+            icon: '//www.googlemapsmarkers.com/v1/P/FF695F/'
+        });
     }
+    
 }
 
 // ========================================================== //

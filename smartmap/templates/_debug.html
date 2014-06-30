@@ -14,6 +14,29 @@
 
 	<table>
 		<colgroup>
+			<col width="120"></col>
+			<col width="120"></col>
+			<col width="120"></col>
+		</colgroup>
+		<tr>
+			<th>Method</th>
+			<th>Value</th>
+			<th>Expires</th>
+		</tr>
+		<tr>
+			<td class="field">Cookie IP:</td>
+			<td>{{ craft.smartMap.debug.cookieValue }}</td>
+			<td>{{ craft.smartMap.debug.cookieExpires }}</td>
+		</tr>
+		<tr>
+			<td class="field">Cache Data:</td>
+			<td><pre>{{ craft.smartMap.debug.cacheValue }}</pre></td>
+			<td>{{ craft.smartMap.debug.cacheExpires }}</td>
+		</tr>
+	</table>
+
+	<table>
+		<colgroup>
 			<col width="100"></col>
 			<col width="200"></col>
 		</colgroup>
@@ -50,18 +73,33 @@
 		</colgroup>
 		<tr>
 			<th>&nbsp;</th>
-			<th>PHP</th>
-			<th>JavaScript</th>
+			<th>Latitude</th>
+			<th>Longitude</th>
 		</tr>
 		<tr>
-			<td class="field">Latitude:</td>
+			<td class="field">PHP:</td>
 			<td class="coords" id="php-latitude">{{ my.latitude|number_format(6) }}</td>
-			<td class="coords" id="js-latitude">&nbsp;</td>
+			<td class="coords" id="php-longitude">{{ my.longitude|number_format(6) }}</td>
 		</tr>
 		<tr>
-			<td class="field">Longitude:</td>
-			<td class="coords" id="php-longitude">{{ my.longitude|number_format(6) }}</td>
+			<td class="field">JavaScript:</td>
+			<td class="coords" id="js-latitude">&nbsp;</td>
 			<td class="coords" id="js-longitude">&nbsp;</td>
+		</tr>
+	</table>
+
+	<table>
+		<colgroup>
+			<col width="130"></col>
+			<col width="120"></col>
+		</colgroup>
+		<tr>
+			<th>$_SERVER</th>
+			<th>&nbsp;</th>
+		</tr>
+		<tr>
+			<td class="field">REMOTE_ADDR</td>
+			<td>{{ craft.smartMap.debug.remote_addr }}</td>
 		</tr>
 	</table>
 

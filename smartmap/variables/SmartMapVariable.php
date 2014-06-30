@@ -52,5 +52,25 @@ class SmartMapVariable
     {
         return craft()->smartMap->settings;
     }
+    public function debug()
+    {
+        $debugData = array(
+            'remote_addr'   => $_SERVER['REMOTE_ADDR'],
+            'cookieValue'   => false,
+            'cookieExpires' => false,
+            'cacheValue'    => false,
+            'cacheExpires'  => false,
+        );
+        $dateFormat = 'F j, Y - g:i:s a';
+        if (craft()->smartMap->cookieData) {
+            $debugData['cookieValue']   = craft()->smartMap->cookieData['ip'];
+            $debugData['cookieExpires'] = date($dateFormat, craft()->smartMap->cookieData['expires']);
+        }
+        if (craft()->smartMap->cacheData) {
+            $debugData['cacheValue']    = print_r(craft()->smartMap->cacheData['here'], true);
+            $debugData['cacheExpires']  = date($dateFormat, craft()->smartMap->cacheData['expires']);
+        }
+        return $debugData;
+    }
     
 }
