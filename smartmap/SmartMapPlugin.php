@@ -12,9 +12,9 @@ class SmartMapPlugin extends BasePlugin
 		// Enums
 		$this->_loadEnums();
 		// Plugin Settings
-    	craft()->smartMap->settings  = $this->getSettings();
-    	craft()->smartMap->mapApiKey = '';
-    	//craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];
+		craft()->smartMap->settings  = $this->getSettings();
+		craft()->smartMap->mapApiKey = '';
+		//craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];
 	}
 
 	public function getName()
@@ -38,11 +38,12 @@ class SmartMapPlugin extends BasePlugin
 		//return 'http://doublesecretagency.com';
 	}
 
-    public function hasCpSection()
-    {
-        return false;
-        //return craft()->smartMap->settings['showDocs'];
-    }
+	public function registerSiteRoutes()
+	{
+		return array(
+			'map/debug' => array('action' => 'smartMap/debug'),
+		);
+	}
 
 	public function getSettingsHtml()
 	{
