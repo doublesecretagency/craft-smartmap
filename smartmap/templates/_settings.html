@@ -12,22 +12,16 @@
 
 <p>All questions, comments, and suggestions are welcome!</p>
 
+<hr />
 
-{#
-<p>A tab will appear at the top of the control panel, allowing you easy access to documentation.</p>
-
-{{ forms.lightswitchField({
-    id:     "showDocs",
-    name:   "showDocs",
-    on:     settings.showDocs,
-    onLabel: "Show"|t,
-    offLabel: "Hide"|t,
-    errors: settings.getErrors('showDocs'),
+{{ forms.textField({
+	label: "Debug Route"|t,
+	id: 'debugRoute',
+	name: 'debugRoute',
+	instructions: "Which front-end route will display the debug page?"|t,
+	value: settings.debugRoute,
+	errors: settings.getErrors('debugRoute')
 }) }}
-
-<p>Or you can view the documentation without enabling the tab. <a href="{{ url('smartmap') }}">Read docs...</a></p>
-#}
-
 
 {#
 <hr />

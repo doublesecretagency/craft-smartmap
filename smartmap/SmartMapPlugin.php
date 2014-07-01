@@ -24,7 +24,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '1.2.7b';
+		return '1.2.7';
 	}
 
 	public function getDeveloper()
@@ -40,8 +40,10 @@ class SmartMapPlugin extends BasePlugin
 
 	public function registerSiteRoutes()
 	{
+		$debugRoute = craft()->smartMap->settings->debugRoute;
+		if (!$debugRoute) {$debugRoute = 'map/debug';}
 		return array(
-			'map/debug' => array('action' => 'smartMap/debug'),
+			$debugRoute => array('action' => 'smartMap/debug'),
 		);
 	}
 
@@ -55,7 +57,7 @@ class SmartMapPlugin extends BasePlugin
 	protected function defineSettings()
 	{
 		return array(
-			//'showDocs' => array(AttributeType::Bool, 'label' => 'Enable documentation?', 'default' => 'on'),
+			'debugRoute' => array(AttributeType::String, 'required' => true, 'label' => 'Debug Route', 'default' => 'map/debug'),
 			//'apiKey'   => array(AttributeType::String, 'required' => true, 'label' => 'API Key'),
 		);
 	}
