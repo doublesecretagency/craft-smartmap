@@ -1,12 +1,14 @@
 {% import "_includes/forms" as forms %}
 
 <div class="smartmap-field" id="{{ handle }}">
-    <!-- div class="google-map-link">Open in Google Maps -&gt;</div -->
-    <div class="smartmap-no-results">No matches</div>
-    <div class="smartmap-matches">
-        <div class="smartmap-matches-intro">Select the closest match: <span onclick="closeMatches(this)">X</span></div>
-        <ul class="smartmap-matches-options" id="{{ handle }}-options">
-        </ul>
+    <div class="smartmap-top-right">
+        {#
+        <span class="smartmap-link smartmap-google-map-link">Open in Google Maps -&gt;</span>
+         &nbsp;&bull;&nbsp; 
+        #}
+        <span class="smartmap-link smartmap-seach-addresses">Seach Addresses</span>
+         &nbsp;&bull;&nbsp; 
+        <span class="smartmap-link smartmap-drag-pin">Drag Pin</span>
     </div>
     <div class="smartmap-street-address">
         {{ forms.textField({
@@ -55,13 +57,6 @@
         }) }}
     </div>
     <div class="smartmap-coordinates">
-        {#
-         - Manually calculates when clicking "Calculate"
-         - Automatically calculates on blur of any field,
-             as long as these fields are not empty:
-             "street1", "city", "state", "zip"
-        #}
-        <!-- div class="heading"><a href="javascript:findCoords('{{ handle }}')">Calculate location coordinates</a></div -->
         {{ forms.textField({
             placeholder: "Latitude"|t,
             id: handle~'-lat',

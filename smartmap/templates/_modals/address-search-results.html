@@ -1,0 +1,42 @@
+<div class="content">
+	<div class="main">
+
+		<div class="toolbar">
+			{% set total = searchResults|length %}
+			<h2>Showing {{ total }} search result{{ total != 1 ? 's' }}...</h2>
+		</div>
+
+		<div class="elements">
+			<div class="tableview">
+				<table class="data fullwidth">
+					<thead>
+						<tr>
+							<th scope="col">Street</th>
+							<th scope="col">City</th>
+							<th scope="col">State</th>
+							<th scope="col">Zip</th>
+							<th scope="col">Country</th>
+							<th scope="col" class="smartmap-modal-coords">Latitude</th>
+							<th scope="col" class="smartmap-modal-coords">Longitude</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for a in searchResults %}
+							{% set streetAddress = (a.street_number is defined ? a.street_number)~' '~(a.route is defined ? a.route) %}
+							<tr class="smartmap-modal-row">
+								<td data-subfield="street1">{{ streetAddress|trim }}</td>
+								<td data-subfield="city">{{ a.locality is defined ? a.locality }}</td>
+								<td data-subfield="state">{{ a.administrative_area_level_1 is defined ? a.administrative_area_level_1 }}</td>
+								<td data-subfield="zip">{{ a.postal_code is defined ? a.postal_code }}</td>
+								<td data-subfield="country">{{ a.country is defined ? a.country }}</td>
+								<td data-subfield="lat" class="smartmap-modal-coords">{{ a.coords.lat is defined ? a.coords.lat }}</td>
+								<td data-subfield="lng" class="smartmap-modal-coords">{{ a.coords.lng is defined ? a.coords.lng }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+</div>

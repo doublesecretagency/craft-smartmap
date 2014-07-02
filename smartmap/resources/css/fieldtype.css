@@ -2,16 +2,27 @@
 div.smartmap-field {
     position: relative;
 }
-div.smartmap-no-results {
-    display: none;
-    z-index: 1000;
+div.smartmap-top-right {
+    z-index: 90;
     position: absolute;
     top: -23px;
-    left: 0px;
     width: 100%;
-    color: #d1202a;
     text-align: right;
 }
+span.smartmap-no-results {
+    display: none;
+    color: #d1202a;
+}
+span.smartmap-link {
+    color: #0d78f2;
+    cursor: pointer;
+    text-decoration: none;
+}
+span.smartmap-link:hover {
+    text-decoration: underline;
+}
+span.smartmap-seach-addresses {}
+span.smartmap-drag-pin {}
 div.smartmap-matches {
     display: none;
     z-index: 1000;
@@ -100,4 +111,23 @@ div.smartmap-coordinates div.field:nth-child(1) {
 div.smartmap-coordinates div.field:nth-child(2) {
     width: 49%;
     margin-right: 0%;
+}
+
+form.smartmap-modal-address-search .toolbar {
+    margin-bottom: 16px;
+    height: auto;
+}
+tr.smartmap-modal-row td {
+    cursor: pointer !important;
+}
+tr.smartmap-modal-row:hover td {
+    background: #f5f5f5;
+}
+th.smartmap-modal-coords,
+td.smartmap-modal-coords {
+    display: none;
+}
+
+form.smartmap-modal-drag-pin .body {
+    padding: 0px;
 }
