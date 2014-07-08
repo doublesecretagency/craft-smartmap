@@ -32,8 +32,8 @@ class SmartMap_AddressFieldType extends BaseFieldType
         }
 
         craft()->templates->includeJsFile($apiJs);
-        craft()->templates->includeJsResource('smartmap/js/fieldtype.js');
-        craft()->templates->includeCssResource('smartmap/css/fieldtype.css');
+        craft()->templates->includeJsResource('smartmap/js/address-fieldtype.js');
+        craft()->templates->includeCssResource('smartmap/css/address-fieldtype.css');
 
         $here = craft()->smartMap->here;
         if ($here['latitude'] && $here['longitude']) {

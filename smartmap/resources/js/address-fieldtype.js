@@ -1,21 +1,7 @@
 
-// IMPORTANT
-// Note that the geocoder may return more than one result.
-
-var geocoder = new google.maps.Geocoder();
-var address = {};
-var addressOptions = {};
-var checkAddress;
-var $ul;
-var trigger;
-var a;
-var state;
-var zip;
-var coords;
 var handle;
-var dragPinModalMap = {};
-var dragPinModalMarker = {};
-var dragPinModalWindow = {};
+var address = {};
+var dragPin = {};
 
 $(document).on('keydown', '.smartmap-field input', function (e) {
     if (9 == e.which) {
@@ -64,10 +50,10 @@ function getCoords(handle) {
 function renderMap(handle, coords) {
 
     // If map already created
-    if (dragPinModalMap[handle]) {
+    if (dragPin[handle]['map']) {
         // Remove marker and center map on new coords
-        dragPinModalMarker[handle].setMap(null);
-        dragPinModalMap[handle].panTo(coords);
+        dragPin[handle]['marker'].setMap(null);
+        dragPin[handle]['map'].panTo(coords);
     } else {
         // Create map
         var mapCanvas = document.getElementById('smartmap-'+handle+'-drag-pin-canvas');
@@ -76,31 +62,32 @@ function renderMap(handle, coords) {
             zoom: 11,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        dragPinModalMap[handle] = new google.maps.Map(mapCanvas, mapOptions);
+        dragPin[handle]['map'] = new google.maps.Map(mapCanvas, mapOptions);
     }
 
     // Set marker for this map
-    dragPinModalMarker[handle] = new google.maps.Marker({
+    dragPin[handle]['marker'] = new google.maps.Marker({
         position: coords,
-        map: dragPinModalMap[handle],
+        map: dragPin[handle]['map'],
         draggable: true
     });
 
     // When marker dropped, re-center map
-    google.maps.event.addListener(dragPinModalMarker[handle], 'dragend', function(event) {
-        dragPinModalMap[handle].panTo(event.latLng);
+    google.maps.event.addListener(dragPin[handle]['marker'], 'dragend', function(event) {
+        dragPin[handle]['map'].panTo(event.latLng);
     });
 
     // Return map marker
-    return dragPinModalMarker[handle];
+    return dragPin[handle]['marker'];
 }
 
 function modalDragPin(handle) {
 
-    if (dragPinModalWindow[handle]) {
+    if (handle in dragPin) {
         // If modal already exists, just show it
-        dragPinModalWindow[handle].show();
+        dragPin[handle]['modal'].show();
     } else {
+        dragPin[handle] = {};
         // Setup modal HTML
         var $modal = $('<form id="smartmap-'+handle+'-modal-drag-pin" class="modal elementselectormodal smartmap-modal-drag-pin"/>').appendTo(Garnish.$bod),
             $body = $('<div class="body"/>').appendTo($modal).html('<div id="smartmap-'+handle+'-drag-pin-canvas" style="height:100%"></div>'),
@@ -110,7 +97,7 @@ function modalDragPin(handle) {
             $okBtn = $('<input type="submit" class="btn submit modal-submit-drag-pin" value="'+Craft.t('Done')+'"/>').appendTo($buttons);
 
         // Create modal
-        dragPinModalWindow[handle] = new Garnish.Modal($modal);
+        dragPin[handle]['modal'] = new Garnish.Modal($modal);
     }
 
     var coords = getCoords(handle);
@@ -118,14 +105,14 @@ function modalDragPin(handle) {
 
     // Set modal close trigger
     $('.modal-cancel').on('click', function() {
-        dragPinModalWindow[handle].hide();
+        dragPin[handle]['modal'].hide();
     });
 
     // Set modal submit trigger
     $('.modal-submit-drag-pin').on('click', function() {
         $('#'+handle+'-lat').val(marker.getPosition().lat());
         $('#'+handle+'-lng').val(marker.getPosition().lng());
-        dragPinModalWindow[handle].hide();
+        dragPin[handle]['modal'].hide();
         return false;
     });
 
@@ -187,11 +174,6 @@ function openMatches(handle, address) {
 }
 
 function findCoords(handle) {
-    
-    //console.log('Finding Coordinates:', handle);
-    
-    $ul = $('#'+handle+'-options');
-    $ul.html('');
 
     address[handle] = {
         'street1' : $('#'+handle+'-street1').val(),
@@ -202,9 +184,8 @@ function findCoords(handle) {
         'country' : $('#'+handle+'-country').val()
     }
 
-    addressOptions[handle] = [];
-
     //'123 Main Street, Los Angeles, CA 90000, USA';
+    var checkAddress;
     checkAddress  = (address[handle].street1 ?      address[handle].street1 : '');
     checkAddress += (address[handle].city    ? ', '+address[handle].city    : '');
     checkAddress += (address[handle].state   ? ', '+address[handle].state   : '');
@@ -212,78 +193,5 @@ function findCoords(handle) {
     checkAddress += (address[handle].country ? ', '+address[handle].country : '');
 
     openMatches(handle, checkAddress);
-
-}
-
-function deconstructAddress(address) {
-
-    components = address.address_components;
-
-    var number, street, subcity, city, state, zip, country;
-
-    for (c in components) {
-
-        //console.log(components[c]['types'][0]+':',components[c]['short_name']);
-
-        switch (components[c]['types'][0]) {
-            case 'street_number':
-                number = components[c]['short_name'];
-                break;
-            case 'route':
-                street = components[c]['short_name'];
-                break;
-            case 'sublocality':
-                subcity = components[c]['short_name'];
-                break;
-            case 'locality':
-                city = components[c]['short_name'];
-                break;
-            case 'administrative_area_level_1':
-                state = components[c]['short_name'];
-                break;
-            case 'postal_code':
-                zip = components[c]['short_name'];
-                break;
-            case 'country':
-                country = components[c]['long_name'];
-                break;
-        }
-    }
-
-    addressOptions[handle][i] = {
-        'street1' : ((number ? number : '')+' '+(street ? street : '')).trim(),
-        'city'    : (typeof subcity === 'undefined' ? city : subcity),
-        'state'   : state,
-        'zip'     : zip,
-        'country' : country,
-        'lat'     : address.geometry.location.lat(),
-        'lng'     : address.geometry.location.lng()
-    }
-
-    trigger = "loadAddress('"+handle+"',"+i+")";
-    formatted_address = address.formatted_address;
-
-    $ul.append('<li><span onmousedown="'+trigger+'">'+formatted_address+'</span></li>');
-}
-
-function loadAddress(handle, i) {
-
-    //console.log('loadAddress('+handle+'):',i);
-
-    var address = addressOptions[handle][i];
-
-    $('#'+handle+'-street1').val(address.street1 ? address.street1 : '');
-    $('#'+handle+'-city').val(address.city ? address.city : '');
-    $('#'+handle+'-state').val(address.state ? address.state : '');
-    $('#'+handle+'-zip').val(address.zip ? address.zip : '');
-    $('#'+handle+'-country').val(address.country ? address.country : '');
-    $('#'+handle+'-lat').val(address.lat ? address.lat : '');
-    $('#'+handle+'-lng').val(address.lng ? address.lng : '');
-
-    setTimeout(function () {
-        $('#'+handle+' .smartmap-matches').hide();
-    }, 250);
-
-    //console.log('Should be hidden',$('#'+handle+' .smartmap-matches'));
 
 }

@@ -4,16 +4,17 @@ namespace Craft;
 class SmartMapVariable
 {
 
-    // Link to the Google map
-    public function linkToGoogle($address)
+    // Renders details about "my" current location
+    public function my()
     {
-        return craft()->smartMap_variables->linkToGoogle($address);
+        return craft()->smartMap->here;
     }
 
-    // Link to directions on a Google map
-    public function directions($address, $title = null)
+    // Includes front-end Javascript
+    public function js()
     {
-        return craft()->smartMap_variables->linkToDirections($address, $title);
+        craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
+        craft()->templates->includeJsResource('smartmap/js/smartmap.js');
     }
 
     // Display a dynamic Google map
@@ -34,18 +35,22 @@ class SmartMapVariable
         return craft()->smartMap_variables->staticMapSrc($markers, $options);
     }
 
-    // Renders details about "my" current location
-    public function my()
+    // Link to the Google map
+    public function linkToGoogle($address)
     {
-        return craft()->smartMap->here;
+        return craft()->smartMap_variables->linkToGoogle($address);
     }
 
-    // Includes front-end Javascript
-    public function js()
+    // Link to directions on a Google map
+    public function directions($address, $title = null)
     {
-        craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
-        craft()->templates->includeJsResource('smartmap/js/smartmap.js');
+        return craft()->smartMap_variables->linkToDirections($address, $title);
     }
+
+
+    // ================================================================== //
+    // ================================================================== //
+
 
     // FOR INTERNAL USE ONLY
     public function settings()

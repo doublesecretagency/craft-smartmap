@@ -267,10 +267,10 @@ class SmartMapService extends BaseApplicationComponent
 		if (!is_array($params)) {
 			$params = array();
 			$api = MapApi::LatLngArray;
-			$coords = $this->_defaultCoords();
+			$coords = $this->defaultCoords();
 		} else if (!array_key_exists('target', $params)) {
 			$api = MapApi::LatLngArray;
-			$coords = $this->_defaultCoords();
+			$coords = $this->defaultCoords();
 		} else if (is_array($params['target'])) {
 			$api = MapApi::LatLngArray;
 			if (!$this->isAssoc($params['target']) && count($params['target']) == 2) {
@@ -290,7 +290,7 @@ class SmartMapService extends BaseApplicationComponent
 			// Invalid target
 			//  - Throw error here?
 			$api = MapApi::LatLngArray;
-			$coords = $this->_defaultCoords();
+			$coords = $this->defaultCoords();
 		}
 
 		$filter = SmartMap_FilterCriteriaModel::populateModel($params);
@@ -364,7 +364,7 @@ class SmartMapService extends BaseApplicationComponent
 		$response = json_decode(curl_exec($ch), true);
 
 		if (empty($response['results'])) {
-			return $this->_defaultCoords();
+			return $this->defaultCoords();
 		} else {
 			return $response['results'][0]['geometry']['location'];
 		}
@@ -377,7 +377,7 @@ class SmartMapService extends BaseApplicationComponent
 
 		if (!$locations || empty($locations)) {
 			return array(
-				'center'  => $this->_defaultCoords(),
+				'center'  => $this->defaultCoords(),
 				'markers' => array(),
 			);
 		}
@@ -573,14 +573,18 @@ class SmartMapService extends BaseApplicationComponent
 			if ($target) {
 				$coords = $this->_geocodeGoogleMapApi($target);
 			} else {
-				$coords = $this->_defaultCoords();
+				$coords = $this->defaultCoords();
 			}
 		}
 		return $coords;
 	}
 
+
+	// ==================================================== //
+	
+
 	// Use default coordinates
-	public function _defaultCoords()
+	public function defaultCoords()
 	{
 		$defaultCoords = array(
 			// Point Nemo

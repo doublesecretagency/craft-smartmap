@@ -1,147 +1,52 @@
 // Smart Map JS object
 var smartMap = {
-    // Default values
-    maps: {},
-    searchUrl: '',
-    _renderedMaps: [],
-    _renderedMarkers: [],
-    _renderedInfoWindows: [],
-    //addMap: function (mapModel) {},
-
-    // DETERMINING COORDS
-
-    // Get closest matches for address
-    getMatches: function (address, callback) {
-        var output = {
-            results : [],
-            error   : null
-        };
-        //'123 Main Street, Los Angeles, CA 90000, USA';
-        checkAddress  = (address.street1 ?      address.street1 : '');
-        checkAddress += (address.city    ? ', '+address.city    : '');
-        checkAddress += (address.state   ? ', '+address.state   : '');
-        checkAddress += (address.zip     ? ', '+address.zip     : '');
-        checkAddress += (address.country ? ', '+address.country : '');
-        // Get results
-        var geocoder = new google.maps.Geocoder();
-        geocoder.geocode({'address': checkAddress}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                for (i in results) {
-                    output.results.push(smartMap._cleanupAddress(results[i]));
-                }
-            } else {
-                if ('ZERO_RESULTS' == status) {
-                    output.error = 'No results were found.';
-                } else {
-                    output.error = 'Geocode was not successful for the following reason: '+status;
-                }
-            }
-            callback(output);
-        });
-
+    map: {},
+    marker: {},
+    infoWindow: {},
+    // Create & delete items
+    createMap: function (mapId, options) {
+        var div = document.getElementById(mapId);
+        this.map[mapId] = new google.maps.Map(div, options);
     },
-    // Clean up address
-    _cleanupAddress: function (address) {
-        var number, street, subcity, city, state, zip, country;
-        var c = address.address_components;
-        for (i in c) {
-            //console.log(c[i]['types'][0]+':',c[i]['short_name']);
-            switch (c[i]['types'][0]) {
-                case 'street_number':
-                    number  = c[i]['short_name'];
-                    break;
-                case 'route':
-                    street  = c[i]['short_name'];
-                    break;
-                case 'sublocality':
-                    subcity = c[i]['short_name'];
-                    break;
-                case 'locality':
-                    city    = c[i]['short_name'];
-                    break;
-                case 'administrative_area_level_1':
-                    state   = c[i]['short_name'];
-                    break;
-                case 'postal_code':
-                    zip     = c[i]['short_name'];
-                    break;
-                case 'country':
-                    country = c[i]['long_name'];
-                    break;
-            }
-        }
-        return {
-            'formatted' : address.formatted_address,
-            'address'   : {
-                'street1' : ((number ? number : '')+' '+(street ? street : '')).trim(),
-                'city'    : (typeof subcity === 'undefined' ? city : subcity),
-                'state'   : state,
-                'zip'     : zip,
-                'country' : country
-            },
-            'coords'    : {
-                'lat'     : address.geometry.location.lat(),
-                'lng'     : address.geometry.location.lng()
-            },
-        };
+    createMarker: function (markerName, options) {
+        this.marker[markerName] = new google.maps.Marker(options);
     },
-
-    // DRAWING MAPS & MARKERS
-
-    // Draw individual map
-    drawMap: function (mapId, map) {
-        var mapEl = document.getElementById(mapId);
-        smartMap._renderedMaps[mapId] = new google.maps.Map(mapEl, {
-            zoom: map.zoom,
-            scrollwheel: map.scrollwheel,
-            center: smartMap._getLatLng(map.center)
-        });
+    deleteMarker: function (markerName) {
+        this.marker[markerName].setMap(null);
     },
-    // Draw all markers
-    drawMarkers: function (mapId, markers) {
-        for (var i in markers) {
-            smartMap.drawMarker(mapId, i, markers[i]);
-        }
-    },
-    // Draw individual marker
-    drawMarker: function (mapId, i, marker) {
-        var mapCanvas = smartMap._renderedMaps[mapId];
-        var coords = {
-            'lat': marker['lat'],
-            'lng': marker['lng'],
-        }
-        smartMap._renderedMarkers[i] = new google.maps.Marker({
-            position: smartMap._getLatLng(coords),
-            map: mapCanvas,
-            title: marker['title']
-        });
-    },
-    // Draw individual marker info
-    drawMarkerInfo: function (mapId, i, infoWindowHtml) {
-        var mapCanvas = smartMap._renderedMaps[mapId];
-        var marker = smartMap._renderedMarkers[i];
-        smartMap._renderedInfoWindows[i] = new google.maps.InfoWindow({'content':infoWindowHtml});
+    createInfoWindow: function (markerName, options) {
+        var marker = this.marker[markerName];
+        var map = marker.getMap();
+        this.infoWindow[markerName] = new google.maps.InfoWindow(options);
         google.maps.event.addListener(marker, 'click', function() {
-            for (var key in smartMap._renderedInfoWindows) {
-                smartMap._renderedInfoWindows[key].close();
+            for (var key in smartMap.infoWindow) {
+                smartMap.infoWindow[key].close();
             }
-            smartMap._renderedInfoWindows[i].open(mapCanvas, marker);
+            smartMap.infoWindow[markerName].open(map, marker);
         });
     },
-    // Zoom in on a marker
-    zoomOnMarker: function (mapId, i, zoom) {
-        smartMap._renderedMaps[mapId].setZoom(zoom);
-        smartMap._renderedMaps[mapId].panTo(smartMap._renderedMarkers[i].position);
+    // List items
+    listMaps: function () {
+        return Object.keys(this.map);
     },
-    // Get map options
-    _getLatLng: function (coords) {
-        return new google.maps.LatLng(coords.lat, coords.lng);
+    listMarkers: function () {
+        return Object.keys(this.marker);
     },
-
-    // SEARCH
-
-    // Conduct search via AJAX
-    search: function (data) {
+    listInfoWindows: function () {
+        return Object.keys(this.infoWindow);
+    },
+    // Get coordinates object
+    coords: function (lat, lng) {
+        return new google.maps.LatLng(lat, lng);
+    },
+    
+    
+    // Search via AJAX
+    // Should this entire thing be removed?
+    // It could be in the docs as only a demo.
+    // No need for it to be in the core code.
+    search: function (url, data, callback) {
+        /*
         if (typeof jQuery != 'function') {
             console.error('Sorry, jQuery is required to use smartMap.search');
             return;
@@ -149,18 +54,86 @@ var smartMap = {
         if (typeof data != 'object') {
             data = {};
         }
-        jQuery.post(smartMap.searchUrl, data, function (response) {
+        */
+        jQuery.post(url, data, callback);
+        /*
+        // This part is actually the useful example!
+        jQuery.post(url, data, function (response) {
             if (typeof response == 'string') {
                 alert(response);
             } else if (typeof response == 'object') {
                 var mapId = (data.id ? data.id : 'smartmap-mapcanvas-1');
-                var mapCanvas = smartMap._renderedMaps[mapId];
-                smartMap.drawMarkers(mapId, response.markers);
-                mapCanvas.panTo(response.center);
+                for (var key in response.markers) {
+                    var marker = response.markers[key];
+                    var coords = smartMap.coords(marker.lat, marker.lng);
+                    smartMap.createMarker(marker.name, marker.options);
+                }
+                smartMap.map[mapId].panTo(response.center);
                 if (data.zoom) {
-                    mapCanvas.setZoom(data.zoom);
+                    smartMap.map[mapId].setZoom(data.zoom);
                 }
             }
         });
+        */
     }
 }
+
+// ============================================================================ //
+
+    /*
+    // Zoom in on a marker
+    // SEE DOCS: https://github.com/lindseydiloreto/craft-smartmap/wiki/Adding-marker-info-bubbles
+    zoomOnMarker: function (mapId, i, zoom) {
+        smartMap._renderedMaps[mapId].setZoom(zoom);
+        smartMap._renderedMaps[mapId].panTo(smartMap._renderedMarkers[i].position);
+    },
+    */
+
+// ============================================================================ //
+
+// EXAMPLES
+
+/*
+// Create single map
+var mapOptions = {
+     // "center" and "zoom" are required
+    center: smartMap.coords(33, -117.5),
+    zoom: 6
+};
+smartMap.createMap('smartmap-mapcanvas-1', mapOptions);
+
+// Create single marker
+var markerOptions = {
+     // "position" and "map" are required
+    position: smartMap.coords(34, -118),
+    map: smartMap.map['smartmap-mapcanvas-1']
+};
+smartMap.createMarker('smartmap-mapcanvas-1.16.fieldHandle', markerOptions);
+
+// Create single marker
+var markerOptions = {
+     // "position" and "map" are required
+    position: smartMap.coords(31, -117),
+    map: smartMap.map['smartmap-mapcanvas-1']
+};
+smartMap.createMarker('smartmap-mapcanvas-1.17.fieldHandle', markerOptions);
+
+// Create single info window
+var infoWindowOptions = {
+     // "content" is required
+    content: '<h2>Dude!</h2>'
+};
+smartMap.createInfoWindow('smartmap-mapcanvas-1.16.fieldHandle', infoWindowOptions);
+
+// Create single info window
+var infoWindowOptions = {
+     // "content" is required
+    content: '<h2>Sweet!</h2>'
+};
+smartMap.createInfoWindow('smartmap-mapcanvas-1.17.fieldHandle', infoWindowOptions);
+*/
+
+//console.log(smartMap.listMarkers());
+
+//smartMap.map['smartmap-mapcanvas-1'].setOptions({styles: styles});
+//smartMap.marker['smartmap-mapcanvas-1.17.fieldHandle'].setDraggable(true);

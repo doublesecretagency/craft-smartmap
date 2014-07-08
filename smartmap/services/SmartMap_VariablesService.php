@@ -4,139 +4,358 @@ namespace Craft;
 class SmartMap_VariablesService extends BaseApplicationComponent
 {
 
-    private $_mapCounter = 0;
-    private $_allMapsInitialized = false;
+    private $_map = array();
+    private $_marker = array();
 
-    private $_segments;
+    public function init() {
+        parent::init();
+        craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
+        craft()->templates->includeJsResource('smartmap/js/smartmap.js');
+        craft()->templates->includeCssResource('smartmap/css/smartmap.css');
+    }
 
     // Create dynamic Google Map of locations
     public function dynamicMap($markers = false, $options = array())
     {
+        // Extract non-Google parameters
+        $mapId             = (array_key_exists('id', $options) ? $options['id'] : 'smartmap-mapcanvas-'.(count($this->_map)+1));
+        unset($options['id']);
 
-        if (!$this->_allMapsInitialized) {
-            $this->_initializeAllMaps();
+        $width             = (array_key_exists('width', $options)  ? 'width:'.$options['width'].'px;'   : '');
+        $height            = (array_key_exists('height', $options) ? 'height:'.$options['height'].'px;' : '');
+        unset($options['width']);
+        unset($options['height']);
+        
+        $markerOptions     = (array_key_exists('markerOptions', $options)     ? $options['markerOptions']     : array());
+        $infoWindowOptions = (array_key_exists('infoWindowOptions', $options) ? $options['infoWindowOptions'] : array());
+        unset($options['markerOptions']);
+        unset($options['infoWindowOptions']);
+
+        // If marker info template specified, move to info window options
+        if (array_key_exists('markerInfo', $options)) {
+            $infoWindowOptions['template'] = $options['markerInfo'];
+            unset($options['markerInfo']);
         }
 
-        // If solo marker, process as an array
-        if ($markers && !is_array($markers)) {
-            return $this->dynamicMap(array($markers), $options);
+        // Determine map center
+        $markersCenter = $this->_parseMarkers($mapId, $markers, $markerOptions);
+        if (array_key_exists('center', $options)) {
+            $center = $this->_parseCenter($options['center']);
+        } else {
+            $center = $this->_parseCenter($markersCenter);
         }
+        $options['center'] = 'smartMap.coords('.$center['lat'].','.$center['lng'].')';
 
-        // Render JS of map
-        $mapId = $this->_mapJs($markers, $options);
+        // Compile JS for map, markers, and info windows
+        $js  = $this->_buildMap($mapId, $options);
+        $js .= $this->_buildMarkers($mapId, $markerOptions);
+        $js .= $this->_buildInfoWindows($mapId, $infoWindowOptions);
+        craft()->templates->includeJs($js);
 
-        // Render width/height of map
-        $style = '';
-        $style .= (array_key_exists('width', $options)  ? 'width:'.$options['width'].'px;'   : '');
-        $style .= (array_key_exists('height', $options) ? 'height:'.$options['height'].'px;' : '');
-
-        return TemplateHelper::getRaw(PHP_EOL.'<div id="'.$mapId.'" class="smartmap-mapcanvas" style="'.$style.'">Loading map...</div>');
-
+        $html = '<div id="'.$mapId.'" class="smartmap-mapcanvas" style="'.$width.$height.'">Loading map...</div>';
+        return TemplateHelper::getRaw(PHP_EOL.$html);
     }
 
-    // Initialize collection of all maps
-    private function _initializeAllMaps()
+    // Parse location variations into standard format
+    private function _parseMarkers($mapId, $locations, $markerOptions = array())
     {
 
-        $this->_segments = craft()->request->getSegments();
-        array_unshift($this->_segments, '');
-
-        //craft()->smartMap->checkApiKey();
-
-        // Include JavaScript & CSS
-        craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
-        craft()->templates->includeJsResource('smartmap/js/smartmap.js');
-        craft()->templates->includeCssResource('smartmap/css/smartmap.css');
-
-        // All maps JS
-        $allMapsJs = 'smartMap.searchUrl = "'.UrlHelper::getActionUrl('smartMap/search').'";'.PHP_EOL;
-        craft()->templates->includeJs($allMapsJs);
-
-        $this->_allMapsInitialized = true;
-    }
-
-    // JS of individual map
-    private function _mapJs($markers, $options)
-    {
-
-        // Generate unique map ID
-        $uniqueId = ++$this->_mapCounter;
-
-        $js = '';
-
-        // Decipher map info
-        $map = craft()->smartMap->markerCoords($markers, $options);
-
-        // "id" option
-        if (array_key_exists('id', $options)) {
-            $mapId = $options['id'];
-        } else {
-            $mapId = 'smartmap-mapcanvas-'.$uniqueId;
-        }
-
-        // "center" option
-        $mapOptions['center'] = json_encode($map['center']);
-
-        // "zoom" option
-        if (array_key_exists('zoom', $options) && is_int($options['zoom'])) {
-            $mapOptions['zoom'] = $options['zoom'];
-        } else {
-            $mapOptions['zoom'] = craft()->smartMap->defaultZoom;
-        }
-
-        // "scrollZoom" option
-        if (array_key_exists('scrollZoom', $options) && is_bool($options['scrollZoom'])) {
-            $mapOptions['scrollwheel'] = ($options['scrollZoom'] ? 'true' : 'false');
-        } else {
-            $mapOptions['scrollwheel'] = 'false';
-        }
-
-        // Render map JS
-        $renderMap = '';
-        foreach ($mapOptions as $option => $value) {
-            if ($renderMap) {$renderMap .= ', ';}
-            $renderMap .= "$option: $value";
-        }
-        $js .= '
-var marker;
-smartMap.drawMap("'.$mapId.'", {'.$renderMap.'});';
-
-        // Add map markers
-        if ($map['markers'] && is_array($map['markers'])) {
-            foreach ($map['markers'] as $i => $m) {
-                if (array_key_exists('element', $m)) {
-                    $element = $m['element'];
-                    unset($m['element']);
-                } else {
-                    $element = false;
-                }
-                $js .= '
-smartMap.drawMarker("'.$mapId.'", '.$i.', '.json_encode($m).');';
-                if ($element) {
-                    if (array_key_exists('markerInfo', $options)) {
-                        $infoWindowHtml = $this->_infoWindowHtml($mapId, $i, $element, $options['markerInfo']);
-                        $js .= '
-    smartMap.drawMarkerInfo("'.$mapId.'", '.$i.', '.$infoWindowHtml.');';
-                    }
-                }
+        // Organize markers
+        if (!is_array($locations)) {
+            // If $locations is an ElementCriteriaModel
+            if (is_a($locations, 'Craft\\ElementCriteriaModel')) {
+                return $this->_parseMarkers($mapId, $locations->find());
+            // If $locations is a single element
+            } else if (is_a($locations, 'Craft\\BaseElementModel')) {
+                $locations = array($locations);
+                return $this->_parseMarkers($mapId, $locations);
             }
         }
 
-        craft()->templates->includeJs($js);
+        // Set defaults
+        $markers = array();
+        $center = craft()->smartMap->defaultCoords();
 
-        return $mapId;
+        // If multiple locations
+        if (!empty($locations) && array_key_exists(0, $locations)) {
+                
+            $allLats = array();
+            $allLngs = array();
+
+            // If location elements are Matrix fields
+            if (is_a($locations[0], 'Craft\\MatrixBlockModel')) {
+                // Get all Address field handles within Matrix
+                $handles = array();
+                $matrixFieldId = $locations[0]->fieldId;
+                $blockTypes = craft()->matrix->getBlockTypesByFieldId($matrixFieldId);
+                foreach ($blockTypes as $blockType) {
+                    $allFields = $blockType->getFields();
+                    $newHandles = $this->_listFieldHandles($allFields);
+                    $handles = array_merge($handles, $newHandles);
+                }
+            } else {
+                // Get all Address field handles
+                $allFields = craft()->fields->getAllFields();
+                $handles = $this->_listFieldHandles($allFields);
+            }
+
+            // Loop through all location elements
+            foreach ($locations as $element) {
+                $title = $element->title;
+                // Loop through all Address fields
+                foreach ($handles as $fieldHandle) {
+                    // If field is being used in this element
+                    if (isset($element->{$fieldHandle}) && !empty($element->{$fieldHandle})) {
+                        $el = $element->{$fieldHandle};
+                        // Set coordinates
+                        $lat = ($el['lat'] ? $el['lat'] : null);
+                        $lng = ($el['lng'] ? $el['lng'] : null);
+                        // Add marker
+                        $name = $el['elementId'].'.'.$el['handle']; // Change "handle" to "fieldId"
+                        $markers[$name] = array(
+                            'title'      => $title,
+                            'mapId'      => $mapId,
+                            'markerName' => $name,
+                            'lat'        => $lat,
+                            'lng'        => $lng,
+                            'element'    => $element,
+                        );
+                        // Add coordinates to average
+                        if (is_numeric($lat) && is_numeric($lng)) {
+                            $allLats[] = $lat;
+                            $allLngs[] = $lng;
+                        }
+                    }
+                }
+            }
+
+            // If any coordinates were provided
+            if (!empty($allLats) && !empty($allLngs)) {
+                // Calculate center of map
+                $centerLat = (min($allLats) + max($allLats)) / 2;
+                $centerLng = (min($allLngs) + max($allLngs)) / 2;
+                $center = array(
+                    'lat' => round($centerLat, 6),
+                    'lng' => round($centerLng, 6)
+                );
+            }
+
+        } else {
+            
+            // Set solo marker
+            $el = $locations;
+            $name = $el['elementId'].'.'.$el['handle']; // Change "handle" to "fieldId"
+            $markers[$name] = array(
+                'mapId'      => $mapId,
+                'markerName' => $name,
+                'lat'        => $el['lat'],
+                'lng'        => $el['lng'],
+                'element'    => craft()->elements->getElementById($locations['elementId']),
+            );
+            if (array_key_exists('title', $markerOptions)) {
+                $markers[$name]['title'] = $markerOptions['title'];
+            }
+
+            // If coordinates exist, set center
+            if (is_numeric($el['lat']) && is_numeric($el['lng'])) {
+                $center = array(
+                    'lat' => $el['lat'],
+                    'lng' => $el['lng'],
+                );
+            }
+
+        }
+
+        // Set markers
+        $this->_marker[$mapId] = $markers;
+
+        // Return center
+        return $center;
     }
 
-    // Generate HTML for InfoWindow
-    private function _infoWindowHtml($mapId, $markerNumber, $element, $template)
+    // Parse coordinates into standard format
+    private function _parseCenter($coords)
     {
-        $html = craft()->templates->render($template, array(
-            'mapId'        => $mapId,
-            'markerNumber' => $markerNumber,
-            'element'      => $element,
-        ));
-        return json_encode($html);
+        // Default coordinates
+        $lat = null;
+        $lng = null;
+
+        // If object, convert to array
+        if (is_object($coords)) {
+            // http://stackoverflow.com/a/2476954/3467557
+            $coords = get_object_vars($coords);
+        }
+
+        // Parse coordinates from array
+        if (is_array($coords)) {
+            if ((2 == count($coords)) && array_key_exists(0, $coords) && array_key_exists(1, $coords)) {
+                // Center is [#, #]
+                $lat = $coords[0];
+                $lng = $coords[1];
+            } else if (array_key_exists('lat', $coords)) {
+                // Center is {lat:#, lng:#} or variation
+                $lat = $coords['lat'];
+                if (array_key_exists('lng', $coords)) {
+                    $lng = $coords['lng'];
+                } else if (array_key_exists('lon', $coords)) {
+                    $lng = $coords['lon'];
+                } else if (array_key_exists('long', $coords)) {
+                    $lng = $coords['long'];
+                }
+            } else if (array_key_exists('latitude', $coords) && array_key_exists('longitude', $coords)) {
+                // Center is {latitude:#, longitude:#}
+                $lat = $coords['latitude'];
+                $lng = $coords['longitude'];
+            }
+        }
+
+        // Fallback
+        if (!is_numeric($lat) || !is_numeric($lng)) {
+            $default = craft()->smartMap->defaultCoords();
+            $lat = $default['latitude'];
+            $lng = $default['longitude'];
+        }
+
+        return array(
+            'lat' => $lat,
+            'lng' => $lng,
+        );
     }
+
+    // Find all Smart Map Address field handles
+    private function _listFieldHandles($allFields)
+    {
+        $handles = array();
+        foreach ($allFields as $field) {
+            if ($field->type == 'SmartMap_Address') {
+                $handles[] = $field->handle;
+            }
+        }
+        return $handles;
+    }
+
+    // Create single map
+    private function _buildMap($mapId, $mapOptions)
+    {
+        // If not specified, "zoom" defaults to 6
+        if (!array_key_exists('zoom', $mapOptions)) {
+            $mapOptions['zoom'] = 6;
+        }
+
+        // LEGACY: "scrollZoom" option
+        if (!array_key_exists('scrollwheel', $mapOptions)) {
+            if (array_key_exists('scrollZoom', $mapOptions)) {
+                $mapOptions['scrollwheel'] = (bool) $mapOptions['scrollZoom'];
+            } else {
+                $mapOptions['scrollwheel'] = false;
+            }
+        }
+        unset($mapOptions['scrollZoom']);
+
+        $options = $this->_jsonify($mapOptions);
+        $mapJs  = PHP_EOL;
+        $mapJs .= PHP_EOL.'// Draw new map';
+        $mapJs .= PHP_EOL.'smartMap.createMap("'.$mapId.'", '.$options.');';
+        return $mapJs;
+    }
+
+    // Create single marker
+    private function _buildMarkers($mapId, $markerOptions)
+    {
+        $markerJs = '';
+        foreach ($this->_marker[$mapId] as $name => $marker) {
+
+            // "map" and "position" are required
+            $markerOptions['map'] = 'smartMap.map["'.$mapId.'"]';
+            $markerOptions['position'] = 'smartMap.coords('.$marker['lat'].','.$marker['lng'].')';
+
+            if (array_key_exists('title', $marker)) {
+                $markerOptions['title'] = $marker['title'];
+            }
+
+            $options = $this->_jsonify($markerOptions);
+            $markerJs .= PHP_EOL;
+            $markerJs .= PHP_EOL.'// Draw new marker';
+            $markerJs .= PHP_EOL.'smartMap.createMarker("'.$mapId.'.'.$name.'", '.$options.');';
+        }
+        return $markerJs;
+    }
+
+    // Create single info window
+    private function _buildInfoWindows($mapId, $infoWindowOptions)
+    {
+
+        $contentExists = array_key_exists('content', $infoWindowOptions);
+        $template = (array_key_exists('template', $infoWindowOptions) ? $infoWindowOptions['template'] : null);
+        unset($infoWindowOptions['template']);
+
+        $infoWindowJs = '';
+        foreach ($this->_marker[$mapId] as $name => $marker) {
+
+            if (!$contentExists) {
+                if ($template) {
+                    if (array_key_exists('title', $marker)) {
+                        //$marker['element']['title'] = $marker['title'];
+                    }
+                    try {
+                        $markerVars = array(
+                            'mapId'      => $marker['mapId'],
+                            'markerName' => $marker['mapId'].'.'.$marker['markerName'],
+                            'coords'     => array(
+                                'lat' => $marker['lat'],
+                                'lng' => $marker['lng'],
+                            ),
+                        );
+                        $html = craft()->templates->render($template, array(
+                            'marker'  => $markerVars,
+                            'element' => $marker['element'],
+                        ));
+                        $infoWindowOptions['content'] = $html;
+                    } catch (\Exception $e) {
+                        $infoWindowOptions['content']  = '<strong>Marker Info Template Error</strong><br />';
+                        $infoWindowOptions['content'] .= $e->getMessage();
+                    }
+                } else {
+                    // Some form of content is required
+                    return null;
+                }
+            }
+
+            $options = $this->_jsonify($infoWindowOptions);
+            $infoWindowJs .= PHP_EOL;
+            $infoWindowJs .= PHP_EOL.'// Draw new info window';
+            $infoWindowJs .= PHP_EOL.'smartMap.createInfoWindow("'.$mapId.'.'.$name.'", '.$options.');';
+
+        }
+        return $infoWindowJs;
+    }
+
+    // Encode JSON with function calls
+    private function _jsonify($dataArr)
+    {
+        $tokens = array();
+        //array_walk_recursive($dataArr, function ($value, $key) {});
+        foreach ($dataArr as $key => $value) {
+            $token = md5(microtime());
+            $smartMap  = (0 === strpos((string) $value, 'smartMap.'));
+            $googleMap = (0 === strpos((string) $value, 'google.maps.'));
+            if ($smartMap || $googleMap) {
+                $dataArr[$key]  = '%'.$token.'%';
+                $tokens[]       = '"%'.$token.'%"';
+                $replacements[] = $value;
+            }
+        }
+        $json = json_encode($dataArr);
+        if ($tokens) {
+            $json = str_replace($tokens, $replacements, $json);
+        }
+        return $json;
+    }
+
+
+    // ================================================================== //
+    // ================================================================== //
+
 
     // Create <img> of static map
     public function staticMap($markers, $options = array())
