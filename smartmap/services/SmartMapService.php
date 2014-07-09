@@ -26,13 +26,13 @@ class SmartMapService extends BaseApplicationComponent
 	public function loadGeoData()
 	{
 		$this->here = array( // Default to empty container array
-            'ip'           => false,
-            'city'         => false,
-            'state'        => false,
-            'zipcode'      => false,
-            'country'      => false,
-            'latitude'     => false,
-            'longitude'    => false,
+			'ip'        => false,
+			'city'      => false,
+			'state'     => false,
+			'zipcode'   => false,
+			'country'   => false,
+			'latitude'  => false,
+			'longitude' => false,
 		);
 		$ipCookie = static::IP_COOKIE_NAME;
 		if (array_key_exists($ipCookie, $_COOKIE)) {
@@ -60,16 +60,22 @@ class SmartMapService extends BaseApplicationComponent
 		}
 	}
 
-	// 
+	// Automatically detect IP address from $_SERVER['REMOTE_ADDR']
 	private function _detectMyIp()
 	{
 		$ip = $_SERVER['REMOTE_ADDR'];
-		$ipPattern = '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/';
-		if (('127.0.0.1' == $ip) || (!preg_match($ipPattern, $ip))) {
+		if (('127.0.0.1' == $ip) || (!$this->validIp($ip))) {
 			return false;
 		} else {
 			return $ip;
 		}
+	}
+
+	// Checks whether IP address is valid
+	public function validIp($ip)
+	{
+		$ipPattern = '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/';
+		return preg_match($ipPattern, $ip);
 	}
 
 	// 
@@ -101,9 +107,9 @@ class SmartMapService extends BaseApplicationComponent
 		}
 	}
 
-    // Set geo information in cookie
-    public function setGeoDataCookie($ipSet, $lifespan = 300) // Expires in five minutes
-    {
+	// Set geo information in cookie
+	public function setGeoDataCookie($ipSet, $lifespan = 300) // Expires in five minutes
+	{
 		if (!$ipSet) {
 			$this->cookieData = array(
 				'ip'      => $this->here['ip'],
@@ -111,7 +117,7 @@ class SmartMapService extends BaseApplicationComponent
 			);
 			setcookie(static::IP_COOKIE_NAME, json_encode($this->cookieData), time()+$lifespan, '/');
 		}
-    }
+	}
 
 	// Cache geo information for IP address
 	public function cacheGeoData($ip, $geoLookupService, $lifespan = 7776000) // 60*60*24*90 // Expires in 90 days

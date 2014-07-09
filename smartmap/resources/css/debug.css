@@ -70,6 +70,7 @@ body {
 table {
 	float: left;
 	margin: 20px 0px 20px 30px;
+	background-color: #ffffff;
 }
 th,
 td {
