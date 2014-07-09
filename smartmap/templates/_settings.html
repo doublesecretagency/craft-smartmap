@@ -2,25 +2,70 @@
 
 {% set getApiKey = 'https://developers.google.com/maps/documentation/javascript/tutorial#api_key' %}
 
-<h2>Documentation has moved...</h2>
+{% set supportEmail = '<a href="mailto:support@doublesecretagency.com?subject=Smart%20Map%20Feedback">support@doublesecretagency.com</a>' %}
+
+<h2>Documentation</h2>
 
 <p>In order to keep things clean and legible, we've moved the documentation into the <a href="https://github.com/lindseydiloreto/craft-smartmap/wiki" target="_blank">GitHub wiki</a>.</p>
 
 <h2>Feedback?</h2>
 
-<p>Contact me on Twitter: <a href="https://twitter.com/LindseyDiLoreto" target="_blank">@LindseyDiLoreto</a></p>
-
-<p>All questions, comments, and suggestions are welcome!</p>
+<p>You can reach us at {{ supportEmail | raw }}. All questions, comments, and suggestions are welcome!</p>
 
 <hr />
 
+{% set debugRoute = siteUrl(settings.debugRoute) %}
+
 {{ forms.textField({
 	label: "Debug Route"|t,
+	instructions: '<a href="'~debugRoute~'" target="_blank">'~debugRoute~'</a>',
 	id: 'debugRoute',
 	name: 'debugRoute',
-	instructions: "Which front-end route will display the debug page?"|t,
 	value: settings.debugRoute,
 	errors: settings.getErrors('debugRoute')
+}) }}
+
+<hr />
+
+<h2>MaxMind Account Information</h2>
+<p><strong>Optional.</strong> A separate paid subscription service, MaxMind will increase the accuracy of your location detection. <a href="https://www.maxmind.com/en/web_services" target="_blank">Learn more...</a></p>
+
+{{ forms.selectField({
+	label: 'Which <a href="https://www.maxmind.com/en/account" target="_blank">GeoIP2 Web Service</a> did you subscribe to?'|t,
+	id: 'maxmindService',
+	name: 'maxmindService',
+	options: {
+		''             : '(service disabled)',
+		'country'      : 'Country',
+		'city'         : 'City',
+		'city_isp_org' : 'City/ISP/Org',
+		'omni'         : 'Omni',
+	},
+	value: settings.maxmindService,
+}) }}
+{#
+	toggle: true,
+	targetPrefix: 'section'
+	---
+	errors: settings.getErrors('maxmindService')
+#}
+
+<p>Copy your <a href="https://www.maxmind.com/en/my_license_key" target="_blank">security access information</a>.</p>
+
+{{ forms.textField({
+	label: "User ID"|t,
+	id: 'maxmindUserId',
+	name: 'maxmindUserId',
+	value: settings.maxmindUserId,
+	errors: settings.getErrors('maxmindUserId')
+}) }}
+
+{{ forms.textField({
+	label: "License Key"|t,
+	id: 'maxmindLicenseKey',
+	name: 'maxmindLicenseKey',
+	value: settings.maxmindLicenseKey,
+	errors: settings.getErrors('maxmindLicenseKey')
 }) }}
 
 {#

@@ -87,6 +87,9 @@ td.field {
 td.coords {
 	text-align: right;
 }
+td.expires {
+	text-align: right;
+}
 
 div#where-am-i {
     clear: both;

@@ -4,11 +4,12 @@ namespace Craft;
 class SmartMapService extends BaseApplicationComponent
 {
 
+	const IP_COOKIE_NAME = 'smartMap_myIp';
+
 	public $settings;
 
 	public $here;
 	public $geoInfoSet = false;
-	private $_ipCookieName = 'smartMap_myIp';
 
 	public $cookieData = false;
 	public $cacheData = false;
@@ -21,23 +22,19 @@ class SmartMapService extends BaseApplicationComponent
 
 	public $defaultZoom = 11;
 
-	function init()
+	// Load geo data
+	public function loadGeoData()
 	{
-		parent::init();
 		$this->here = array( // Default to empty container array
-			'ip'           => false,
-			'country_code' => false,
-			'country_name' => false,
-			'region_code'  => false,
-			'region_name'  => false,
-			'city'         => false,
-			'zipcode'      => false,
-			'latitude'     => false,
-			'longitude'    => false,
-			'metro_code'   => false,
-			'area_code'    => false,
+            'ip'           => false,
+            'city'         => false,
+            'state'        => false,
+            'zipcode'      => false,
+            'country'      => false,
+            'latitude'     => false,
+            'longitude'    => false,
 		);
-		$ipCookie = $this->_ipCookieName;
+		$ipCookie = static::IP_COOKIE_NAME;
 		if (array_key_exists($ipCookie, $_COOKIE)) {
 			$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
 		}
@@ -47,21 +44,20 @@ class SmartMapService extends BaseApplicationComponent
 	// Automatically detect & set current location
 	public function currentLocation()
 	{
-
+		// Detect IP address
 		$ip = $this->_detectMyIp();
-
+		// If IP can't be detected
 		if (!$ip) {
 			if ($this->cookieData) {
 				$ip = $this->cookieData['ip'];
 			} else {
-				$this->_setGeoData();
+				$this->_setGeoData(); // Auto detect IP
 			}
 		}
-
+		// Set new geo data
 		if ($ip && !$this->geoInfoSet) {
-			$this->_setGeoData($ip);
+			$this->_setGeoData($ip); // Manually set IP
 		}
-
 	}
 
 	// 
@@ -80,25 +76,10 @@ class SmartMapService extends BaseApplicationComponent
 	private function _setGeoData($ip = '')
 	{
 		if (!$this->_matchGeoData($ip)) {
-			try
-			{
-				$client = new \Guzzle\Http\Client('http://freegeoip.net');
-				$this->here = $client->get('/json/'.$ip)->send()->json();
-				if (!$ip) {
-					$ip = $this->here['ip'];
-					$cookieExpires = time()+(60*5); // Expires in five minutes
-					$this->cookieData = array(
-						'ip'      => $ip,
-						'expires' => $cookieExpires,
-					);
-					setcookie($this->_ipCookieName, json_encode($this->cookieData), $cookieExpires, '/');
-				}
-				$this->_cacheGeoData($ip);
-			}
-			catch (\Exception $e)
-			{
-				$message = 'The request to freegeoip.net failed: '.$e->getMessage();
-				Craft::log($message, LogLevel::Warning);
+			if (craft()->smartMap_maxMind->available) {
+				craft()->smartMap_maxMind->lookupIpData($ip);
+			} else {
+				craft()->smartMap_freeGeoIp->lookupIpData($ip);
 			}
 		}
 		$this->geoInfoSet = true;
@@ -120,13 +101,26 @@ class SmartMapService extends BaseApplicationComponent
 		}
 	}
 
+    // Set geo information in cookie
+    public function setGeoDataCookie($ipSet, $lifespan = 300) // Expires in five minutes
+    {
+		if (!$ipSet) {
+			$this->cookieData = array(
+				'ip'      => $this->here['ip'],
+				'expires' => time() + $lifespan,
+			);
+			setcookie(static::IP_COOKIE_NAME, json_encode($this->cookieData), time()+$lifespan, '/');
+		}
+    }
+
 	// Cache geo information for IP address
-	private function _cacheGeoData($ip, $lifespan = 7776000) // 60*60*24*90 // Expires in 90 days
+	public function cacheGeoData($ip, $geoLookupService, $lifespan = 7776000) // 60*60*24*90 // Expires in 90 days
 	{
 		if ($ip) {
 			$data = array(
 				'here'    => $this->here,
 				'expires' => time() + $lifespan,
+				'service' => $geoLookupService,
 			);
 			craft()->fileCache->set($ip, $data, $lifespan);
 			$this->cacheData = $data;
@@ -401,7 +395,7 @@ class SmartMapService extends BaseApplicationComponent
 		// If locations are specified
 		if (!empty($locations)) {
 			// If location is a pair of coordinates
-			if (!craft()->smartMap->isAssoc($locations) && count($locations) == 2 && !is_object($locations[0])) {
+			if (!$this->isAssoc($locations) && count($locations) == 2 && !is_object($locations[0])) {
 				$lat = $locations[0];
 				$lng = $locations[1];
 				$allLats[] = $lat;
@@ -442,13 +436,13 @@ class SmartMapService extends BaseApplicationComponent
 						}
 					} else if (is_array($loc)) {
 						// Else, if location is an array
-						if (!craft()->smartMap->isAssoc($loc) && count($loc) == 2 && !is_object($loc[0])) {
+						if (!$this->isAssoc($loc) && count($loc) == 2 && !is_object($loc[0])) {
 							$lat = $loc[0];
 							$lng = $loc[1];
 							$title = '';
 						} else {
-							$lat = craft()->smartMap->findKeyInArray($loc, array('latitude','lat'));
-							$lng = craft()->smartMap->findKeyInArray($loc, array('longitude','lng','lon','long'));
+							$lat = $this->findKeyInArray($loc, array('latitude','lat'));
+							$lng = $this->findKeyInArray($loc, array('longitude','lng','lon','long'));
 							$title = (array_key_exists('title',$loc) ? $loc['title'] : '');
 						}
 						$markers[] = array(

@@ -15,6 +15,7 @@ class SmartMapPlugin extends BasePlugin
 		craft()->smartMap->settings  = $this->getSettings();
 		craft()->smartMap->mapApiKey = '';
 		//craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];
+		craft()->smartMap->loadGeoData();
 	}
 
 	public function getName()
@@ -24,7 +25,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '1.2.7';
+		return '1.3.1';
 	}
 
 	public function getDeveloper()
@@ -57,7 +58,10 @@ class SmartMapPlugin extends BasePlugin
 	protected function defineSettings()
 	{
 		return array(
-			'debugRoute' => array(AttributeType::String, 'required' => true, 'label' => 'Debug Route', 'default' => 'map/debug'),
+			'maxmindUserId'     => array(AttributeType::String, 'label' => 'Max Mind User ID'),
+			'maxmindLicenseKey' => array(AttributeType::String, 'label' => 'Max Mind License Key'),
+			'maxmindService'    => array(AttributeType::String, 'label' => 'Max Mind Service'),
+			'debugRoute'        => array(AttributeType::String, 'required' => true, 'label' => 'Debug Route', 'default' => 'map/debug'),
 			//'apiKey'   => array(AttributeType::String, 'required' => true, 'label' => 'API Key'),
 		);
 	}

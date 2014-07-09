@@ -23,15 +23,16 @@
 			<th>Value</th>
 			<th>Expires</th>
 		</tr>
+        {% set dateFormat = 'g:i:s a\nM. j, Y' %}
 		<tr>
 			<td class="field">Cookie IP:</td>
 			<td>{{ craft.smartMap.debug.cookieValue }}</td>
-			<td>{{ craft.smartMap.debug.cookieExpires }}</td>
+			<td class="expires">{{ craft.smartMap.debug.cookieExpires|date(dateFormat)|nl2br }}</td>
 		</tr>
 		<tr>
 			<td class="field">Cache Data:</td>
 			<td><pre>{{ craft.smartMap.debug.cacheValue }}</pre></td>
-			<td>{{ craft.smartMap.debug.cacheExpires }}</td>
+			<td class="expires">{{ craft.smartMap.debug.cacheExpires|date(dateFormat)|nl2br }}</td>
 		</tr>
 	</table>
 
@@ -41,7 +42,7 @@
 			<col width="200"></col>
 		</colgroup>
 		<tr>
-			<th colspan="2">Detected via PHP</th>
+			<th colspan="2">Detected via {{ craft.smartMap.debug.geoService }}</th>
 		</tr>
 		<tr>
 			<td class="field">IP address:</td>
@@ -53,7 +54,7 @@
 		</tr>
 		<tr>
 			<td class="field">State:</td>
-			<td id="php-state">{{ my.region_name }}</td>
+			<td id="php-state">{{ my.state }}</td>
 		</tr>
 		<tr>
 			<td class="field">Zip:</td>
@@ -61,15 +62,15 @@
 		</tr>
 		<tr>
 			<td class="field">Country:</td>
-			<td id="php-country">{{ my.country_name }}</td>
+			<td id="php-country">{{ my.country }}</td>
 		</tr>
 	</table>
 
 	<table>
 		<colgroup>
-			<col width="90"></col>
-			<col width="110"></col>
-			<col width="110"></col>
+			<col width="60"></col>
+			<col width="100"></col>
+			<col width="100"></col>
 		</colgroup>
 		<tr>
 			<th>&nbsp;</th>
@@ -82,7 +83,7 @@
 			<td class="coords" id="php-longitude">{{ my.longitude|number_format(6) }}</td>
 		</tr>
 		<tr>
-			<td class="field">JavaScript:</td>
+			<td class="field">JS:</td>
 			<td class="coords" id="js-latitude">&nbsp;</td>
 			<td class="coords" id="js-longitude">&nbsp;</td>
 		</tr>

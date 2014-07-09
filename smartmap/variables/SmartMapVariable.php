@@ -65,15 +65,16 @@ class SmartMapVariable
             'cookieExpires' => false,
             'cacheValue'    => false,
             'cacheExpires'  => false,
+            'geoService'    => 'PHP',
         );
-        $dateFormat = 'F j, Y - g:i:s a';
         if (craft()->smartMap->cookieData) {
             $debugData['cookieValue']   = craft()->smartMap->cookieData['ip'];
-            $debugData['cookieExpires'] = date($dateFormat, craft()->smartMap->cookieData['expires']);
+            $debugData['cookieExpires'] = craft()->smartMap->cookieData['expires'];
         }
         if (craft()->smartMap->cacheData) {
             $debugData['cacheValue']    = print_r(craft()->smartMap->cacheData['here'], true);
-            $debugData['cacheExpires']  = date($dateFormat, craft()->smartMap->cacheData['expires']);
+            $debugData['cacheExpires']  = craft()->smartMap->cacheData['expires'];
+            $debugData['geoService']    = craft()->smartMap->cacheData['service'];
         }
         return $debugData;
     }

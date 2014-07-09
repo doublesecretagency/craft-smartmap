@@ -39,6 +39,12 @@ var smartMap = {
     coords: function (lat, lng) {
         return new google.maps.LatLng(lat, lng);
     },
+    // Zoom in on a marker
+    // SEE DOCS: https://github.com/lindseydiloreto/craft-smartmap/wiki/Adding-marker-info-bubbles
+    zoomOnMarker: function (mapId, markerName, zoom) {
+        this.map[mapId].setZoom(zoom);
+        this.map[mapId].panTo(this.marker[markerName].position);
+    },
     
     
     // Search via AJAX
@@ -77,17 +83,6 @@ var smartMap = {
         */
     }
 }
-
-// ============================================================================ //
-
-    /*
-    // Zoom in on a marker
-    // SEE DOCS: https://github.com/lindseydiloreto/craft-smartmap/wiki/Adding-marker-info-bubbles
-    zoomOnMarker: function (mapId, i, zoom) {
-        smartMap._renderedMaps[mapId].setZoom(zoom);
-        smartMap._renderedMaps[mapId].panTo(smartMap._renderedMarkers[i].position);
-    },
-    */
 
 // ============================================================================ //
 
