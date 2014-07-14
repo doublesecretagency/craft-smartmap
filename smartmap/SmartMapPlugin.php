@@ -72,5 +72,10 @@ class SmartMapPlugin extends BasePlugin
 		require('enums/ImageFormat.php');
 		require('enums/MapType.php');
 	}
-	
+
+	public function onAfterInstall()
+	{
+		craft()->request->redirect(UrlHelper::getCpUrl('smartmap/welcome'));
+	}
+
 }

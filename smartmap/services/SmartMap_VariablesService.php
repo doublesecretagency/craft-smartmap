@@ -412,8 +412,9 @@ class SmartMap_VariablesService extends BaseApplicationComponent
                 $q .= $address[$key];
             }
         }
-        if ($q) {
-            return 'http://maps.google.com/?q='.$q;
+        if ($address['lat'] && $address['lng']) {
+            $coords = $address['lat'].'+'.$address['lng'];
+            return 'http://maps.google.com/maps?q='.($q ? $q : $coords).'&ll='.$coords;
         } else {
             return '#';
         }
