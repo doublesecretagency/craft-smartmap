@@ -9,7 +9,9 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
     public function init() {
         parent::init();
-        craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
+        $api  = '//maps.google.com/maps/api/js';
+        $api .= craft()->smartMap->appendGoogleApiKey('?');
+        craft()->templates->includeJsFile($api);
         craft()->templates->includeJsResource('smartmap/js/smartmap.js');
         craft()->templates->includeCssResource('smartmap/css/smartmap.css');
     }
@@ -376,12 +378,11 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         $width  = (array_key_exists('width', $options)  ? $options['width']  : '200');
         $height = (array_key_exists('height', $options) ? $options['height'] : '200');
 
-        $src  = '//maps.googleapis.com/maps/api/staticmap?sensor=false';
-        //$src .= '&key='.craft()->smartMap->mapApiKey;
+        $src  = '//maps.googleapis.com/maps/api/staticmap?visual_refresh=true';
+        $src .= craft()->smartMap->appendGoogleApiKey();
         $src .= '&center='.$map['center']['lat'].','.$map['center']['lng'];
         $src .= '&zoom='.(array_key_exists('zoom', $options) ? $options['zoom'] : craft()->smartMap->defaultZoom);
         $src .= '&size='.$width.'x'.$height;
-        $src .= '&visual_refresh=true';
         $src .= '&maptype=roadmap';
 
         $i = 0;

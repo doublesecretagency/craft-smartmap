@@ -17,8 +17,6 @@ class SmartMapService extends BaseApplicationComponent
 	public $targetCoords; // TEMP: Until P&T "distance" fix
 
 	public $measurementUnit;
-	public $mapApi;
-	public $mapApiKey;
 
 	public $defaultZoom = 11;
 
@@ -39,6 +37,17 @@ class SmartMapService extends BaseApplicationComponent
 			$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
 		}
 		$this->currentLocation();
+	}
+
+	// Append Google API key if exists and enabled
+	public function appendGoogleApiKey($prepend = '&')
+	{
+		$s = $this->settings;
+		if ($s['enableService'] && is_array($s['enableService']) && in_array('google', $s['enableService']) && $s['googleApiKey']) {
+			return $prepend.'key='.$s['googleApiKey'];
+		} else {
+			return null;
+		}
 	}
 
 	// Automatically detect & set current location
@@ -158,14 +167,6 @@ class SmartMapService extends BaseApplicationComponent
 		return ($unitVal * acos(cos(deg2rad($lat_1)) * cos(deg2rad($lat_2)) * cos(deg2rad($lng_2) - deg2rad($lng_1)) + sin(deg2rad($lat_1)) * sin(deg2rad($lat_2))));
 	}
 	// END TEMP
-
-	// Check if API key is valid
-	public function checkApiKey()
-	{
-		if (!$this->mapApiKey) {
-			throw new Exception("Please enter your Google Maps API key. [/admin/settings/plugins/smartmap]");
-		}
-	}
 
 
 	// ==================================================== //
@@ -356,7 +357,9 @@ class SmartMapService extends BaseApplicationComponent
 	private function _geocodeGoogleMapApi($target)
 	{
 
-		$api = 'http://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($target).'&sensor=false';
+		$api  = 'http://maps.googleapis.com/maps/api/geocode/json';
+		$api .= '?address='.rawurlencode($target);
+		$api .= $this->appendGoogleApiKey();
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $api);

@@ -7,8 +7,9 @@ class SmartMap_MainService extends BaseApplicationComponent
 	// Search for address using Google Maps API
 	public function addressSearch($address)
 	{
-		$addressParam = str_replace(' ', '+', $address);
-		$api = 'http://maps.googleapis.com/maps/api/geocode/json?address='.$addressParam.'&sensor=false';
+		$api  = 'http://maps.googleapis.com/maps/api/geocode/json';
+		$api .= '?address='.str_replace(' ', '+', $address);
+		$api .= craft()->smartMap->appendGoogleApiKey();
 
 		$ch = curl_init();
 		curl_setopt_array($ch, array(

@@ -14,15 +14,17 @@ class SmartMap_MaxMindService extends BaseApplicationComponent
 	public function init()
 	{
 		parent::init();
-		$settings = craft()->plugins->getPlugin('smartMap')->getSettings();
-		if ($settings['maxmindService']) {
-			$this->_maxmindApi .= $settings['maxmindService'].'/';
+		$s = craft()->plugins->getPlugin('smartMap')->getSettings();
+		if ($s['maxmindService']) {
+			$this->_maxmindApi .= $s['maxmindService'].'/';
 		} else {
 			$this->_maxmindApi = null;
 		}
-		$this->_maxmindUserId     = $settings['maxmindUserId'];
-		$this->_maxmindLicenseKey = $settings['maxmindLicenseKey'];
-		$this->available = ($settings['maxmindService'] && $settings['maxmindUserId'] && $settings['maxmindLicenseKey']);
+		$this->_maxmindUserId     = $s['maxmindUserId'];
+		$this->_maxmindLicenseKey = $s['maxmindLicenseKey'];
+		if ($s['enableService'] && is_array($s['enableService']) && in_array('maxmind', $s['enableService'])) {
+			$this->available = ($s['maxmindService'] && $s['maxmindUserId'] && $s['maxmindLicenseKey']);
+		}
 	}
 
 	// Look up geolocation data based on IP address

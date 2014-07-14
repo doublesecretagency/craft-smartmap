@@ -21,17 +21,12 @@ class SmartMap_AddressFieldType extends BaseFieldType
     public function getInputHtml($name, $value) // $value has been prepared by prepValue()
     {
 
-        craft()->smartMap->mapApi = MapApi::GoogleMaps;
         craft()->smartMap->measurementUnit = MeasurementUnit::Miles;
 
-        switch (craft()->smartMap->mapApi) {
-            case MapApi::GoogleMaps:
-            default:
-                $apiJs = '//maps.googleapis.com/maps/api/js?key='.craft()->smartMap->mapApiKey.'&sensor=false';
-                break;
-        }
+        $api  = '//maps.googleapis.com/maps/api/js';
+        $api .= craft()->smartMap->appendGoogleApiKey('?');
 
-        craft()->templates->includeJsFile($apiJs);
+        craft()->templates->includeJsFile($api);
         craft()->templates->includeJsResource('smartmap/js/address-fieldtype.js');
         craft()->templates->includeCssResource('smartmap/css/address-fieldtype.css');
 

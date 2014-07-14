@@ -12,9 +12,7 @@ class SmartMapPlugin extends BasePlugin
 		// Enums
 		$this->_loadEnums();
 		// Plugin Settings
-		craft()->smartMap->settings  = $this->getSettings();
-		craft()->smartMap->mapApiKey = '';
-		//craft()->smartMap->mapApiKey = craft()->smartMap->settings['apiKey'];
+		craft()->smartMap->settings = $this->getSettings();
 		craft()->smartMap->loadGeoData();
 	}
 
@@ -58,11 +56,12 @@ class SmartMapPlugin extends BasePlugin
 	protected function defineSettings()
 	{
 		return array(
+			'debugRoute'        => array(AttributeType::String, 'required' => true, 'label' => 'Debug Route', 'default' => 'map/debug'),
+			'enableService'     => array(AttributeType::Mixed,  'label' => 'Enable Optional Service(s)'),
+			'googleApiKey'      => array(AttributeType::String, 'label' => 'API Key'),
 			'maxmindUserId'     => array(AttributeType::String, 'label' => 'Max Mind User ID'),
 			'maxmindLicenseKey' => array(AttributeType::String, 'label' => 'Max Mind License Key'),
 			'maxmindService'    => array(AttributeType::String, 'label' => 'Max Mind Service'),
-			'debugRoute'        => array(AttributeType::String, 'required' => true, 'label' => 'Debug Route', 'default' => 'map/debug'),
-			//'apiKey'   => array(AttributeType::String, 'required' => true, 'label' => 'API Key'),
 		);
 	}
 

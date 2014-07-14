@@ -1,88 +1,94 @@
 {% import '_includes/forms' as forms %}
-
-{% set getApiKey = 'https://developers.google.com/maps/documentation/javascript/tutorial#api_key' %}
+{% includeJsResource  'smartmap/js/settings.js' %}
+{% includeCssResource 'smartmap/css/settings.css' %}
 
 {% set supportEmail = '<a href="mailto:support@doublesecretagency.com?subject=Smart%20Map%20Feedback">support@doublesecretagency.com</a>' %}
 
-<h2>Documentation</h2>
+<h2>Documentation &amp; Feedback</h2>
 
 <p>In order to keep things clean and legible, we've moved the documentation into the <a href="https://github.com/lindseydiloreto/craft-smartmap/wiki" target="_blank">GitHub wiki</a>.</p>
-
-<h2>Feedback?</h2>
 
 <p>You can reach us at {{ supportEmail | raw }}. All questions, comments, and suggestions are welcome!</p>
 
 <hr />
 
+<h2>Optional Enhancement Services</h2>
+<input type="hidden" name="enableService[]" value="" />
+
+<h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="google" id="smartmap-service-google" class="smartmap-service-checkbox" {{ 'google' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-google">Google Maps for Business</label></h3>
+<p>Google provides a few extra niceties when you upgrade to a paid business account. Check out <a href="http://www.google.com/enterprise/mapsearth/products/mapsapi.html#compare-editions" target="_blank">this chart</a> to see if Google Maps for Business is right for you.</p>
+
+<div class="smartmap-field-container" id="smartmap-fields-google">
+
+	<p><strong>Getting an API key is easy!</strong> Simply <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key" target="_blank">follow these instructions...</a></p>
+
+	{{ forms.textField({
+		label: "Google Maps API Key:"|t,
+		id: 'googleApiKey',
+		name: 'googleApiKey',
+		value: settings.googleApiKey,
+		errors: settings.getErrors('googleApiKey')
+	}) }}
+</div>
+
+<h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="maxmind" id="smartmap-service-maxmind" class="smartmap-service-checkbox" {{ 'maxmind' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-maxmind">MaxMind GeoIP2</label></h3>
+<p>MaxMind will <strong>increase the accuracy of your location detection</strong>. This is important when the plugin automatically detects a visitor's coordinates. The default accuracy is already very good, you only need this service if you have a need for extreme accuracy. <a href="https://www.maxmind.com/en/web_services" target="_blank">Learn more...</a></p>
+
+<div class="smartmap-field-container" id="smartmap-fields-maxmind">
+	<p><strong>Step 1:</strong> Which <a href="https://www.maxmind.com/en/account" target="_blank">Web Service</a> did you subscribe to?</p>
+
+	{{ forms.selectField({
+		id: 'maxmindService',
+		name: 'maxmindService',
+		options: {
+			''             : '(service disabled)',
+			'country'      : 'GeoIP2 Country',
+			'city'         : 'GeoIP2 City',
+			'city_isp_org' : 'GeoIP2 City/ISP/Org',
+			'omni'         : 'GeoIP2 Omni',
+		},
+		value: settings.maxmindService,
+	}) }}
+	{#
+		toggle: true,
+		targetPrefix: 'section'
+		---
+		errors: settings.getErrors('maxmindService')
+	#}
+
+	<p><strong>Step 2:</strong> Copy your <a href="https://www.maxmind.com/en/my_license_key" target="_blank">security access information</a>, and paste it here...</p>
+
+	{{ forms.textField({
+		label: "User ID:"|t,
+		id: 'maxmindUserId',
+		name: 'maxmindUserId',
+		value: settings.maxmindUserId,
+		errors: settings.getErrors('maxmindUserId')
+	}) }}
+
+	{{ forms.textField({
+		label: "License Key:"|t,
+		id: 'maxmindLicenseKey',
+		name: 'maxmindLicenseKey',
+		value: settings.maxmindLicenseKey,
+		errors: settings.getErrors('maxmindLicenseKey')
+	}) }}
+</div>
+
+<p><em><strong>Note:</strong> If you have recently enabled (or disabled) MaxMind integration, but you are still seeing old geolocation results, just go to <strong>Settings &gt; Clear Caches</strong></em></p>
+
+<hr />
+
+<h2>Plugin Debug Page</h2>
+
+<p>Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site.</p>
+
 {% set debugRoute = siteUrl(settings.debugRoute) %}
 
 {{ forms.textField({
-	label: "Debug Route"|t,
 	instructions: '<a href="'~debugRoute~'" target="_blank">'~debugRoute~'</a>',
 	id: 'debugRoute',
 	name: 'debugRoute',
 	value: settings.debugRoute,
 	errors: settings.getErrors('debugRoute')
 }) }}
-
-<hr />
-
-<h2>MaxMind Account Information</h2>
-<p><strong>Optional.</strong> A separate paid subscription service, MaxMind will increase the accuracy of your location detection. <a href="https://www.maxmind.com/en/web_services" target="_blank">Learn more...</a></p>
-
-{{ forms.selectField({
-	label: 'Which <a href="https://www.maxmind.com/en/account" target="_blank">GeoIP2 Web Service</a> did you subscribe to?'|t,
-	id: 'maxmindService',
-	name: 'maxmindService',
-	options: {
-		''             : '(service disabled)',
-		'country'      : 'Country',
-		'city'         : 'City',
-		'city_isp_org' : 'City/ISP/Org',
-		'omni'         : 'Omni',
-	},
-	value: settings.maxmindService,
-}) }}
-{#
-	toggle: true,
-	targetPrefix: 'section'
-	---
-	errors: settings.getErrors('maxmindService')
-#}
-
-<p>Copy your <a href="https://www.maxmind.com/en/my_license_key" target="_blank">security access information</a>.</p>
-
-{{ forms.textField({
-	label: "User ID"|t,
-	id: 'maxmindUserId',
-	name: 'maxmindUserId',
-	value: settings.maxmindUserId,
-	errors: settings.getErrors('maxmindUserId')
-}) }}
-
-{{ forms.textField({
-	label: "License Key"|t,
-	id: 'maxmindLicenseKey',
-	name: 'maxmindLicenseKey',
-	value: settings.maxmindLicenseKey,
-	errors: settings.getErrors('maxmindLicenseKey')
-}) }}
-
-{#
-<hr />
-
-<p>In order to use this plugin, you'll need your own Google API Key.</p>
-
-<h2>Where can I get an API Key?</h2>
-<p>Getting an API key is easy! Simply <a href="{{ getApiKey }}" target="_blank">follow the instructions found here...</a></p>
-
-{{ forms.textField({
-	label: "API Key"|t,
-	id: 'apiKey',
-	name: 'apiKey',
-	instructions: "Enter your Google Maps API key:"|t,
-	value: settings.apiKey,
-	autofocus: true,
-	errors: settings.getErrors('apiKey')
-}) }}
-#}

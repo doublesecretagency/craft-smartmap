@@ -13,7 +13,9 @@ class SmartMapVariable
     // Includes front-end Javascript
     public function js()
     {
-        craft()->templates->includeJsFile('//maps.google.com/maps/api/js?sensor=false');
+        $api  = '//maps.google.com/maps/api/js';
+        $api .= craft()->smartMap->appendGoogleApiKey('?');
+        craft()->templates->includeJsFile($api);
         craft()->templates->includeJsResource('smartmap/js/smartmap.js');
     }
 

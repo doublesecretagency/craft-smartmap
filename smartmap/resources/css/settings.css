@@ -1,0 +1,16 @@
+
+div.smartmap-field-container {
+	display: none;
+	margin: 10px 0;
+	padding: 14px;
+	background: #eef0f1;
+	border: 1px solid #d5d7d8;
+}
+
+input.smartmap-service-checkbox {
+	margin-right: 7px;
+}
+
+h3.smartmap-service-title {
+	margin-top: 28px;
+}
