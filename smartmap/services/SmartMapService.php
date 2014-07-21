@@ -67,6 +67,9 @@ class SmartMapService extends BaseApplicationComponent
 	// 
 	private function _detectMyIp()
 	{
+		if (!isset($_SERVER['REMOTE_ADDR']))
+			return false;
+		
 		$ip = $_SERVER['REMOTE_ADDR'];
 		$ipPattern = '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/';
 		if (('127.0.0.1' == $ip) || (!preg_match($ipPattern, $ip))) {
