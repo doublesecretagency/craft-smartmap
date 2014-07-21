@@ -37,11 +37,14 @@ class SmartMapService extends BaseApplicationComponent
 			'metro_code'   => false,
 			'area_code'    => false,
 		);
-		$ipCookie = $this->_ipCookieName;
-		if (array_key_exists($ipCookie, $_COOKIE)) {
-			$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
+		
+		if (!craft()->isConsole()) {
+			$ipCookie = $this->_ipCookieName;
+			if (array_key_exists($ipCookie, $_COOKIE)) {
+				$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
+			}
+			$this->currentLocation();
 		}
-		$this->currentLocation();
 	}
 
 	// Automatically detect & set current location
@@ -67,9 +70,6 @@ class SmartMapService extends BaseApplicationComponent
 	// 
 	private function _detectMyIp()
 	{
-		if (!isset($_SERVER['REMOTE_ADDR']))
-			return false;
-		
 		$ip = $_SERVER['REMOTE_ADDR'];
 		$ipPattern = '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/';
 		if (('127.0.0.1' == $ip) || (!preg_match($ipPattern, $ip))) {
