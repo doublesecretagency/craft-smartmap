@@ -5,6 +5,10 @@ class SmartMapController extends BaseController
 {
 	protected $allowAnonymous = true;
 
+	/*
+	// TEMPORARILY DISABLED:
+	// smartMap->ajaxSearch needs to be re-written
+	//
 	// Conduct a search via AJAX
 	public function actionSearch()
 	{
@@ -13,6 +17,7 @@ class SmartMapController extends BaseController
 		$response = craft()->smartMap->ajaxSearch($params);
 		$this->returnJson($response);
 	}
+	*/
 
 	// Get location information for debugging
 	public function actionDebug()

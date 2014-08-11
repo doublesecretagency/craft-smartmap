@@ -39,15 +39,4 @@ class SmartMap_ModalController extends BaseController
 		));
 	}
 
-	// ================================================================ //
-
-	// TEMP
-	public function actionDemo()
-	{
-		$address = '5113 Huck Finn';
-		$results = craft()->smartMap_main->addressSearch($address);
-		Craft::dump($results);
-		die();
-	}
-
 }

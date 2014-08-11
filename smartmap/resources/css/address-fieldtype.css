@@ -21,7 +21,7 @@ span.smartmap-link {
 span.smartmap-link:hover {
     text-decoration: underline;
 }
-span.smartmap-seach-addresses {}
+span.smartmap-search-addresses {}
 span.smartmap-drag-pin {}
 div.smartmap-matches {
     display: none;

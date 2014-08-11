@@ -96,6 +96,15 @@ class SmartMapService extends BaseApplicationComponent
 			} else {
 				craft()->smartMap_freeGeoIp->lookupIpData($ip);
 			}
+			// Fire an 'onDetectLocation' event
+			$eventLocation = $this->cacheData['here'];
+			unset($eventLocation['ip']);
+			$this->onDetectLocation(new Event($this, array(
+				'ip'               => $this->cacheData['here']['ip'],
+				'location'         => $eventLocation,
+				'detectionService' => $this->cacheData['service'],
+				'cacheExpires'     => $this->cacheData['expires'],
+			)));
 		}
 		$this->geoInfoSet = true;
 	}
@@ -249,7 +258,15 @@ class SmartMapService extends BaseApplicationComponent
 		// Get attributes
 		if ($addressRecord) {
 			$attr = $addressRecord->getAttributes();
-			$attr['distance'] = $this->_haversinePHP($this->targetCoords, $attr); // TEMP: Until P&T "distance" fix
+			if ($this->targetCoords) {
+				$here = $this->targetCoords;
+			} else {
+				$here = array(
+					'lat' => $this->here['latitude'],
+					'lng' => $this->here['longitude'],
+				);
+			}
+			$attr['distance'] = $this->_haversinePHP($here, $attr); // TEMP: Until P&T "distance" fix
 		} else {
 			$attr = array();
 		}
@@ -496,6 +513,7 @@ class SmartMapService extends BaseApplicationComponent
 		);
 	}
 
+	/*
 	// Search via AJAX
 	public function ajaxSearch($params)
 	{
@@ -558,7 +576,7 @@ class SmartMapService extends BaseApplicationComponent
 				->andWhere($where, $pdo)
 			;
 		}
-		*/
+		* /
 
 		// Search by comparing coordinates
 		$this->_searchCoords($query, $params);
@@ -567,6 +585,7 @@ class SmartMapService extends BaseApplicationComponent
 		$markers = $query->queryAll();
 		return $this->markerCoords($markers);
 	}
+	*/
 
 	// Center coordinates of target
 	public function targetCenter($target = false)
@@ -628,5 +647,36 @@ class SmartMapService extends BaseApplicationComponent
 	public function isAssoc($array) {
 		return (bool) count(array_filter(array_keys($array), 'is_string'));
 	}
+
+
+	// ==================================================== //
+
+	// Events
+
+	/**
+	 * Fires an 'onDetectLocation' event.
+	 *
+	 * @param Event $event
+	 */
+	public function onDetectLocation(Event $event)
+	{
+		$this->raiseEvent('onDetectLocation', $event);
+	}
+	/*
+	// Event returns params:
+	array(
+	    'ip' => '76.94.199.186'
+	    'location' => array(
+	        'city' => 'Culver City'
+	        'state' => 'California'
+	        'zipcode' => '90230'
+	        'country' => 'United States'
+	        'latitude' => 33.995
+	        'longitude' => -118.3917
+	    )
+	    'detectionService' => 'MaxMind'
+	    'cacheExpires' => 1413590881
+	)
+	*/
 
 }

@@ -92,6 +92,10 @@ td.expires {
 	text-align: right;
 }
 
+table.alt-rows {}
+table.alt-rows tr:nth-child(even) td {background-color: #eeeeee}
+table.alt-rows tr:nth-child(odd)  td {background-color: #ffffff}
+
 div#where-am-i {
     clear: both;
     height: 500px;

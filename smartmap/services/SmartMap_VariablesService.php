@@ -113,11 +113,11 @@ class SmartMap_VariablesService extends BaseApplicationComponent
                         $lat = ($el['lat'] ? $el['lat'] : null);
                         $lng = ($el['lng'] ? $el['lng'] : null);
                         // Add marker
-                        $name = $el['elementId'].'.'.$el['handle']; // Change "handle" to "fieldId"
-                        $markers[$name] = array(
+                        $markerName = $this->_getMarkerName($el);
+                        $markers[$markerName] = array(
                             'title'      => $title,
                             'mapId'      => $mapId,
-                            'markerName' => $name,
+                            'markerName' => $markerName,
                             'lat'        => $lat,
                             'lng'        => $lng,
                             'element'    => $element,
@@ -146,16 +146,16 @@ class SmartMap_VariablesService extends BaseApplicationComponent
             
             // Set solo marker
             $el = $locations;
-            $name = $el['elementId'].'.'.$el['handle']; // Change "handle" to "fieldId"
-            $markers[$name] = array(
+            $markerName = $this->_getMarkerName($el);
+            $markers[$markerName] = array(
                 'mapId'      => $mapId,
-                'markerName' => $name,
+                'markerName' => $markerName,
                 'lat'        => $el['lat'],
                 'lng'        => $el['lng'],
                 'element'    => craft()->elements->getElementById($locations['elementId']),
             );
             if (array_key_exists('title', $markerOptions)) {
-                $markers[$name]['title'] = $markerOptions['title'];
+                $markers[$markerName]['title'] = $markerOptions['title'];
             }
 
             // If coordinates exist, set center
@@ -173,6 +173,12 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
         // Return center
         return $center;
+    }
+
+    // Get marker name from element
+    private function _getMarkerName($el)
+    {
+        return $el['elementId'].'.'.$el['handle']; // Might have to change "handle" to "fieldId" after migration
     }
 
     // Parse coordinates into standard format
@@ -214,8 +220,8 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         // Fallback
         if (!is_numeric($lat) || !is_numeric($lng)) {
             $default = craft()->smartMap->defaultCoords();
-            $lat = $default['latitude'];
-            $lng = $default['longitude'];
+            $lat = $default['lat'];
+            $lng = $default['lng'];
         }
 
         return array(
@@ -265,7 +271,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     private function _buildMarkers($mapId, $markerOptions)
     {
         $markerJs = '';
-        foreach ($this->_marker[$mapId] as $name => $marker) {
+        foreach ($this->_marker[$mapId] as $markerName => $marker) {
 
             // "map" and "position" are required
             $markerOptions['map'] = 'smartMap.map["'.$mapId.'"]';
@@ -278,7 +284,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
             $options = $this->_jsonify($markerOptions);
             $markerJs .= PHP_EOL;
             $markerJs .= PHP_EOL.'// Draw new marker';
-            $markerJs .= PHP_EOL.'smartMap.createMarker("'.$mapId.'.'.$name.'", '.$options.');';
+            $markerJs .= PHP_EOL.'smartMap.createMarker("'.$mapId.'.'.$markerName.'", '.$options.');';
         }
         return $markerJs;
     }
@@ -292,7 +298,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         unset($infoWindowOptions['template']);
 
         $infoWindowJs = '';
-        foreach ($this->_marker[$mapId] as $name => $marker) {
+        foreach ($this->_marker[$mapId] as $markerName => $marker) {
 
             if (!$contentExists) {
                 if ($template) {
@@ -326,7 +332,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
             $options = $this->_jsonify($infoWindowOptions);
             $infoWindowJs .= PHP_EOL;
             $infoWindowJs .= PHP_EOL.'// Draw new info window';
-            $infoWindowJs .= PHP_EOL.'smartMap.createInfoWindow("'.$mapId.'.'.$name.'", '.$options.');';
+            $infoWindowJs .= PHP_EOL.'smartMap.createInfoWindow("'.$mapId.'.'.$markerName.'", '.$options.');';
 
         }
         return $infoWindowJs;
@@ -404,6 +410,10 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     // Get a link to open the Google map
     public function linkToGoogle($address)
     {
+        if (!$address) {
+            return '#';
+        }
+
         $q = '';
         $components = array('street1','city','state','zip');
         foreach ($components as $key) {
@@ -423,6 +433,10 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     // Get a link to open directions on a Google map
     public function linkToDirections($address, $title = null)
     {
+        if (!$address) {
+            return '#';
+        }
+
         if (array_key_exists('lat', $address) && array_key_exists('lng', $address)) {
             $coords = $address['lat'].','.$address['lng'];
         } else {

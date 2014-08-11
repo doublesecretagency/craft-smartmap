@@ -7,7 +7,7 @@ class SmartMap_MainService extends BaseApplicationComponent
 	// Search for address using Google Maps API
 	public function addressSearch($address)
 	{
-		$api  = 'http://maps.googleapis.com/maps/api/geocode/json';
+		$api  = 'https://maps.googleapis.com/maps/api/geocode/json';
 		$api .= '?address='.str_replace(' ', '+', $address);
 		$api .= craft()->smartMap->appendGoogleApiKey();
 
@@ -33,7 +33,11 @@ class SmartMap_MainService extends BaseApplicationComponent
 				$message = 'You are over your quota.';
 				break;
 			case 'REQUEST_DENIED':
-				$message = 'Your request was denied for some reason.';
+				if (array_key_exists('error_message', $response) && $response['error_message']) {
+					$message = $response['error_message'];
+				} else {
+					$message = 'Your request was denied for some reason.';
+				}
 				break;
 			case 'INVALID_REQUEST':
 				$message = 'The query is missing.';
