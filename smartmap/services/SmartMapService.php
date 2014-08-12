@@ -37,11 +37,14 @@ class SmartMapService extends BaseApplicationComponent
 			'metro_code'   => false,
 			'area_code'    => false,
 		);
-		$ipCookie = $this->_ipCookieName;
-		if (array_key_exists($ipCookie, $_COOKIE)) {
-			$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
+		
+		if (!craft()->isConsole()) {
+			$ipCookie = $this->_ipCookieName;
+			if (array_key_exists($ipCookie, $_COOKIE)) {
+				$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
+			}
+			$this->currentLocation();
 		}
-		$this->currentLocation();
 	}
 
 	// Automatically detect & set current location
