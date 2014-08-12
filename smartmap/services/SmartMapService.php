@@ -32,11 +32,14 @@ class SmartMapService extends BaseApplicationComponent
 			'latitude'  => false,
 			'longitude' => false,
 		);
-		$ipCookie = static::IP_COOKIE_NAME;
-		if (array_key_exists($ipCookie, $_COOKIE)) {
-			$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
+		
+		if (!craft()->isConsole()) {
+			$ipCookie = $this->_ipCookieName;
+			if (array_key_exists($ipCookie, $_COOKIE)) {
+				$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
+			}
+			$this->currentLocation();
 		}
-		$this->currentLocation();
 	}
 
 	// Append Google API key if exists and enabled
