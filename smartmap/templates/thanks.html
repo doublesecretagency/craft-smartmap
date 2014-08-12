@@ -1,0 +1,23 @@
+{% extends '_layouts/cp' %}
+{% set title = 'Welcome to Smart Map!' %}
+
+{% set content %}
+    <div style="text-align:center; margin:0 auto;">
+        <h2>Thanks for downloading Smart Map!</h2>
+        <p>Feel free to contact us with any feature requests, bug reports, or suggestions.</p>
+        <a href="https://craftpl.us/plugins/smart-map/docs/new-in-2.0" target="_blank"><button class="btn submit">See What's New...</button></a>
+        <p>
+            <a href="{{ url('settings/fields/new') }}">Create a new Address field</a> | 
+            <a href="mailto:support@doublesecretagency.com?subject=Smart+Map+~+Fresh+Installation" target="_blank">Contact Us</a>
+        </p>
+    </div>
+    <script
+        src="//d2s6cp23z9c3gz.cloudfront.net/js/embed.widget.min.js"
+        data-domain="craftplus.besnappy.com"
+        data-title="Craft Plus Support"
+    >
+    </script>
+    <script>
+        window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(e){return function(){var n=Array.prototype.slice.call(arguments);return n.unshift(e),window.analytics.push(n),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key)}window.analytics.load=function(e){if(!document.getElementById("analytics-js")){var t=document.createElement("script");t.type="text/javascript",t.id="analytics-js",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)}},window.analytics.SNIPPET_VERSION="2.0.9",window.analytics.load("636oi4pt7l");window.analytics.track("Installed",{"Plugin Name":"Smart Map",source:window.location.host});
+    </script>
+{% endset %}

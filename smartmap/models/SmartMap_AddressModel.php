@@ -16,6 +16,7 @@ class SmartMap_AddressModel extends BaseModel // Change name to "LocationModel" 
 
         return array(
             'elementId' => AttributeType::Number,
+            'fieldId'   => AttributeType::Number,
             'handle'    => AttributeType::String,
             'street1'   => AttributeType::String,
             'street2'   => AttributeType::String,

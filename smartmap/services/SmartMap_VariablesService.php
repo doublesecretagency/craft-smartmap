@@ -178,7 +178,8 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     // Get marker name from element
     private function _getMarkerName($el)
     {
-        return $el['elementId'].'.'.$el['handle']; // Might have to change "handle" to "fieldId" after migration
+        $field = craft()->fields->getFieldById($el['fieldId']);
+        return $el['elementId'].'.'.$field->handle;
     }
 
     // Parse coordinates into standard format

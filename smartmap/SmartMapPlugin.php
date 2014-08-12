@@ -23,7 +23,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '1.3.2';
+		return '2.0.0';
 	}
 
 	public function getDeveloper()
@@ -33,7 +33,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getDeveloperUrl()
 	{
-		return 'https://github.com/lindseydiloreto/craft-smartmap';
+		return 'https://craftpl.us/plugins/smart-map';
 		//return 'http://doublesecretagency.com';
 	}
 
@@ -75,7 +75,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function onAfterInstall()
 	{
-		craft()->request->redirect(UrlHelper::getCpUrl('smartmap/welcome'));
+		craft()->request->redirect(UrlHelper::getCpUrl('smartmap/thanks'));
 	}
 
 }

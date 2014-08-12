@@ -20,7 +20,6 @@ class SmartMap_AddressFieldType extends BaseFieldType
     // Render HTML for field input
     public function getInputHtml($name, $value) // $value has been prepared by prepValue()
     {
-
         craft()->smartMap->measurementUnit = MeasurementUnit::Miles;
 
         $api  = '//maps.googleapis.com/maps/api/js';
@@ -45,8 +44,8 @@ class SmartMap_AddressFieldType extends BaseFieldType
             $addressModel = SmartMap_AddressModel::populateModel($value);
         } else {
             $addressModel = new SmartMap_AddressModel;
-            $addressModel->handle = $name;
         }
+        $addressModel->handle = $name;
 
         return craft()->templates->render('smartmap/address/input', $addressModel->getAttributes());
         
@@ -88,7 +87,7 @@ class SmartMap_AddressFieldType extends BaseFieldType
     // As the data leaves the database
     public function prepValue($value)
     {
-        // Ignoring $value on purpose (it's the empty value from the _content table)
+        // Ignoring $value on purpose (it's the empty value from the "content" table)
         return craft()->smartMap->getAddress($this);
     }
 

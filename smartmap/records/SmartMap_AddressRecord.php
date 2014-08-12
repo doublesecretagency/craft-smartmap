@@ -23,15 +23,14 @@ class SmartMap_AddressRecord extends BaseRecord
         );
 
         return array(
-            'handle'    => AttributeType::String,
-            'street1'   => AttributeType::String,
-            'street2'   => AttributeType::String,
-            'city'      => AttributeType::String,
-            'state'     => AttributeType::String,
-            'zip'       => AttributeType::String,
-            'country'   => AttributeType::String,
-            'lat'       => $coordColumn,
-            'lng'       => $coordColumn,
+            'street1' => AttributeType::String,
+            'street2' => AttributeType::String,
+            'city'    => AttributeType::String,
+            'state'   => AttributeType::String,
+            'zip'     => AttributeType::String,
+            'country' => AttributeType::String,
+            'lat'     => $coordColumn,
+            'lng'     => $coordColumn,
         );
 
     }
@@ -40,6 +39,7 @@ class SmartMap_AddressRecord extends BaseRecord
     {
         return array(
             'element' => array(static::BELONGS_TO, 'ElementRecord', 'required' => true, 'onDelete' => static::CASCADE),
+            'field'   => array(static::BELONGS_TO, 'FieldRecord',   'required' => true, 'onDelete' => static::CASCADE),
         );
     }
 

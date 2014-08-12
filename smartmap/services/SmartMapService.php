@@ -197,67 +197,59 @@ class SmartMapService extends BaseApplicationComponent
 	// ==================================================== //
 
 	// Save field to plugin table
-	public function saveAddressField(BaseFieldType $fieldType)
+	public function saveAddressField(BaseFieldType $field)
 	{
-		// Get handle, elementId, and content
-		$handle    = $fieldType->model->handle;
-		$elementId = $fieldType->element->id;
-		$content   = $fieldType->element->getContent();
+		// Get fieldId, elementId, and content
+		$elementId = $field->element->id;
+		$fieldId   = $field->model->id;
+		$content   = $field->element->getContent();
 
 		// Set specified attributes
-		$attr = $content->getAttribute($handle);
+		$fieldHandle = $field->model->handle;
+		$data = $content->getAttribute($fieldHandle);
 
 		// Return false if attribute doesn't exist
-		if (!$attr) {
+		if (!$data) {
 			return false;
 		}
 
 		// Attempt to load existing record
 		$addressRecord = SmartMap_AddressRecord::model()->findByAttributes(array(
 			'elementId' => $elementId,
-			'handle'    => $handle,
+			'fieldId'   => $fieldId,
 		));
 
 		// If no record exists, create new record
 		if (!$addressRecord) {
 			$addressRecord = new SmartMap_AddressRecord;
-			$attr['elementId'] = $elementId;
-			$attr['handle']    = $handle;
+			$addressRecord->elementId = $elementId;
+			$addressRecord->fieldId   = $fieldId;
 		}
 
-		// Force empty values as NULL
-		if (!$attr['street1']) {$attr['street1'] = null;}
-		if (!$attr['street2']) {$attr['street2'] = null;}
-		if (!$attr['city'])    {$attr['city']    = null;}
-		if (!$attr['state'])   {$attr['state']   = null;}
-		if (!$attr['zip'])     {$attr['zip']     = null;}
-		if (!$attr['country']) {$attr['country'] = null;}
-		if (!$attr['lat'])     {$attr['lat']     = null;}
-		if (!$attr['lng'])     {$attr['lng']     = null;}
-
 		// Set record attributes
-		$addressRecord->setAttributes($attr, false);
+		$addressRecord->setAttributes($data, false);
 
-		//if (!$addressRecord->save()) {
-		//    $errors = $addressRecord->getErrors();
-		//}
-
-		return $addressRecord->save();
+		// Save record
+		$saved = $addressRecord->save();
+		if (!$saved) {
+		    $errors = $addressRecord->getErrors();
+		}
+		return $saved;
 
 	}
 
 	// Retrieves address from 3rd party table
-	public function getAddress(BaseFieldType $fieldType)
+	public function getAddress(BaseFieldType $field)
 	{
 		// Load record (if exists)
 		$addressRecord = SmartMap_AddressRecord::model()->findByAttributes(array(
-			'elementId' => $fieldType->element->id,
-			'handle'    => $fieldType->model->handle,
+			'elementId' => $field->element->id,
+			'fieldId'   => $field->model->id,
 		));
 
 		// Get attributes
 		if ($addressRecord) {
-			$attr = $addressRecord->getAttributes();
+			$data = $addressRecord->getAttributes();
 			if ($this->targetCoords) {
 				$here = $this->targetCoords;
 			} else {
@@ -266,12 +258,12 @@ class SmartMapService extends BaseApplicationComponent
 					'lng' => $this->here['longitude'],
 				);
 			}
-			$attr['distance'] = $this->_haversinePHP($here, $attr); // TEMP: Until P&T "distance" fix
+			$data['distance'] = $this->_haversinePHP($here, $data); // TEMP: Until P&T "distance" fix
 		} else {
-			$attr = array();
+			$data = array();
 		}
 
-		return $attr;
+		return $data;
 	}
 
 	// ==================================================== //
@@ -416,7 +408,7 @@ class SmartMapService extends BaseApplicationComponent
 		$markers = array();
 		$allLats = array();
 		$allLngs = array();
-		$handles = array();
+		$fieldIds = array();
 
 		// If locations are specified
 		if (!empty($locations)) {
@@ -431,20 +423,20 @@ class SmartMapService extends BaseApplicationComponent
 					'lng' => $lng,
 				);
 			} else {
-				// Find all Smart Map Address field handles
+				// Find all Smart Map Address field fieldIds
 				foreach (craft()->fields->getAllFields() as $field) {
 					if ($field->type == 'SmartMap_Address') {
-						$handles[] = $field->handle;
+						$fieldIds[] = $field->fieldId;
 					}
 				}
 				// Loop through locations
 				foreach ($locations as $loc) {
 					if (is_object($loc)) {
 						// If location is an object
-						if (!empty($handles)) {
-							foreach ($handles as $handle) {
-								if (isset($loc->{$handle})) {
-									$address = $loc->{$handle};
+						if (!empty($fieldIds)) {
+							foreach ($fieldIds as $fieldId) {
+								if (isset($loc->{$fieldId})) {
+									$address = $loc->{$fieldId};
 									if (!empty($address)) {
 										$lat = $address['lat'];
 										$lng = $address['lng'];
@@ -535,16 +527,16 @@ class SmartMapService extends BaseApplicationComponent
 		// Filter by specified section(s)
 		if (array_key_exists('section', $params)) {
 			if (!is_array($params['section'])) {
-				$where = craft()->db->tablePrefix.'sections.handle=:handle';
-				$pdo = array(':handle'=>$params['section']);
+				$where = craft()->db->tablePrefix.'sections.fieldId=:fieldId';
+				$pdo = array(':fieldId'=>$params['section']);
 			} else {
 				$i = 0;
 				$where = '';
 				$pdo = array();
-				foreach ($params['section'] as $handle) {
+				foreach ($params['section'] as $fieldId) {
 					if ($where) {$where .= ' OR ';}
-					$where .= craft()->db->tablePrefix.'sections.handle=:handle'.$i;
-					$pdo[':handle'.$i] = $handle;
+					$where .= craft()->db->tablePrefix.'sections.fieldId=:fieldId'.$i;
+					$pdo[':fieldId'.$i] = $fieldId;
 					$i++;
 				}
 			}
@@ -559,16 +551,16 @@ class SmartMapService extends BaseApplicationComponent
 		// Filter by specified field(s)
 		if (array_key_exists('field', $params)) {
 			if (!is_array($params['field'])) {
-				$where = craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.handle=:handle';
-				$pdo = array(':handle'=>$params['field']);
+				$where = craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.fieldId=:fieldId';
+				$pdo = array(':fieldId'=>$params['field']);
 			} else {
 				$i = 0;
 				$where = '';
 				$pdo = array();
-				foreach ($params['field'] as $handle) {
+				foreach ($params['field'] as $fieldId) {
 					if ($where) {$where .= ' OR ';}
-					$where .= craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.handle=:handle'.$i;
-					$pdo[':handle'.$i] = $handle;
+					$where .= craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.fieldId=:fieldId'.$i;
+					$pdo[':fieldId'.$i] = $fieldId;
 					$i++;
 				}
 			}
