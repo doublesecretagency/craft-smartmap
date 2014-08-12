@@ -1,0 +1,62 @@
+Smart Map License
+==============
+https://craftpl.us/plugins/smart-map
+Copyright © 2014 Double Secret Agency. All rights reserved.
+
+This license (the "License") is a legal agreement between you (either an individual or a single entity) and Double Secret Agency covering the use, installation, copying or distribution of Smart Map.
+
+Please read the license terms below. If you do not agree to all of the terms and conditions of this License, then do not use, install, copy, or distribute Smart Map. In addition, you may return to Double Secret Agency a copy of your License Key, and a signed Affidavit of De-Installation and Non-Use within thirty (30) days after purchase, for a full refund of the license fee, detracted of any purchase-specific fees and expenses already paid or to be paid by Double Secret Agency, including refund-related costs.
+
+TERMS AND CONDITIONS
+
+1. Your Agreement to this License
+
+This License applies to the Smart Map code and any accompanying distributable files, data, and materials. You should carefully read the following terms and conditions before using, installing, copying, or distributing Smart Map. Unless otherwise agreed in a writing signed by Double Secret Agency, your use, installation, copying, or distribution of Smart Map indicates your acceptance of this License.
+
+The terms and conditions of this License describe the permitted use of each Licensed Copy of Smart Map.
+
+2. Scope of License
+
+Subject to the terms of this License, Double Secret Agency grants to you, for each Licensed Copy, a limited, non-exclusive, non-transferable, royalty-free, license to use, install, copy, or distribute Smart Map.
+
+All rights of any kind in Smart Map which are not expressly granted in this License are entirely and exclusively reserved to and by Double Secret Agency. Double Secret Agency is protected by applicable national and international laws and treaties.
+
+You may use, install, copy, and distribute Smart Map solely as expressly provided in this License. You may not rent, lease, loan, sublicense, modify, translate, reverse engineer, decompile, disassemble, or create derivative works based on Smart Map, in whole or in part, nor permit anyone else to do so. You may not make access to Smart Map available to others in connection with a service bureau, application service provider, or similar business, nor permit anyone else to do so.
+
+It is agreed that in exchange for the license set forth herein, you will pay a onetime license fee. The fee value will be specified in the Double Secret Agency official website at the moment of the purchase.
+
+3. License Model
+
+This is a single-site license, meaning you may integrate Smart Map into one live website (the "Website") at a time. You may also integrate Smart Map into an unlimited number of websites that are not yet live, however you must purchase new Licenses before they become live.
+
+4. License Validity
+
+This license is valid only if the Website, is a work that uses Smart Map, and doesn't go in competition with Smart Map in the marketplace.
+
+5. Updates
+
+Double Secret Agency will provide you with free updates to Smart Map v1 for the remainder of Smart Map v1's lifespan. Such updates will include any updates for Smart Map v1 that are released by Double Secret Agency for general distribution to Smart Map v1 licensees. Double Secret Agency has no obligation to provide you with any updates that are not released for general distribution to Double Secret Agency's other licensees. Nothing in this Agreement shall be construed to obligate Double Secret Agency to provide updates to you under any circumstances.
+
+6. Reservation of Rights and Ownership
+
+Double Secret Agency reserves all rights not expressly granted to you in this License. Double Secret Agency is protected by copyright and other intellectual property laws and treaties. Double Secret Agency owns the title, copyright, and other intellectual property rights in Smart Map, its files, and its source code. Smart Map is licensed, not sold. This License does not grant you any rights to trademarks or service marks.
+
+7. Termination
+
+Without prejudice to any other rights, Double Secret Agency may terminate this License if you fail to comply with the terms and conditions of the License. In such event, your right to use, install, copy, and distribute Smart Map terminates automatically and you must then destroy all copies of Smart Map in your possession.
+
+8. Warranty
+
+Double Secret Agency represents and warrants that they have full title and ownership to Smart Map and has the authority to grant the license hereunder. To the best of Double Secret Agency's knowledge, Smart Map does not infringe upon the intellectual property rights of any third party and that they did not receive any notice regarding any alleged infringement thereof.
+
+9. Disclaimer of Warranties
+
+Smart Map and its related material are provided "AS IS" and without warranty of any kind and the Owner expressly disclaims all other warranties, expressed or implied, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose.
+
+10. EXCLUSION OF INCIDENTAL, CONSEQUENTIAL, AND CERTAIN OTHER DAMAGES. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL Double Secret Agency BE LIABLE FOR ANY SPECIAL, INCIDENTAL, PUNITIVE, INDIRECT, OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING, BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS OR CONFIDENTIAL OR OTHER INFORMATION, FOR BUSINESS INTERRUPTION, FOR PERSONAL INJURY, FOR LOSS OF PRIVACY, FOR FAILURE TO MEET ANY DUTY INCLUDING OF GOOD FAITH OR OF REASONABLE CARE, FOR NEGLIGENCE, AND FOR ANY OTHER PECUNIARY OR OTHER LOSS WHATSOEVER) ARISING OUT OF OR IN ANY WAY RELATED TO THE USE OF OR INABILITY TO USE Smart Map, THE PROVISION OF OR FAILURE TO PROVIDE SUPPORT OR OTHER SERVICES, INFORMATION, SOFTWARE, AND RELATED CONTENT THROUGH Smart Map OR OTHERWISE ARISING OUT OF THE USE OF Smart Map, OR OTHERWISE UNDER OR IN CONNECTION WITH ANY PROVISION OF THIS LICENSE, EVEN IN THE EVENT OF THE FAULT, TORT (INCLUDING NEGLIGENCE), MISREPRESENTATION, STRICT LIABILITY, BREACH OF CONTRACT, AND EVEN IF Smart Map HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+11. Limitation of Liability
+
+In no event shall Double Secret Agency's liability exceed the license fee paid.
+
+END OF TERMS AND CONDITIONS

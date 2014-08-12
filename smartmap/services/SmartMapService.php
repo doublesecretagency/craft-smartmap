@@ -260,7 +260,8 @@ class SmartMapService extends BaseApplicationComponent
 			}
 			$data['distance'] = $this->_haversinePHP($here, $data); // TEMP: Until P&T "distance" fix
 		} else {
-			$data = array();
+			$data = SmartMap_AddressRecord::model()->getAttributes();
+			$data['distance'] = null;
 		}
 
 		return $data;
@@ -408,7 +409,7 @@ class SmartMapService extends BaseApplicationComponent
 		$markers = array();
 		$allLats = array();
 		$allLngs = array();
-		$fieldIds = array();
+		$fieldHandles = array();
 
 		// If locations are specified
 		if (!empty($locations)) {
@@ -426,17 +427,17 @@ class SmartMapService extends BaseApplicationComponent
 				// Find all Smart Map Address field fieldIds
 				foreach (craft()->fields->getAllFields() as $field) {
 					if ($field->type == 'SmartMap_Address') {
-						$fieldIds[] = $field->fieldId;
+						$fieldHandles[] = $field->handle;
 					}
 				}
 				// Loop through locations
 				foreach ($locations as $loc) {
 					if (is_object($loc)) {
 						// If location is an object
-						if (!empty($fieldIds)) {
-							foreach ($fieldIds as $fieldId) {
-								if (isset($loc->{$fieldId})) {
-									$address = $loc->{$fieldId};
+						if (!empty($fieldHandles)) {
+							foreach ($fieldHandles as $fieldHandle) {
+								if (isset($loc->{$fieldHandle})) {
+									$address = $loc->{$fieldHandle};
 									if (!empty($address)) {
 										$lat = $address['lat'];
 										$lng = $address['lng'];
