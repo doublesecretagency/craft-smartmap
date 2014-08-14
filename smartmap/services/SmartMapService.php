@@ -34,7 +34,7 @@ class SmartMapService extends BaseApplicationComponent
 		);
 		
 		if (!craft()->isConsole()) {
-			$ipCookie = $this->_ipCookieName;
+			$ipCookie = static::IP_COOKIE_NAME;
 			if (array_key_exists($ipCookie, $_COOKIE)) {
 				$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
 			}

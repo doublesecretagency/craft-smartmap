@@ -114,18 +114,20 @@ class SmartMap_VariablesService extends BaseApplicationComponent
                         $lng = ($el['lng'] ? $el['lng'] : null);
                         // Add marker
                         $markerName = $this->_getMarkerName($el);
-                        $markers[$markerName] = array(
-                            'title'      => $title,
-                            'mapId'      => $mapId,
-                            'markerName' => $markerName,
-                            'lat'        => $lat,
-                            'lng'        => $lng,
-                            'element'    => $element,
-                        );
-                        // Add coordinates to average
-                        if (is_numeric($lat) && is_numeric($lng)) {
-                            $allLats[] = $lat;
-                            $allLngs[] = $lng;
+                        if ($markerName) {
+                            $markers[$markerName] = array(
+                                'title'      => $title,
+                                'mapId'      => $mapId,
+                                'markerName' => $markerName,
+                                'lat'        => $lat,
+                                'lng'        => $lng,
+                                'element'    => $element,
+                            );
+                            // Add coordinates to average
+                            if (is_numeric($lat) && is_numeric($lng)) {
+                                $allLats[] = $lat;
+                                $allLngs[] = $lng;
+                            }
                         }
                     }
                 }
@@ -147,17 +149,18 @@ class SmartMap_VariablesService extends BaseApplicationComponent
             // Set solo marker
             $el = $locations;
             $markerName = $this->_getMarkerName($el);
-            $markers[$markerName] = array(
-                'mapId'      => $mapId,
-                'markerName' => $markerName,
-                'lat'        => $el['lat'],
-                'lng'        => $el['lng'],
-                'element'    => craft()->elements->getElementById($locations['elementId']),
-            );
-            if (array_key_exists('title', $markerOptions)) {
-                $markers[$markerName]['title'] = $markerOptions['title'];
+            if ($markerName) {
+                $markers[$markerName] = array(
+                    'mapId'      => $mapId,
+                    'markerName' => $markerName,
+                    'lat'        => $el['lat'],
+                    'lng'        => $el['lng'],
+                    'element'    => craft()->elements->getElementById($locations['elementId']),
+                );
+                if (array_key_exists('title', $markerOptions)) {
+                    $markers[$markerName]['title'] = $markerOptions['title'];
+                }
             }
-
             // If coordinates exist, set center
             if (is_numeric($el['lat']) && is_numeric($el['lng'])) {
                 $center = array(
@@ -178,8 +181,12 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     // Get marker name from element
     private function _getMarkerName($el)
     {
-        $field = craft()->fields->getFieldById($el['fieldId']);
-        return $el['elementId'].'.'.$field->handle;
+        if ($el['fieldId'] && $el['elementId']) {
+            $field = craft()->fields->getFieldById($el['fieldId']);
+            return $el['elementId'].'.'.$field->handle;
+        } else {
+            return false;
+        }
     }
 
     // Parse coordinates into standard format
