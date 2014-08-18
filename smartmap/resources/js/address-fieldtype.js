@@ -13,12 +13,16 @@ $(document).on('keydown', '.smartmap-field input', function (e) {
 	return true;
 });
 
-$('.smartmap-search-addresses').click(function() {
+// Listen for new blocks
+$(document).on('click', '.smartmap-search-addresses', function () {
 	handle = $(this).closest('.smartmap-field').attr('id');
+	console.log('Searching addresses...');
 	findCoords(handle);
 });
-$('.smartmap-drag-pin').click(function() {
+// Listen for new blocks
+$(document).on('click', '.smartmap-drag-pin', function () {
 	handle = $(this).closest('.smartmap-field').attr('id');
+	console.log('Opening drag pin modal...', handle);
 	modalDragPin(handle);
 });
 
