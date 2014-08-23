@@ -22,7 +22,7 @@ $(document).on('click', '.smartmap-search-addresses', function () {
 // Listen for new blocks
 $(document).on('click', '.smartmap-drag-pin', function () {
 	handle = $(this).closest('.smartmap-field').attr('id');
-	console.log('Opening drag pin modal...', handle);
+	console.log('Opening drag pin modal...');
 	modalDragPin(handle);
 });
 
@@ -51,7 +51,7 @@ function getCoords(handle) {
 	return new google.maps.LatLng(coords.lat, coords.lng);
 }
 
-function renderMap(handle, coords) {
+function _renderMap(handle, coords) {
 
 	// If map already created
 	if (dragPin[handle]['map']) {
@@ -59,8 +59,10 @@ function renderMap(handle, coords) {
 		dragPin[handle]['marker'].setMap(null);
 		dragPin[handle]['map'].panTo(coords);
 	} else {
+
 		// Create map
 		var mapCanvas = document.getElementById('smartmap-'+handle+'-drag-pin-canvas');
+
 		var mapOptions = {
 			center: coords,
 			zoom: 11,
@@ -93,6 +95,7 @@ function modalDragPin(handle) {
 	} else {
 		dragPin[handle] = {};
 		// Setup modal HTML
+		$('form.smartmap-modal-drag-pin').remove();
 		var $modal = $('<form id="smartmap-'+handle+'-modal-drag-pin" class="modal elementselectormodal smartmap-modal-drag-pin"/>').appendTo(Garnish.$bod),
 			$body = $('<div class="body"/>').appendTo($modal).html('<div id="smartmap-'+handle+'-drag-pin-canvas" style="height:100%"></div>'),
 			$footer = $('<footer class="footer"/>').appendTo($modal),
@@ -104,21 +107,37 @@ function modalDragPin(handle) {
 		dragPin[handle]['modal'] = new Garnish.Modal($modal);
 	}
 
-	var coords = getCoords(handle);
-	var marker = renderMap(handle, coords);
+	// Get canvas
+	var mapCanvas = document.getElementById('smartmap-'+handle+'-drag-pin-canvas');
 
-	// Set modal close trigger
-	$('.modal-cancel').on('click', function() {
-		dragPin[handle]['modal'].hide();
-	});
+	// Wait until canvas has height & width
+	var refreshIntervalId = setInterval(function () {
 
-	// Set modal submit trigger
-	$('.modal-submit-drag-pin').on('click', function() {
-		$('#'+handle+'-lat').val(marker.getPosition().lat());
-		$('#'+handle+'-lng').val(marker.getPosition().lng());
-		dragPin[handle]['modal'].hide();
-		return false;
-	});
+		// Once canvas has width
+		if ($(mapCanvas).width()) {
+
+			// Render map
+			var coords = getCoords(handle);
+			var marker = _renderMap(handle, coords);
+
+			// Set modal close trigger
+			$('.modal-cancel').on('click', function() {
+				dragPin[handle]['modal'].hide();
+			});
+
+			// Set modal submit trigger
+			$('.modal-submit-drag-pin').on('click', function() {
+				$('#'+handle+'-lat').val(marker.getPosition().lat());
+				$('#'+handle+'-lng').val(marker.getPosition().lng());
+				dragPin[handle]['modal'].hide();
+				return false;
+			});
+
+			// Break loop
+			clearInterval(refreshIntervalId);
+		}
+
+	}, 10);
 
 }
 
