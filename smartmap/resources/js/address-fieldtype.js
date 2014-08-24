@@ -1,4 +1,5 @@
 
+var here;
 var handle;
 var address = {};
 var dragPin = {};

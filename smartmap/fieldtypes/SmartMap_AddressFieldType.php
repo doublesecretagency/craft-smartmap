@@ -17,9 +17,23 @@ class SmartMap_AddressFieldType extends BaseFieldType
         }
     }
 
-    // Render HTML for field input
-    public function getInputHtml($name, $value) // $value has been prepared by prepValue()
+    /**
+     * Renders the input fields for this fieldtype
+     *
+     * @param string $name
+     * @param SmartMap_AddressModel $model
+     *
+     * @return string
+     */
+    public function getInputHtml($name, $model) // $model has been prepared by prepValue()
     {
+
+        if (!$model) {
+            $model = new SmartMap_AddressModel;
+        }
+
+        $model->handle = $name;
+
         craft()->smartMap->measurementUnit = MeasurementUnit::Miles;
 
         $api  = '//maps.googleapis.com/maps/api/js';
@@ -38,16 +52,9 @@ class SmartMap_AddressFieldType extends BaseFieldType
         } else {
             $hereJs = 'false';
         }
-        craft()->templates->includeJs('var here = '.$hereJs.';');
+        craft()->templates->includeJs('here = '.$hereJs.';');
 
-        if (!empty($value)) {
-            $addressModel = SmartMap_AddressModel::populateModel($value);
-        } else {
-            $addressModel = new SmartMap_AddressModel;
-        }
-        $addressModel->handle = $name;
-
-        return craft()->templates->render('smartmap/address/input', $addressModel->getAttributes());
+        return craft()->templates->render('smartmap/address/input', $model->getAttributes());
         
     }
 
@@ -87,8 +94,47 @@ class SmartMap_AddressFieldType extends BaseFieldType
     // As the data leaves the database
     public function prepValue($value)
     {
-        // Ignoring $value on purpose (it's the empty value from the "content" table)
-        return craft()->smartMap->getAddress($this);
+        return craft()->smartMap->getAddress($this, $value);
+    }
+
+    // ==================================================== //
+    // VALIDATION
+    // ==================================================== //
+
+    /**
+     * Validates our fields submitted value beyond the checks 
+     * that were assumed based on the content attribute.
+     *
+     * Returns 'true' or any custom validation errors.
+     *
+     * @param array $value
+     * @return true|string|array
+     */
+    public function validate($value)
+    {
+        $errors = parent::validate($value);
+
+        if (!is_array($errors))
+        {
+            $errors = array();
+        }
+
+        $validLat = (!$value['lat'] || is_numeric($value['lat']));
+        $validLng = (!$value['lng'] || is_numeric($value['lng']));
+
+        if (!$validLat || !$validLng)
+        {
+            $errors[] = Craft::t('If coordinates are specified, they must be numbers.');
+        }
+
+        if ($errors)
+        {
+            return $errors;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     // ==================================================== //

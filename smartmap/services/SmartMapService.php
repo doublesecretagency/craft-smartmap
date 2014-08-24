@@ -14,7 +14,7 @@ class SmartMapService extends BaseApplicationComponent
 	public $cookieData = false;
 	public $cacheData = false;
 
-	public $targetCoords; // TEMP: Until P&T "distance" fix
+	public $targetCoords;
 
 	public $measurementUnit;
 
@@ -156,7 +156,6 @@ class SmartMapService extends BaseApplicationComponent
 
 	// ==================================================== //
 
-	// TEMP: Until P&T "distance" fix
 	// Use haversine formula
 	private function _haversinePHP($coords_1, $coords_2)
 	{
@@ -178,7 +177,6 @@ class SmartMapService extends BaseApplicationComponent
 		// Calculate haversine formula
 		return ($unitVal * acos(cos(deg2rad($lat_1)) * cos(deg2rad($lat_2)) * cos(deg2rad($lng_2) - deg2rad($lng_1)) + sin(deg2rad($lat_1)) * sin(deg2rad($lat_2))));
 	}
-	// END TEMP
 
 
 	// ==================================================== //
@@ -232,6 +230,16 @@ class SmartMapService extends BaseApplicationComponent
 		// Set record attributes
 		$addressRecord->setAttributes($data, false);
 
+		// Empty values default to NULL
+		if (!$addressRecord->street1) {$addressRecord->street1 = null;}
+		if (!$addressRecord->street2) {$addressRecord->street2 = null;}
+		if (!$addressRecord->city)    {$addressRecord->city    = null;}
+		if (!$addressRecord->state)   {$addressRecord->state   = null;}
+		if (!$addressRecord->zip)     {$addressRecord->zip     = null;}
+		if (!$addressRecord->country) {$addressRecord->country = null;}
+		if (!is_numeric($addressRecord->lat)) {$addressRecord->lat = null;}
+		if (!is_numeric($addressRecord->lng)) {$addressRecord->lng = null;}
+
 		// Save record
 		$saved = $addressRecord->save();
 		if (!$saved) {
@@ -242,17 +250,32 @@ class SmartMapService extends BaseApplicationComponent
 	}
 
 	// Retrieves address from 3rd party table
-	public function getAddress(BaseFieldType $field)
+	public function getAddress(SmartMap_AddressFieldType $field, $value)
 	{
+
 		// Load record (if exists)
-		$addressRecord = SmartMap_AddressRecord::model()->findByAttributes(array(
+		$record	= SmartMap_AddressRecord::model()->findByAttributes(array(
 			'elementId' => $field->element->id,
 			'fieldId'   => $field->model->id,
 		));
 
+		if (craft()->request->getPost())
+		{
+			$model = SmartMap_AddressModel::populateModel($value);
+		}
+		else if ($record)
+		{
+			$model = SmartMap_AddressModel::populateModel($record->getAttributes());
+		}
+		else
+		{
+            $model = new SmartMap_AddressModel;
+		}
+
+        /* OBSOLETE?
 		// Get attributes
-		if ($addressRecord) {
-			$data = $addressRecord->getAttributes();
+		if ($record) {
+			$data = $record->getAttributes();
 			if ($this->targetCoords) {
 				$here = $this->targetCoords;
 			} else {
@@ -261,13 +284,14 @@ class SmartMapService extends BaseApplicationComponent
 					'lng' => $this->here['longitude'],
 				);
 			}
-			$data['distance'] = $this->_haversinePHP($here, $data); // TEMP: Until P&T "distance" fix
+			$data['distance'] = $this->_haversinePHP($here, $data);
 		} else {
 			$data = SmartMap_AddressRecord::model()->getAttributes();
 			$data['distance'] = null;
 		}
+		*/
 
-		return $data;
+		return $model;
 	}
 
 	// ==================================================== //
@@ -324,8 +348,8 @@ class SmartMapService extends BaseApplicationComponent
 				break;
 		}
 
-		$this->targetCoords    = $filter->coords; // TEMP: Until P&T "distance" fix
-		$this->measurementUnit = $filter->units;  // TEMP: Until P&T "distance" fix
+		$this->targetCoords    = $filter->coords;
+		$this->measurementUnit = $filter->units;
 
 		return $filter;
 	}
