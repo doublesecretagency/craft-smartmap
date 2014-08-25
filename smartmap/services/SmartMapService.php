@@ -272,24 +272,17 @@ class SmartMapService extends BaseApplicationComponent
             $model = new SmartMap_AddressModel;
 		}
 
-        /* OBSOLETE?
-		// Get attributes
-		if ($record) {
-			$data = $record->getAttributes();
-			if ($this->targetCoords) {
-				$here = $this->targetCoords;
-			} else {
-				$here = array(
-					'lat' => $this->here['latitude'],
-					'lng' => $this->here['longitude'],
-				);
-			}
-			$data['distance'] = $this->_haversinePHP($here, $data);
+		// Set distance property
+		$data = $model->getAttributes();
+		if ($this->targetCoords) {
+			$here = $this->targetCoords;
 		} else {
-			$data = SmartMap_AddressRecord::model()->getAttributes();
-			$data['distance'] = null;
+			$here = array(
+				'lat' => $this->here['latitude'],
+				'lng' => $this->here['longitude'],
+			);
 		}
-		*/
+		$model->distance = $this->_haversinePHP($here, $data);
 
 		return $model;
 	}

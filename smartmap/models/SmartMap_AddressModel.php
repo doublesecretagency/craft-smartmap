@@ -26,6 +26,7 @@ class SmartMap_AddressModel extends BaseModel // Change name to "LocationModel" 
             'country'   => AttributeType::String,
             'lat'       => $coordColumn,
             'lng'       => $coordColumn,
+            'distance'  => $coordColumn,
         );
 
         // THESE WILL GO IN THE "MAP MODEL":
