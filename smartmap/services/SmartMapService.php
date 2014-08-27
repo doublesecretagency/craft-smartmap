@@ -157,7 +157,7 @@ class SmartMapService extends BaseApplicationComponent
 	// ==================================================== //
 
 	// Use haversine formula
-	private function _haversinePHP($coords_1, $coords_2)
+	private function _haversinePHP(array $coords_1, array $coords_2)
 	{
 		// Determine unit of measurement
 		switch ($this->measurementUnit) {
@@ -282,7 +282,11 @@ class SmartMapService extends BaseApplicationComponent
 				'lng' => $this->here['longitude'],
 			);
 		}
-		$model->distance = $this->_haversinePHP($here, $data);
+		if (is_numeric($data['lat']) && is_numeric($data['lng'])) {
+			$model->distance = $this->_haversinePHP($here, $data);
+		} else {
+			$model->distance = null;
+		}
 
 		return $model;
 	}
