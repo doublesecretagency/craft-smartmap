@@ -32,27 +32,39 @@ function getCoords(handle) {
 	var lat = $('#'+handle+'-lat').val();
 	var lng = $('#'+handle+'-lng').val();
 
+	var coords;
+
+	// Set default map coordinates
 	if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
-		var coords = {
+		coords = {
 			'lat': lat,
 			'lng': lng
 		};
 	} else if (here) {
-		var coords = {
+		coords = {
 			'lat': here.lat,
 			'lng': here.lng
 		};
 	} else {
-		var coords = {
+		coords = {
 			'lat': 0,
 			'lng': 0
 		};
 	}
 
+	// If JS geolocation available, recenter
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(function (position) {
+			var center = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+			dragPin[handle]['marker'].setPosition(center);
+			dragPin[handle]['map'].panTo(center);
+		});
+	}
+
 	return new google.maps.LatLng(coords.lat, coords.lng);
 }
 
-function _renderMap(handle, coords) {
+function _renderMap(handle, mapCanvas, coords) {
 
 	// If map already created
 	if (dragPin[handle]['map']) {
@@ -60,10 +72,6 @@ function _renderMap(handle, coords) {
 		dragPin[handle]['marker'].setMap(null);
 		dragPin[handle]['map'].panTo(coords);
 	} else {
-
-		// Create map
-		var mapCanvas = document.getElementById('smartmap-'+handle+'-drag-pin-canvas');
-
 		var mapOptions = {
 			center: coords,
 			zoom: 11,
@@ -119,7 +127,7 @@ function modalDragPin(handle) {
 
 			// Render map
 			var coords = getCoords(handle);
-			var marker = _renderMap(handle, coords);
+			var marker = _renderMap(handle, mapCanvas, coords);
 
 			// Set modal close trigger
 			$('.modal-cancel').on('click', function() {
