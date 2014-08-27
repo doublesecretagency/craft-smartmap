@@ -40,25 +40,27 @@ function getCoords(handle) {
 			'lat': lat,
 			'lng': lng
 		};
-	} else if (here) {
-		coords = {
-			'lat': here.lat,
-			'lng': here.lng
-		};
 	} else {
-		coords = {
-			'lat': 0,
-			'lng': 0
-		};
-	}
-
-	// If JS geolocation available, recenter
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(function (position) {
-			var center = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-			dragPin[handle]['marker'].setPosition(center);
-			dragPin[handle]['map'].panTo(center);
-		});
+		// Set default map position
+		if (here) {
+			coords = {
+				'lat': here.lat,
+				'lng': here.lng
+			};
+		} else {
+			coords = {
+				'lat': 0,
+				'lng': 0
+			};
+		}
+		// If JS geolocation available, recenter
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function (position) {
+				var center = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				dragPin[handle]['marker'].setPosition(center);
+				dragPin[handle]['map'].panTo(center);
+			});
+		}
 	}
 
 	return new google.maps.LatLng(coords.lat, coords.lng);
