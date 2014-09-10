@@ -1,7 +1,5 @@
+/_DEL
 /WISHLIST.md
-/composer.json
-/phpunit.xml
-/vendor
-/tests
+/smartmap/tests
 /smartmap/templates/address/_country/___components.html
 /_migrations

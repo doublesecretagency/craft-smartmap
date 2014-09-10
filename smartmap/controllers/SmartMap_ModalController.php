@@ -12,7 +12,7 @@ class SmartMap_ModalController extends BaseController
 		
 		$address = craft()->request->getPost('address');
 		if (!trim($address)) {
-			$this->returnJson(array('success'=>false, 'message'=>'No address provided'));
+			$this->returnJson(array('success'=>false, 'message'=>'No address provided. Please enter a partial address to search for.'));
 		}
 
 		$response = craft()->smartMap_main->addressSearch($address);

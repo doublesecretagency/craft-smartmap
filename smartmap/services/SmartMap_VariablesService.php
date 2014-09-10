@@ -162,7 +162,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
                 }
             }
             // If coordinates exist, set center
-            if (is_numeric($el['lat']) && is_numeric($el['lng'])) {
+            if (array_key_exists('lat',$el) && array_key_exists('lng',$el) && is_numeric($el['lat']) && is_numeric($el['lng'])) {
                 $center = array(
                     'lat' => $el['lat'],
                     'lng' => $el['lng'],
