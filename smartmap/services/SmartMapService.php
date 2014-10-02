@@ -259,7 +259,7 @@ class SmartMapService extends BaseApplicationComponent
 			'fieldId'   => $field->model->id,
 		));
 
-		if (craft()->request->getPost())
+		if (craft()->request->getPost() && $value)
 		{
 			$model = SmartMap_AddressModel::populateModel($value);
 		}
