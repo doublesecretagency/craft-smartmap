@@ -1,3 +1,5 @@
+console.log('Loading smartMap object...');
+
 // Smart Map JS object
 var smartMap = {
 	map: {},
@@ -7,9 +9,11 @@ var smartMap = {
 	createMap: function (mapId, options) {
 		var div = document.getElementById(mapId);
 		this.map[mapId] = new google.maps.Map(div, options);
+		console.log('['+mapId+'] Map rendered.');
 	},
 	createMarker: function (markerName, options) {
 		this.marker[markerName] = new google.maps.Marker(options);
+		console.log('['+markerName+'] Marker rendered.');
 	},
 	deleteMarker: function (markerName) {
 		this.marker[markerName].setMap(null);
@@ -24,6 +28,7 @@ var smartMap = {
 			}
 			smartMap.infoWindow[markerName].open(map, marker);
 		});
+		console.log('['+markerName+'] Info window rendered.');
 	},
 	// List items
 	listMaps: function () {
@@ -46,3 +51,5 @@ var smartMap = {
 		this.map[mapId].panTo(this.marker[markerName].position);
 	}
 }
+
+console.log('smartMap object loaded.');

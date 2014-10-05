@@ -270,7 +270,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
         $options = $this->_jsonify($mapOptions);
         $mapJs  = PHP_EOL;
-        $mapJs .= PHP_EOL.'// Draw new map';
+        $mapJs .= PHP_EOL.'console.log("['.$mapId.'] Drawing map...")';
         $mapJs .= PHP_EOL.'smartMap.createMap("'.$mapId.'", '.$options.');';
         return $mapJs;
     }
@@ -291,7 +291,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
             $options = $this->_jsonify($markerOptions);
             $markerJs .= PHP_EOL;
-            $markerJs .= PHP_EOL.'// Draw new marker';
+            $markerJs .= PHP_EOL.'console.log("['.$mapId.'.'.$markerName.'] Drawing marker...")';
             $markerJs .= PHP_EOL.'smartMap.createMarker("'.$mapId.'.'.$markerName.'", '.$options.');';
         }
         return $markerJs;
@@ -344,7 +344,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
             $options = $this->_jsonify($infoWindowOptions);
             $infoWindowJs .= PHP_EOL;
-            $infoWindowJs .= PHP_EOL.'// Draw new info window';
+            $infoWindowJs .= PHP_EOL.'console.log("['.$mapId.'.'.$markerName.'] Drawing info window...")';
             $infoWindowJs .= PHP_EOL.'smartMap.createInfoWindow("'.$mapId.'.'.$markerName.'", '.$options.');';
 
         }
