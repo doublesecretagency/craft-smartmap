@@ -32,6 +32,7 @@ class SmartMap_MaxMindService extends BaseApplicationComponent
 	{
 		try
 		{
+        	craft()->smartMap->loadGeoData();
 			// Ping geo location service
 			$results = $this->rawData($ip);
 			// Populate "here" array

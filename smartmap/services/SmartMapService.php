@@ -8,7 +8,7 @@ class SmartMapService extends BaseApplicationComponent
 
 	public $settings;
 
-	public $here;
+	public $here = false;
 	public $geoInfoSet = false;
 
 	public $cookieData = false;
@@ -23,22 +23,23 @@ class SmartMapService extends BaseApplicationComponent
 	// Load geo data
 	public function loadGeoData()
 	{
-		$this->here = array( // Default to empty container array
-			'ip'        => false,
-			'city'      => false,
-			'state'     => false,
-			'zipcode'   => false,
-			'country'   => false,
-			'latitude'  => false,
-			'longitude' => false,
-		);
-		
-		if (!craft()->isConsole()) {
-			$ipCookie = static::IP_COOKIE_NAME;
-			if (array_key_exists($ipCookie, $_COOKIE)) {
-				$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
+		if (!$this->here) {
+			$this->here = array( // Default to empty container array
+				'ip'        => false,
+				'city'      => false,
+				'state'     => false,
+				'zipcode'   => false,
+				'country'   => false,
+				'latitude'  => false,
+				'longitude' => false,
+			);
+			if (!craft()->isConsole()) {
+				$ipCookie = static::IP_COOKIE_NAME;
+				if (array_key_exists($ipCookie, $_COOKIE)) {
+					$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
+				}
+				$this->currentLocation();
 			}
-			$this->currentLocation();
 		}
 	}
 
@@ -132,6 +133,7 @@ class SmartMapService extends BaseApplicationComponent
 	public function setGeoDataCookie($ipSet, $lifespan = 300) // Expires in five minutes
 	{
 		if (!$ipSet) {
+        	craft()->smartMap->loadGeoData();
 			$this->cookieData = array(
 				'ip'      => $this->here['ip'],
 				'expires' => time() + $lifespan,
@@ -144,6 +146,7 @@ class SmartMapService extends BaseApplicationComponent
 	public function cacheGeoData($ip, $geoLookupService, $lifespan = 7776000) // 60*60*24*90 // Expires in 90 days
 	{
 		if ($ip) {
+        	craft()->smartMap->loadGeoData();
 			$data = array(
 				'here'    => $this->here,
 				'expires' => time() + $lifespan,
@@ -277,6 +280,7 @@ class SmartMapService extends BaseApplicationComponent
 		if ($this->targetCoords) {
 			$here = $this->targetCoords;
 		} else {
+        	craft()->smartMap->loadGeoData();
 			$here = array(
 				'lat' => $this->here['latitude'],
 				'lng' => $this->here['longitude'],
@@ -630,6 +634,7 @@ class SmartMapService extends BaseApplicationComponent
 			'lat' => -48.876667,
 			'lng' => -123.393333,
 		);
+        craft()->smartMap->loadGeoData();
 		if (array_key_exists('latitude', $this->here) && array_key_exists('longitude', $this->here)) {
 			$coords = array(
 				// Current location

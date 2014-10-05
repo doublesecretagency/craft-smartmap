@@ -7,6 +7,7 @@ class SmartMapVariable
     // Renders details about "my" current location
     public function my()
     {
+        craft()->smartMap->loadGeoData();
         return craft()->smartMap->here;
     }
 

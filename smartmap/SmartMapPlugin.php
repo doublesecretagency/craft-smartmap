@@ -11,7 +11,6 @@ class SmartMapPlugin extends BasePlugin
 		$this->_loadEnums();
 		// Plugin Settings
 		craft()->smartMap->settings = $this->getSettings();
-		craft()->smartMap->loadGeoData();
 	}
 
 	public function getName()
@@ -21,7 +20,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '2.0.7';
+		return '2.0.8';
 	}
 
 	public function getDeveloper()

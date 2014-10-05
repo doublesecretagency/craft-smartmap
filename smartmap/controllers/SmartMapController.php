@@ -22,6 +22,7 @@ class SmartMapController extends BaseController
 	// Get location information for debugging
 	public function actionDebug()
 	{
+        craft()->smartMap->loadGeoData();
 		$templatesPath = craft()->path->getPluginsPath().'smartmap/templates/';
 		craft()->path->setTemplatesPath($templatesPath);
 		$this->renderTemplate('_debug', array(
