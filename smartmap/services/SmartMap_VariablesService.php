@@ -181,7 +181,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     // Get marker name from element
     private function _getMarkerName($el)
     {
-        if ($el['fieldId'] && $el['elementId']) {
+        if (!empty($el) && $el['fieldId'] && $el['elementId']) {
             $field = craft()->fields->getFieldById($el['fieldId']);
             return $el['elementId'].'.'.$field->handle;
         } else {
