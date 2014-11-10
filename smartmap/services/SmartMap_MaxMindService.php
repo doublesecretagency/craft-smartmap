@@ -60,11 +60,13 @@ class SmartMap_MaxMindService extends BaseApplicationComponent
 				craft()->smartMap->setGeoDataCookie($ip);
 				craft()->smartMap->cacheGeoData(craft()->smartMap->here['ip'], 'MaxMind');
 			} else {
+				/*
 				// Else, grap IP using FreeGeoIp
 				$freeGeoIp = craft()->smartMap_freeGeoIp->rawData();
 				if (array_key_exists('ip', $freeGeoIp)) {
 					$this->lookupIpData($freeGeoIp['ip']);
 				}
+				*/
 			}
 		}
 		catch (\Exception $e)

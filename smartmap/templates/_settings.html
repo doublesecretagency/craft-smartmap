@@ -12,6 +12,20 @@
 
 <hr />
 
+<h2>Geolocation</h2>
+
+<h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="geolocation" id="smartmap-service-geolocation" class="smartmap-service-checkbox" {{ 'geolocation' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-geolocation">Enable geolocation?</label></h3>
+<p>When geolocation is enabled, Smart Map will be able to determine where your visitors are viewing the site from. This is typically unnecessary, but can occasionally be useful on some websites.</p>
+<p>There are two services which can provide geolocation for your site:</p>
+<ul style="margin-left:20px">
+	<li><strong>&bull; FreeGeoIp.net (free)</strong> - If geolocation is enabled, this service will be used by default. <strong>WARNING:</strong> FreeGeoIp.net may experience unexpected downtimes, which can have a negative impact on your website!</li>
+	<li><strong>&bull; MaxMind (paid subscription)</strong> - MaxMind provides more accurate results, and a greater guarantee of uptime.</li>
+</ul>
+
+<p><em><strong>Warning:</strong> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net. If you require geolocation, MaxMind is a far more reliable service. (See below for more details.)</em></p>
+
+<hr />
+
 <h2>Optional Enhancement Services</h2>
 <input type="hidden" name="enableService[]" value="" />
 
@@ -32,7 +46,7 @@
 </div>
 
 <h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="maxmind" id="smartmap-service-maxmind" class="smartmap-service-checkbox" {{ 'maxmind' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-maxmind">MaxMind GeoIP2</label></h3>
-<p>MaxMind will <strong>increase the accuracy of your location detection</strong>. This is important when the plugin automatically detects a visitor's coordinates. The default accuracy is already very good, you only need this service if you have a need for extreme accuracy. <a href="https://www.maxmind.com/en/web_services" target="_blank">Learn more...</a></p>
+<p>MaxMind will <strong>increase the accuracy of your location detection</strong>. This is important when the plugin automatically detects a visitor's coordinates. <a href="https://www.maxmind.com/en/web_services" target="_blank">Learn more...</a></p>
 
 <div class="smartmap-field-container" id="smartmap-fields-maxmind">
 	<p><strong>Step 1:</strong> Which <a href="https://www.maxmind.com/en/account" target="_blank">Web Service</a> did you subscribe to?</p>
