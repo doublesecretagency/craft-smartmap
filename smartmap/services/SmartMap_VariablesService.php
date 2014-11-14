@@ -114,7 +114,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
                         $lng = ($el['lng'] ? $el['lng'] : null);
                         // Add marker
                         $markerName = $this->_getMarkerName($el);
-                        if ($markerName) {
+                        if ($markerName && is_numeric($lat) && is_numeric($lng)) {
                             $markers[$markerName] = array(
                                 'title'      => $title,
                                 'mapId'      => $mapId,
@@ -124,10 +124,8 @@ class SmartMap_VariablesService extends BaseApplicationComponent
                                 'element'    => $element,
                             );
                             // Add coordinates to average
-                            if (is_numeric($lat) && is_numeric($lng)) {
-                                $allLats[] = $lat;
-                                $allLngs[] = $lng;
-                            }
+                            $allLats[] = $lat;
+                            $allLngs[] = $lng;
                         }
                     }
                 }
@@ -148,6 +146,11 @@ class SmartMap_VariablesService extends BaseApplicationComponent
             
             // Set solo marker
             $el = $locations;
+
+            if (!is_array($el)) {
+                $el = $el->attributes;
+            }
+
             $markerName = $this->_getMarkerName($el);
             if ($markerName) {
                 $markers[$markerName] = array(
