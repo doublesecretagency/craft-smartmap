@@ -692,14 +692,14 @@ class SmartMapService extends BaseApplicationComponent
 	/*
 	// Event returns params:
 	array(
-	    'ip' => '76.94.199.186'
+	    'ip' => 'xx.xx.xx.xx'
 	    'location' => array(
-	        'city' => 'Culver City'
+	        'city' => 'Los Angeles'
 	        'state' => 'California'
-	        'zipcode' => '90230'
+	        'zipcode' => '90000'
 	        'country' => 'United States'
-	        'latitude' => 33.995
-	        'longitude' => -118.3917
+	        'latitude' => 33.0000
+	        'longitude' => -118.0000
 	    )
 	    'detectionService' => 'MaxMind'
 	    'cacheExpires' => 1413590881
