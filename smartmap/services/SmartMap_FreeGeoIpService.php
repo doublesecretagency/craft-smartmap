@@ -15,13 +15,13 @@ class SmartMap_FreeGeoIpService extends BaseApplicationComponent
 			$results = $this->rawData($ip);
 			// Populate "here" array
 			craft()->smartMap->here = array(
-				'ip'        => $results['ip'],
-				'city'      => $results['city'],
-				'state'     => $results['region_name'],
-				'zipcode'   => $results['zipcode'],
-				'country'   => $results['country_name'],
-				'latitude'  => $results['latitude'],
-				'longitude' => $results['longitude'],
+				'ip'        => (array_key_exists('ip',$results)           ? $results['ip']           : ''),
+				'city'      => (array_key_exists('city',$results)         ? $results['city']         : ''),
+				'state'     => (array_key_exists('region_name',$results)  ? $results['region_name']  : ''),
+				'zipcode'   => (array_key_exists('zipcode',$results)      ? $results['zipcode']      : ''),
+				'country'   => (array_key_exists('country_name',$results) ? $results['country_name'] : ''),
+				'latitude'  => (array_key_exists('latitude',$results)     ? $results['latitude']     : ''),
+				'longitude' => (array_key_exists('longitude',$results)    ? $results['longitude']    : ''),
 			);
 			// If valid IP, set cache & cookie
 			if (craft()->smartMap->validIp(craft()->smartMap->here['ip'])) {
