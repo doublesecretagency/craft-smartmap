@@ -6,9 +6,12 @@ var dragPin = {};
 
 // On load
 $(function () {
-	// Adjust CSS within Matrix blocks
-	var $containers = $('.matrixblock .smartmap-field').closest('.field');
-	$containers.not(':has(.heading)').addClass('smartmap-no-heading');
+	addNoHeadingClass();
+});
+
+// Listen for new blocks
+$(document).on('click', '.matrix .btn, .menu ul li a', function () {
+	addNoHeadingClass();
 });
 
 // Tab "onBlur" patch
@@ -34,6 +37,13 @@ $(document).on('click', '.smartmap-drag-pin', function () {
 	console.log('Opening drag pin modal...');
 	modalDragPin(handle);
 });
+
+// Adjust CSS within Matrix blocks
+function addNoHeadingClass() {
+	var $containers = $('.matrixblock .smartmap-field').closest('.field');
+	$containers.not(':has(.heading)').addClass('smartmap-no-heading');
+}
+
 
 function getCoords(handle) {
 
