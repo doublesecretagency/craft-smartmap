@@ -4,6 +4,14 @@ var handle;
 var address = {};
 var dragPin = {};
 
+// On load
+$(function () {
+	// Adjust CSS within Matrix blocks
+	var $containers = $('.matrixblock .smartmap-field').closest('.field');
+	$containers.not(':has(.heading)').addClass('smartmap-no-heading');
+});
+
+// Tab "onBlur" patch
 $(document).on('keydown', '.smartmap-field input', function (e) {
 	if (9 == e.which) {
 		handle = $(this).closest('.smartmap-field').attr('id');
