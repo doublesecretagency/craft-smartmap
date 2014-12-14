@@ -427,22 +427,21 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     public function linkToGoogle($address)
     {
         if (!$address) {
-            return '#';
+            return '#invalid-address-field';
         }
-
         $q = '';
         $components = array('street1','city','state','zip');
         foreach ($components as $key) {
-            if (array_key_exists($key, $address)) {
+            if ($address->{$key}) {
                 if ($q) {$q .= ', ';}
-                $q .= $address[$key];
+                $q .= $address->{$key};
             }
         }
-        if ($address['lat'] && $address['lng']) {
-            $coords = $address['lat'].'+'.$address['lng'];
+        if ($address->lat && $address->lng) {
+            $coords = $address->lat.'+'.$address->lng;
             return 'http://maps.google.com/maps?q='.($q ? $q : $coords).'&ll='.$coords;
         } else {
-            return '#';
+            return '#no-address-coordinates';
         }
     }
 
@@ -450,25 +449,22 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     public function linkToDirections($address, $title = null)
     {
         if (!$address) {
-            return '#';
+            return '#invalid-address-field';
         }
-
-        if (array_key_exists('lat', $address) && array_key_exists('lng', $address)) {
-            $coords = $address['lat'].','.$address['lng'];
+        if ($address->lat && $address->lng) {
+            $coords = $address->lat.','.$address->lng;
         } else {
             return '#no-address-coordinates';
         }
-
         if (!$title) {
             $components = array('street1','city','state','zip');
             foreach ($components as $key) {
-                if (array_key_exists($key, $address)) {
+                if ($address->{$key}) {
                     if ($title) {$title .= ', ';}
-                    $title .= $address[$key];
+                    $title .= $address->{$key};
                 }
             }
         }
-
         return 'http://maps.google.com/maps?daddr='.rawurlencode($title).'@'.$coords;
     }
 
