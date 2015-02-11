@@ -31,11 +31,13 @@ function drawMap() {
 
 	// Draw map
 	var el = document.getElementById('where-am-i');
-	var myMap = new google.maps.Map(el, {
-		zoom: 13,
-		scrollwheel: false,
-		center: center
-	});
+	if (el) {
+		var myMap = new google.maps.Map(el, {
+			zoom: 13,
+			scrollwheel: false,
+			center: center
+		});
+	}
 
 	// Place JS marker
 	if (coordsJs) {
