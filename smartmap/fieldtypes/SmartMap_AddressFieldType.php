@@ -120,8 +120,8 @@ class SmartMap_AddressFieldType extends BaseFieldType
             $errors = array();
         }
 
-        $validLat = in_array('lat', $value) && (!$value['lat'] || is_numeric($value['lat']));
-        $validLng = in_array('lng', $value) && (!$value['lng'] || is_numeric($value['lng']));
+        $validLat = array_key_exists('lat', $value) && (!$value['lat'] || is_numeric($value['lat']));
+        $validLng = array_key_exists('lng', $value) && (!$value['lng'] || is_numeric($value['lng']));
 
         if (!$validLat || !$validLng)
         {
