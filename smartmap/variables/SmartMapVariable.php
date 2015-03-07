@@ -12,12 +12,19 @@ class SmartMapVariable
     }
 
     // Includes front-end Javascript
-    public function js()
+    public function js($renderHere = false)
     {
         $api  = '//maps.google.com/maps/api/js';
         $api .= craft()->smartMap->appendGoogleApiKey('?');
-        craft()->templates->includeJsFile($api);
-        craft()->templates->includeJsResource('smartmap/js/smartmap.js');
+        if ($renderHere) {
+            return '
+<script type="text/javascript" src="'.$api.'"></script>
+<script type="text/javascript" src="'.UrlHelper::getResourceUrl('smartmap/js/smartmap.js').'"></script>
+';
+        } else {
+            craft()->templates->includeJsFile($api);
+            craft()->templates->includeJsResource('smartmap/js/smartmap.js');
+        }
     }
 
     // Display a dynamic Google map
@@ -48,6 +55,23 @@ class SmartMapVariable
     public function directions($address, $title = null)
     {
         return craft()->smartMap_variables->linkToDirections($address, $title);
+    }
+
+    // Formats an address field
+    public function format($address, $streetBreak = true, $cityBreak = true)
+    {
+        $streetGlue = ($streetBreak ? '<br />' : ', ');
+        $cityGlue   = ($cityBreak   ? '<br />' : ', ');
+
+        $formatted  = '';
+        $formatted .= ($address->street1 ? $address->street1 : '');
+        $formatted .= ($address->street2 ? ($streetGlue.$address->street2) : '');
+        $formatted .= $cityGlue.($address->city ? $address->city : '');
+        $formatted .= (($address->city and $address->state) ? ', ' : '');
+        $formatted .= ($address->state ? $address->state : '').' ';
+        $formatted .= ($address->zip ? $address->zip : '');
+
+        return TemplateHelper::getRaw($formatted);
     }
 
 
