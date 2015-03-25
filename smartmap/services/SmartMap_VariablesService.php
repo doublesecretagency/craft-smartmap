@@ -402,6 +402,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
         $src  = '//maps.googleapis.com/maps/api/staticmap?visual_refresh=true';
         $src .= craft()->smartMap->appendGoogleApiKey();
+        $src .= '&scale=2'; // Retina
         $src .= '&center='.$map['center']['lat'].','.$map['center']['lng'];
         $src .= '&zoom='.(array_key_exists('zoom', $options) ? $options['zoom'] : craft()->smartMap->defaultZoom);
         $src .= '&size='.$width.'x'.$height;
