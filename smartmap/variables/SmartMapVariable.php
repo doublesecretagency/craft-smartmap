@@ -74,10 +74,16 @@ class SmartMapVariable
         return TemplateHelper::getRaw($formatted);
     }
 
+    // Lookup a target location, returning full JSON
+    public function lookup($target)
+    {
+        return craft()->smartMap->lookup($target);
+    }
 
     // ================================================================== //
     // ================================================================== //
 
+    // Move to SmartMap_InternalVariable.php
 
     // FOR INTERNAL USE ONLY
     public function settings()

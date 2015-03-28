@@ -19,10 +19,19 @@ class SmartMapController extends BaseController
 	}
 	*/
 
+	// Lookup a target location, returning full JSON
+	public function actionLookup()
+	{
+		$this->requireAjaxRequest();
+		$target = craft()->request->getPost('target');
+		$response = craft()->smartMap->lookup($target);
+		$this->returnJson($response);
+	}
+
 	// Get location information for debugging
 	public function actionDebug()
 	{
-        craft()->smartMap->loadGeoData();
+		craft()->smartMap->loadGeoData();
 		$templatesPath = craft()->path->getPluginsPath().'smartmap/templates/';
 		craft()->path->setTemplatesPath($templatesPath);
 		$this->renderTemplate('_debug', array(

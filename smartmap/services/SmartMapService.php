@@ -627,6 +627,23 @@ class SmartMapService extends BaseApplicationComponent
 		return $coords;
 	}
 
+    // Lookup a target location, returning full JSON
+	public function lookup($target)
+	{
+
+		$api  = 'http://maps.googleapis.com/maps/api/geocode/json';
+		$api .= '?address='.rawurlencode($target);
+		//$api .= $this->appendGoogleApiKey();
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $api);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$response = curl_exec($ch);
+
+		return json_decode($response, true);
+
+	}
+
 
 	// ==================================================== //
 	
