@@ -60,17 +60,7 @@ class SmartMapVariable
     // Formats an address field
     public function format($address, $streetBreak = true, $cityBreak = true)
     {
-        $streetGlue = ($streetBreak ? '<br />' : ', ');
-        $cityGlue   = ($cityBreak   ? '<br />' : ', ');
-
-        $formatted  = '';
-        $formatted .= ($address->street1 ? $address->street1 : '');
-        $formatted .= ($address->street2 ? ($streetGlue.$address->street2) : '');
-        $formatted .= $cityGlue.($address->city ? $address->city : '');
-        $formatted .= (($address->city and $address->state) ? ', ' : '');
-        $formatted .= ($address->state ? $address->state : '').' ';
-        $formatted .= ($address->zip ? $address->zip : '');
-
+        $formatted = craft()->smartMap_variables->format($address, $streetBreak, $cityBreak);
         return TemplateHelper::getRaw($formatted);
     }
 

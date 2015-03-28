@@ -469,4 +469,23 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         return 'http://maps.google.com/maps?daddr='.rawurlencode($title).'@'.$coords;
     }
 
+    // Formats an address field
+    public function format($address, $streetBreak = true, $cityBreak = true)
+    {
+        $streetGlue = ($streetBreak ? '<br />' : ', ');
+        $cityGlue   = ($cityBreak   ? '<br />' : ', ');
+
+        $formatted  = '';
+        $formatted .= ($address->street1 ? $address->street1 : '');
+        $formatted .= ($address->street1 && $address->street2 ? $streetGlue : '');
+        $formatted .= ($address->street2 ? $address->street2 : '');
+        $formatted .= ($address->city || $address->state ? $cityGlue : '');
+        $formatted .= ($address->city ? $address->city : '');
+        $formatted .= (($address->city && $address->state) ? ', ' : '');
+        $formatted .= ($address->state ? $address->state : '').' ';
+        $formatted .= ($address->zip ? $address->zip : '');
+
+        return trim($formatted);
+    }
+
 }
