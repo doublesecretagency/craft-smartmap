@@ -40,6 +40,29 @@ class SmartMap_AddressModel extends BaseModel
     }
 
     /**
+     * Nicely formats an address
+     *
+     * @return string
+     */
+    public function format($unitLine = false, $cityLine = false)
+    {
+        $unitGlue = ($unitLine ? ', ' : '<br />');
+        $cityGlue = ($cityLine ? ', ' : '<br />');
+
+        $formatted  = '';
+        $formatted .= ($this->street1 ? $this->street1 : '');
+        $formatted .= ($this->street1 && $this->street2 ? $unitGlue : '');
+        $formatted .= ($this->street2 ? $this->street2 : '');
+        $formatted .= ($this->city || $this->state ? $cityGlue : '');
+        $formatted .= ($this->city ? $this->city : '');
+        $formatted .= (($this->city && $this->state) ? ', ' : '');
+        $formatted .= ($this->state ? $this->state : '').' ';
+        $formatted .= ($this->zip ? $this->zip : '');
+
+        return TemplateHelper::getRaw(trim($formatted));
+    }
+
+    /**
      * Checks whether address is empty.
      *
      * @return bool

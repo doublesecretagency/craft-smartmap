@@ -57,13 +57,6 @@ class SmartMapVariable
         return craft()->smartMap_variables->linkToDirections($address, $title);
     }
 
-    // Formats an address field
-    public function format($address, $streetBreak = true, $cityBreak = true)
-    {
-        $formatted = craft()->smartMap_variables->format($address, $streetBreak, $cityBreak);
-        return TemplateHelper::getRaw($formatted);
-    }
-
     // Lookup a target location, returning full JSON
     public function lookup($target)
     {
