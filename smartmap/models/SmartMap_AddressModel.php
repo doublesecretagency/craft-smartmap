@@ -1,7 +1,7 @@
 <?php
 namespace Craft;
 
-class SmartMap_AddressModel extends BaseModel // Change name to "LocationModel" ?
+class SmartMap_AddressModel extends BaseModel
 {
     protected function defineAttributes()
     {
@@ -38,4 +38,35 @@ class SmartMap_AddressModel extends BaseModel // Change name to "LocationModel" 
         // https://developers.google.com/maps/documentation/staticmaps/index
 
     }
+
+    /**
+     * Checks whether address is empty.
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return (
+               empty($this->street1)
+            && empty($this->street2)
+            && empty($this->city)
+            && empty($this->state)
+            && empty($this->zip)
+            && empty($this->country)
+        );
+    }
+
+    /**
+     * Checks whether address has coordinates.
+     *
+     * @return bool
+     */
+    public function hasCoords()
+    {
+        return (
+               !empty($this->lat) && is_numeric($this->lat)
+            && !empty($this->lng) && is_numeric($this->lng)
+        );
+    }
+
 }
