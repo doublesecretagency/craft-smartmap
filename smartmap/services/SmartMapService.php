@@ -100,6 +100,10 @@ class SmartMapService extends BaseApplicationComponent
 	private function _setGeoData($ip = '')
 	{
 		if (!$this->_matchGeoData($ip)) {
+
+			// @TODO
+			// Use Google Maps Geolocation API (as default service)
+
 			if (craft()->smartMap_maxMind->available) {
 				craft()->smartMap_maxMind->lookupIpData($ip);
 			} else {

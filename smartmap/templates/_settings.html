@@ -34,14 +34,22 @@
 
 <div class="smartmap-field-container" id="smartmap-fields-google">
 
-	<p><strong>Getting an API key is easy!</strong> Simply <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key" target="_blank">follow these instructions...</a></p>
+	<p>To get your Google API keys, <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key" target="_blank">follow these instructions...</a></p>
 
 	{{ forms.textField({
-		label: "Google Maps API Key:"|t,
-		id: 'googleApiKey',
-		name: 'googleApiKey',
-		value: settings.googleApiKey,
-		errors: settings.getErrors('googleApiKey')
+		label: "Google API Server Key:"|t,
+		id: 'googleServerKey',
+		name: 'googleServerKey',
+		value: settings.googleServerKey,
+		errors: settings.getErrors('googleServerKey')
+	}) }}
+
+	{{ forms.textField({
+		label: "Google API Browser Key:"|t,
+		id: 'googleBrowserKey',
+		name: 'googleBrowserKey',
+		value: settings.googleBrowserKey,
+		errors: settings.getErrors('googleBrowserKey')
 	}) }}
 </div>
 

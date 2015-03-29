@@ -20,7 +20,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '2.0.13';
+		return '2.1.0';
 	}
 
 	public function getDeveloper()
@@ -55,7 +55,8 @@ class SmartMapPlugin extends BasePlugin
 		return array(
 			'debugRoute'        => array(AttributeType::String, 'required' => true, 'label' => 'Debug Route', 'default' => 'map/debug'),
 			'enableService'     => array(AttributeType::Mixed,  'label' => 'Enable Optional Service(s)'),
-			'googleApiKey'      => array(AttributeType::String, 'label' => 'API Key'),
+			'googleServerKey'   => array(AttributeType::String, 'label' => 'Google API Server Key'),
+			'googleBrowserKey'  => array(AttributeType::String, 'label' => 'Google API Browser Key'),
 			'maxmindUserId'     => array(AttributeType::String, 'label' => 'Max Mind User ID'),
 			'maxmindLicenseKey' => array(AttributeType::String, 'label' => 'Max Mind License Key'),
 			'maxmindService'    => array(AttributeType::String, 'label' => 'Max Mind Service'),

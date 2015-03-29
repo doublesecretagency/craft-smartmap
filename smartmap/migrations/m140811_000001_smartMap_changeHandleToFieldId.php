@@ -18,20 +18,20 @@ class m140811_000001_smartMap_changeHandleToFieldId extends BaseMigration
 		$this->addColumnAfter($table, 'fieldId', ColumnType::Int, 'elementId');
 		$this->addForeignKey($table, 'fieldId', 'fields', 'id', 'CASCADE', 'CASCADE');
 		// Get all Address fields
-        $query = craft()->db->createCommand()
-            ->select()
-            ->from('fields')
-            ->where('type = "SmartMap_Address"')
-        ;
-        $fields = $query->queryAll();
-        // Update existing Address data
-        foreach ($fields as $field) {
-            $newFieldId = array('fieldId'=>$field['id']);
-            $this->update($table, $newFieldId, 'handle=:handle', array(':handle'=>$field['handle']));
-        }
-        // Remove old column
-        $this->dropColumn($table, 'handle');
-        // Finish
+		$query = craft()->db->createCommand()
+			->select()
+			->from('fields')
+			->where('type = "SmartMap_Address"')
+		;
+		$fields = $query->queryAll();
+		// Update existing Address data
+		foreach ($fields as $field) {
+			$newFieldId = array('fieldId'=>$field['id']);
+			$this->update($table, $newFieldId, 'handle=:handle', array(':handle'=>$field['handle']));
+		}
+		// Remove old column
+		$this->dropColumn($table, 'handle');
+		// Finish
 		return true;
 	}
 }
