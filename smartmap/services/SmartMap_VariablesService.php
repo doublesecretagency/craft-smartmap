@@ -9,8 +9,8 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
     public function init() {
         parent::init();
-        $api  = '//maps.google.com/maps/api/js';
-        $api .= craft()->smartMap->appendGoogleApiKey('?');
+        $api  = '//maps.googleapis.com/maps/api/js';
+        $api .= craft()->smartMap->googleBrowserKey('?');
         craft()->templates->includeJsFile($api);
         craft()->templates->includeJsResource('smartmap/js/smartmap.js');
         craft()->templates->includeCssResource('smartmap/css/smartmap.css');
@@ -385,7 +385,13 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     public function staticMap($markers, $options = array())
     {
         $src = $this->staticMapSrc($markers, $options);
-        return TemplateHelper::getRaw('<img src="'.$src.'" />');
+        $dimensions = '';
+        foreach (array('width','height') as $side) {
+            if (array_key_exists($side, $options)) {
+                $dimensions .= ' '.$side.'="'.$options[$side].'"';
+            }
+        }
+        return TemplateHelper::getRaw('<img src="'.$src.'" '.$dimensions.'/>');
     }
 
     // Get source of static map image
@@ -398,10 +404,10 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         $map = craft()->smartMap->markerCoords($markers, $options);
 
         $width  = (array_key_exists('width', $options)  ? $options['width']  : '200');
-        $height = (array_key_exists('height', $options) ? $options['height'] : '200');
+        $height = (array_key_exists('height', $options) ? $options['height'] : '150');
 
         $src  = '//maps.googleapis.com/maps/api/staticmap?visual_refresh=true';
-        $src .= craft()->smartMap->appendGoogleApiKey();
+        $src .= craft()->smartMap->googleBrowserKey();
         $src .= '&scale=2'; // Retina
         $src .= '&center='.$map['center']['lat'].','.$map['center']['lng'];
         $src .= '&zoom='.(array_key_exists('zoom', $options) ? $options['zoom'] : craft()->smartMap->defaultZoom);

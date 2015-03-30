@@ -1,10 +1,12 @@
 
 div.smartmap-field-container {
-	display: none;
 	margin: 10px 0;
 	padding: 14px;
 	background: #eef0f1;
 	border: 1px solid #d5d7d8;
+}
+div#settings-smartmap-fields-maxmind {
+	display: none;
 }
 
 input.smartmap-service-checkbox {
@@ -12,5 +14,10 @@ input.smartmap-service-checkbox {
 }
 
 h3.smartmap-service-title {
-	margin-top: 28px;
+	margin-top: 16px;
+}
+
+ul.smartmap-list {
+	list-style: disc;
+	margin-left: 20px;
 }

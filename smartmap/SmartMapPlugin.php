@@ -53,13 +53,13 @@ class SmartMapPlugin extends BasePlugin
 	protected function defineSettings()
 	{
 		return array(
-			'debugRoute'        => array(AttributeType::String, 'required' => true, 'label' => 'Debug Route', 'default' => 'map/debug'),
-			'enableService'     => array(AttributeType::Mixed,  'label' => 'Enable Optional Service(s)'),
 			'googleServerKey'   => array(AttributeType::String, 'label' => 'Google API Server Key'),
 			'googleBrowserKey'  => array(AttributeType::String, 'label' => 'Google API Browser Key'),
-			'maxmindUserId'     => array(AttributeType::String, 'label' => 'Max Mind User ID'),
-			'maxmindLicenseKey' => array(AttributeType::String, 'label' => 'Max Mind License Key'),
-			'maxmindService'    => array(AttributeType::String, 'label' => 'Max Mind Service'),
+			'enableService'     => array(AttributeType::Mixed,  'label' => 'Enable MaxMind Service'),
+			'maxmindUserId'     => array(AttributeType::String, 'label' => 'MaxMind User ID'),
+			'maxmindLicenseKey' => array(AttributeType::String, 'label' => 'MaxMind License Key'),
+			'maxmindService'    => array(AttributeType::String, 'label' => 'MaxMind Service'),
+			'debugRoute'        => array(AttributeType::String, 'required' => true, 'label' => 'Debug Route', 'default' => 'map/debug'),
 		);
 	}
 

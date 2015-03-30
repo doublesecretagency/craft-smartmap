@@ -1,24 +1,22 @@
 
-function setFieldBehavior(service) {
-	$('input#settings-smartmap-service-'+service).on('change', function (e) { // fix line
-		if ($(this).is(':checked')) {
-			$('div#settings-smartmap-fields-'+service).slideDown('fast');
-		} else {
-			$('div#settings-smartmap-fields-'+service).slideUp('fast');
-		}
-	});
-}
+var $maxmindInput = $('input#settings-smartmap-service-maxmind');
+var $maxmindDiv   = $('div#settings-smartmap-fields-maxmind');
 
-function checkFieldValue(service) {
-	if ($('input#settings-smartmap-service-'+service).is(':checked')) {
-		$('div#settings-smartmap-fields-'+service).slideDown('fast');
+// Expand/collapse MaxMind field
+function maxmindExpandCollapse() {
+	if ($maxmindInput.is(':checked')) {
+		$maxmindDiv.slideDown('fast');
 	} else {
-		$('div#settings-smartmap-fields-'+service).slideUp('fast');
+		$maxmindDiv.slideUp('fast');
 	}
 }
 
-setFieldBehavior('google');
-setFieldBehavior('maxmind');
+// On change, expand/collapse
+$maxmindInput.on('change', function () {
+	maxmindExpandCollapse();
+});
 
-checkFieldValue('google');
-checkFieldValue('maxmind');
+// On page load, expand/collapse
+$(function () {
+	maxmindExpandCollapse();
+});

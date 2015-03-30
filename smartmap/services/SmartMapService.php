@@ -48,17 +48,6 @@ class SmartMapService extends BaseApplicationComponent
 		}
 	}
 
-	// Append Google API key if exists and enabled
-	public function appendGoogleApiKey($prepend = '&')
-	{
-		$s = $this->settings;
-		if ($s['enableService'] && is_array($s['enableService']) && in_array('google', $s['enableService']) && $s['googleApiKey']) {
-			return $prepend.'key='.$s['googleApiKey'];
-		} else {
-			return null;
-		}
-	}
-
 	// Automatically detect & set current location
 	public function currentLocation()
 	{
@@ -403,22 +392,14 @@ class SmartMapService extends BaseApplicationComponent
 	// Get coordinates from Google Maps API
 	private function _geocodeGoogleMapApi($target)
 	{
-
-		$api  = 'http://maps.googleapis.com/maps/api/geocode/json';
-		$api .= '?address='.rawurlencode($target);
-		$api .= $this->appendGoogleApiKey();
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $api);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		$response = json_decode(curl_exec($ch), true);
-
+		// Lookup geocode matches
+		$response = $this->lookup($target);
+		// If no results, use default coords
 		if (empty($response['results'])) {
 			return $this->defaultCoords();
 		} else {
 			return $response['results'][0]['geometry']['location'];
 		}
-
 	}
 
 	// Decipher map center & markers based on locations
@@ -475,7 +456,7 @@ class SmartMapService extends BaseApplicationComponent
 							foreach ($fieldHandles as $fieldHandle) {
 								if (isset($loc->{$fieldHandle})) {
 									$address = $loc->{$fieldHandle};
-									if (!empty($address)) {
+									if (!empty($address) && $address->hasCoords()) {
 										$lat = $address['lat'];
 										$lng = $address['lng'];
 										$markers[] = array(
@@ -635,9 +616,9 @@ class SmartMapService extends BaseApplicationComponent
 	public function lookup($target)
 	{
 
-		$api  = 'http://maps.googleapis.com/maps/api/geocode/json';
+		$api  = 'https://maps.googleapis.com/maps/api/geocode/json';
 		$api .= '?address='.rawurlencode($target);
-		//$api .= $this->appendGoogleApiKey();
+		$api .= $this->googleServerKey();
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $api);
@@ -646,6 +627,31 @@ class SmartMapService extends BaseApplicationComponent
 
 		return json_decode($response, true);
 
+	}
+
+
+	// ==================================================== //
+
+	// Append Google API server key
+	public function googleServerKey($prepend = '&')
+	{
+		return $this->_googleKey('googleServerKey', $prepend);
+	}
+
+	// Append Google API browser key
+	public function googleBrowserKey($prepend = '&')
+	{
+		return $this->_googleKey('googleBrowserKey', $prepend);
+	}
+
+	// Append Google API key
+	private function _googleKey($setting, $prepend)
+	{
+		if ($this->settings[$setting]) {
+			return $prepend.'key='.$this->settings[$setting];
+		} else {
+			return '';
+		}
 	}
 
 

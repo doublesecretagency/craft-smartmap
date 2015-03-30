@@ -9,7 +9,7 @@ class SmartMap_MainService extends BaseApplicationComponent
 	{
 		$api  = 'https://maps.googleapis.com/maps/api/geocode/json';
 		$api .= '?address='.str_replace(' ', '+', $address);
-		$api .= craft()->smartMap->appendGoogleApiKey();
+		$api .= craft()->smartMap->googleServerKey();
 
 		$ch = curl_init();
 		curl_setopt_array($ch, array(

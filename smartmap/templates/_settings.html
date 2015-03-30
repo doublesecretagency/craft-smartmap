@@ -12,29 +12,18 @@
 
 <hr />
 
-<h2>Geolocation</h2>
-
-<h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="geolocation" id="smartmap-service-geolocation" class="smartmap-service-checkbox" {{ 'geolocation' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-geolocation">Enable geolocation?</label></h3>
-<p>When geolocation is enabled, Smart Map will be able to determine where your visitors are viewing the site from. This is typically unnecessary, but can occasionally be useful on some websites.</p>
-<p>There are two services which can provide geolocation for your site:</p>
-<ul style="margin-left:20px">
-	<li><strong>&bull; FreeGeoIp.net (free)</strong> - If geolocation is enabled, this service will be used by default. <strong>WARNING:</strong> FreeGeoIp.net may experience unexpected downtimes, which can have a negative impact on your website!</li>
-	<li><strong>&bull; MaxMind (paid subscription)</strong> - MaxMind provides more accurate results, and a greater guarantee of uptime.</li>
-</ul>
-
-<p><em><strong>Warning:</strong> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net. If you require geolocation, MaxMind is a far more reliable service. (See below for more details.)</em></p>
-
-<hr />
-
-<h2>Optional Enhancement Services</h2>
+<h2>Google Maps API Keys</h2>
 <input type="hidden" name="enableService[]" value="" />
 
-<h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="google" id="smartmap-service-google" class="smartmap-service-checkbox" {{ 'google' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-google">Google Maps for Business</label></h3>
-<p>Google provides a few extra niceties when you upgrade to a paid business account. Check out <a href="http://www.google.com/enterprise/mapsearth/products/mapsapi.html#compare-editions" target="_blank">this chart</a> to see if Google Maps for Business is right for you.</p>
+<p>Using API keys is optional, but you may find it beneficial in many situations:</p>
+<ul class="smartmap-list">
+	<li>If your website is on a shared server.</li>
+	<li>If you expect extremely high traffic to your website.</li>
+</ul>
 
 <div class="smartmap-field-container" id="smartmap-fields-google">
 
-	<p>To get your Google API keys, <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key" target="_blank">follow these instructions...</a></p>
+	<p>To get your Google API keys, <a href="https://craftpl.us/plugins/smart-map/docs/get-a-google-api-key" target="_blank">follow these instructions...</a></p>
 
 	{{ forms.textField({
 		label: "Google API Server Key:"|t,
@@ -53,7 +42,22 @@
 	}) }}
 </div>
 
-<h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="maxmind" id="smartmap-service-maxmind" class="smartmap-service-checkbox" {{ 'maxmind' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-maxmind">MaxMind GeoIP2</label></h3>
+<hr />
+
+<h2>Geolocation</h2>
+
+<p>When geolocation is enabled, Smart Map will be able to determine where your visitors are viewing the site from. This is typically unnecessary, but can occasionally be useful on some websites.</p>
+
+<h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="geolocation" id="smartmap-service-geolocation" class="smartmap-service-checkbox" {{ 'geolocation' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-geolocation">Enable geolocation?</label></h3>
+<p>There are two services which can provide geolocation for your site:</p>
+<ul class="smartmap-list">
+	<li><strong>FreeGeoIp.net (free)</strong> - If geolocation is enabled, this service will be used by default.</li>
+	<li><strong>MaxMind (paid subscription)</strong> - MaxMind provides more accurate results, and a greater guarantee of uptime.</li>
+</ul>
+
+<p><strong>WARNING:</strong> FreeGeoIp.net may experience unexpected downtimes, which can have a negative impact on your website! It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net. <em>If you require geolocation, MaxMind is a far more reliable service.</em></p>
+
+<h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="maxmind" id="smartmap-service-maxmind" class="smartmap-service-checkbox" {{ 'maxmind' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-maxmind">Use MaxMind Geolocation service?</label></h3>
 <p>MaxMind will <strong>increase the accuracy of your location detection</strong>. This is important when the plugin automatically detects a visitor's coordinates. <a href="https://www.maxmind.com/en/web_services" target="_blank">Learn more...</a></p>
 
 <div class="smartmap-field-container" id="smartmap-fields-maxmind">

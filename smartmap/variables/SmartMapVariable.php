@@ -14,8 +14,8 @@ class SmartMapVariable
     // Includes front-end Javascript
     public function js($renderHere = false)
     {
-        $api  = '//maps.google.com/maps/api/js';
-        $api .= craft()->smartMap->appendGoogleApiKey('?');
+        $api  = '//maps.googleapis.com/maps/api/js';
+        $api .= craft()->smartMap->googleBrowserKey('?');
         if ($renderHere) {
             return '
 <script type="text/javascript" src="'.$api.'"></script>
