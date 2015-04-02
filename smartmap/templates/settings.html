@@ -60,12 +60,6 @@
 	</li>
 </ul>
 
-<div class="smartmap-field-container">
-	<h3>WARNING</h3>
-	<p>FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net.</p>
-	<p><strong>If you require geolocation, MaxMind is a far more reliable service.</strong></p>
-</div>
-
 {% macro geolocationOption(label, value, current) %}
 	{% if 'none' == value %}
 		{% set checked = (current not in ['freegeoip','maxmind']) %}
@@ -78,7 +72,6 @@
 
 
 <h2>Select a Geolocation Service</h2>
-<p>If you have recently switched services, clear old geolocation results by visiting <strong>Settings &nbsp;&gt;&nbsp; Clear Caches &nbsp;&gt;&nbsp; Data caches</strong></p>
 
 <ul class="smartmap-geolocation-options">
 	{{ render.geolocationOption('None', 'none', settings.geolocation) }}
@@ -126,6 +119,14 @@
 		value: settings.maxmindLicenseKey,
 		errors: settings.getErrors('maxmindLicenseKey')
 	}) }}
+</div>
+
+<p>If you have recently switched services, clear old geolocation results by visiting <strong><a href="{{ url('settings') }}">Settings &nbsp;&gt;&nbsp; Clear Caches &nbsp;&gt;&nbsp; Data caches</a></strong></p>
+
+<div class="smartmap-field-container">
+	<h3>WARNING</h3>
+	<p>FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net.</p>
+	<p><strong>If you require geolocation, MaxMind is a far more reliable service.</strong></p>
 </div>
 
 <hr />
