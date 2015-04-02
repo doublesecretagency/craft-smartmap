@@ -9,15 +9,36 @@ div#settings-smartmap-fields-maxmind {
 	display: none;
 }
 
-input.smartmap-service-checkbox {
+input.smartmap-geolocation-radio {
 	margin-right: 7px;
 }
 
-h3.smartmap-service-title {
-	margin-top: 16px;
+ul.smartmap-api-keys {
+	list-style: disc;
+	margin: 0px 0px 16px 40px;
+}
+ul.smartmap-api-keys li {
+	margin-top: 6px;
 }
 
 ul.smartmap-list {
 	list-style: disc;
-	margin-left: 20px;
+	margin: 0px 0px 22px 40px;
+}
+ul.smartmap-list li {
+	margin-top: 8px;
+}
+ul.smartmap-list h3 {
+	margin: 3px 0px 0px;
+}
+ul.smartmap-list p {
+	margin: 3px 0px 0px;
+}
+
+ul.smartmap-geolocation-options {
+	margin-left: 21px;
+}
+ul.smartmap-geolocation-options li {
+	font-weight: bold;
+	margin: 6px 0px;
 }

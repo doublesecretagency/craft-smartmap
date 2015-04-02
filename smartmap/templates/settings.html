@@ -5,18 +5,14 @@
 {% set supportEmail = '<a href="mailto:support@doublesecretagency.com?subject=Smart%20Map%20Feedback">support@doublesecretagency.com</a>' %}
 
 <h2>Documentation &amp; Feedback</h2>
-
 <p>All documentation can be found at <a href="https://craftpl.us/plugins/smart-map/docs/" target="_blank">Craft Plus</a>.</p>
-
 <p>You can reach us at {{ supportEmail | raw }}. All questions, comments, and suggestions are welcome!</p>
-
 <hr />
 
 <h2>Google Maps API Keys</h2>
-<input type="hidden" name="enableService[]" value="" />
 
 <p>Using API keys is optional, but you may find it beneficial in many situations:</p>
-<ul class="smartmap-list">
+<ul class="smartmap-api-keys">
 	<li>If your website is on a shared server.</li>
 	<li>If you expect extremely high traffic to your website.</li>
 </ul>
@@ -40,28 +36,59 @@
 		value: settings.googleBrowserKey,
 		errors: settings.getErrors('googleBrowserKey')
 	}) }}
+
 </div>
 
 <hr />
 
 <h2>Geolocation</h2>
 
-<p>When geolocation is enabled, Smart Map will be able to determine where your visitors are viewing the site from. This is typically unnecessary, but can occasionally be useful on some websites.</p>
+<p>Depending on the purpose of your website, you may need to use <strong>geolocation</strong> to automatically determine where your site visitors are located. Smart Map provides the following options:</p>
 
-<h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="geolocation" id="smartmap-service-geolocation" class="smartmap-service-checkbox" {{ 'geolocation' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-geolocation">Enable geolocation?</label></h3>
-<p>There are two services which can provide geolocation for your site:</p>
 <ul class="smartmap-list">
-	<li><strong>FreeGeoIp.net (free)</strong> - If geolocation is enabled, this service will be used by default.</li>
-	<li><strong>MaxMind (paid subscription)</strong> - MaxMind provides more accurate results, and a greater guarantee of uptime.</li>
+	<li>
+		<h3>None</h3>
+		<p>Geolocation is disabled.</p>
+	</li>
+	<li>
+		<h3>FreeGeoIp.net</h3>
+		<p>A free service, FreeGeoIp.net can perform IP address lookups automatically.</p>
+	</li>
+	<li>
+		<h3>MaxMind</h3>
+		<p>A paid subscription service, MaxMind provides more accurate results, and a greater guarantee of uptime.</p>
+	</li>
 </ul>
 
-<p><strong>WARNING:</strong> FreeGeoIp.net may experience unexpected downtimes, which can have a negative impact on your website! It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net. <em>If you require geolocation, MaxMind is a far more reliable service.</em></p>
+<div class="smartmap-field-container">
+	<h3>WARNING</h3>
+	<p>FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net.</p>
+	<p><strong>If you require geolocation, MaxMind is a far more reliable service.</strong></p>
+</div>
 
-<h3 class="smartmap-service-title"><input type="checkbox" name="enableService[]" value="maxmind" id="smartmap-service-maxmind" class="smartmap-service-checkbox" {{ 'maxmind' in settings.enableService ? 'checked="checked"' }} /><label for="smartmap-service-maxmind">Use MaxMind Geolocation service?</label></h3>
-<p>MaxMind will <strong>increase the accuracy of your location detection</strong>. This is important when the plugin automatically detects a visitor's coordinates. <a href="https://www.maxmind.com/en/web_services" target="_blank">Learn more...</a></p>
+{% macro geolocationOption(label, value, current) %}
+	{% if 'none' == value %}
+		{% set checked = (current not in ['freegeoip','maxmind']) %}
+	{% else %}
+		{% set checked = (current == value) %}
+	{% endif %}
+	<li><label><input type="radio" class="smartmap-geolocation-radio" name="geolocation" value="{{ value }}" {{ checked ? 'checked="checked"' }} />{{ label }}</label></li>
+{% endmacro %}
+{% import _self as render %}
+
+
+<h2>Select a Geolocation Service</h2>
+<p>If you have recently switched services, clear old geolocation results by visiting <strong>Settings &nbsp;&gt;&nbsp; Clear Caches &nbsp;&gt;&nbsp; Data caches</strong></p>
+
+<ul class="smartmap-geolocation-options">
+	{{ render.geolocationOption('None', 'none', settings.geolocation) }}
+	{{ render.geolocationOption('FreeGeoIp.net', 'freegeoip', settings.geolocation) }}
+	{{ render.geolocationOption('MaxMind', 'maxmind', settings.geolocation) }}
+</ul>
 
 <div class="smartmap-field-container" id="smartmap-fields-maxmind">
-	<p><strong>Step 1:</strong> Which <a href="https://www.maxmind.com/en/account" target="_blank">Web Service</a> did you subscribe to?</p>
+	<p><strong>Step 1:</strong> Subscribe to a <a href="https://www.maxmind.com/en/web_services" target="_blank">Web Service...</a></p>
+	<p><strong>Step 2:</strong> Which <a href="https://www.maxmind.com/en/account" target="_blank">Web Service</a> have you subscribed to?</p>
 
 	{{ forms.selectField({
 		id: 'maxmindService',
@@ -82,7 +109,7 @@
 		errors: settings.getErrors('maxmindService')
 	#}
 
-	<p><strong>Step 2:</strong> Copy your <a href="https://www.maxmind.com/en/my_license_key" target="_blank">security access information</a>, and paste it here...</p>
+	<p><strong>Step 3:</strong> Copy your <a href="https://www.maxmind.com/en/my_license_key" target="_blank">security access information</a>, and paste it here...</p>
 
 	{{ forms.textField({
 		label: "User ID:"|t,
@@ -100,8 +127,6 @@
 		errors: settings.getErrors('maxmindLicenseKey')
 	}) }}
 </div>
-
-<p><em><strong>Note:</strong> If you have recently enabled (or disabled) MaxMind integration, but you are still seeing old geolocation results, just go to <strong>Settings &gt; Clear Caches</strong></em></p>
 
 <hr />
 

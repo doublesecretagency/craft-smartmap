@@ -10,20 +10,27 @@ class SmartMap_MaxMindService extends BaseApplicationComponent
 	private $_maxmindUserId;
 	private $_maxmindLicenseKey;
 
-	// 
+	// Load MaxMind settings
 	public function init()
 	{
 		parent::init();
 		$s = craft()->plugins->getPlugin('smartMap')->getSettings();
-		if ($s['maxmindService']) {
-			$this->_maxmindApi .= $s['maxmindService'].'/';
-		} else {
-			$this->_maxmindApi = null;
-		}
-		$this->_maxmindUserId     = $s['maxmindUserId'];
-		$this->_maxmindLicenseKey = $s['maxmindLicenseKey'];
-		if ($s['enableService'] && is_array($s['enableService']) && in_array('maxmind', $s['enableService'])) {
-			$this->available = ($s['maxmindService'] && $s['maxmindUserId'] && $s['maxmindLicenseKey']);
+		if ('maxmind' == $s['geolocation']) {
+
+			if ($s['maxmindService']) {
+				$this->_maxmindApi .= $s['maxmindService'].'/';
+			} else {
+				$this->_maxmindApi = null;
+			}
+
+			$this->_maxmindUserId     = $s['maxmindUserId'];
+			$this->_maxmindLicenseKey = $s['maxmindLicenseKey'];
+
+			$this->available = (
+				   $this->_maxmindApi
+				&& $this->_maxmindUserId
+				&& $this->_maxmindLicenseKey
+			);
 		}
 	}
 

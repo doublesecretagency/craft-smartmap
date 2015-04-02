@@ -45,7 +45,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getSettingsHtml()
 	{
-		return craft()->templates->render('smartmap/_settings', array(
+		return craft()->templates->render('smartmap/settings', array(
 			'settings' => craft()->smartMap->settings
 		));
 	}
@@ -55,7 +55,7 @@ class SmartMapPlugin extends BasePlugin
 		return array(
 			'googleServerKey'   => array(AttributeType::String, 'label' => 'Google API Server Key'),
 			'googleBrowserKey'  => array(AttributeType::String, 'label' => 'Google API Browser Key'),
-			'enableService'     => array(AttributeType::Mixed,  'label' => 'Enable MaxMind Service'),
+			'geolocation'       => array(AttributeType::String, 'label' => 'Geolocation Service'),
 			'maxmindUserId'     => array(AttributeType::String, 'label' => 'MaxMind User ID'),
 			'maxmindLicenseKey' => array(AttributeType::String, 'label' => 'MaxMind License Key'),
 			'maxmindService'    => array(AttributeType::String, 'label' => 'MaxMind Service'),

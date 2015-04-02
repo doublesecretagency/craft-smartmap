@@ -33,12 +33,11 @@ class SmartMapService extends BaseApplicationComponent
 				'latitude'  => false,
 				'longitude' => false,
 			);
-			if (is_array($this->settings['enableService'])) {
-				$servicesEnabled = $this->settings['enableService'];
-			} else {
-				$servicesEnabled = array();
-			}
-			if (in_array('geolocation', $servicesEnabled) && !craft()->isConsole()) {
+			// If using geolocation, get cookie data
+			$geoSelection = $this->settings['geolocation'];
+			$geoServices  = array('freegeoip','maxmind');
+			$usingGeo     = in_array($geoSelection, $geoServices);
+			if ($usingGeo && !craft()->isConsole()) {
 				$ipCookie = static::IP_COOKIE_NAME;
 				if (array_key_exists($ipCookie, $_COOKIE)) {
 					$this->cookieData = json_decode($_COOKIE[$ipCookie], true);
