@@ -13,7 +13,7 @@
 
 <p>Using API keys is optional, but you may find it beneficial in many situations:</p>
 <ul class="smartmap-api-keys">
-	<li>If your website is on a shared server.</li>
+	<li>If your website is on a shared server, or</li>
 	<li>If you expect extremely high traffic to your website.</li>
 </ul>
 
@@ -43,40 +43,33 @@
 
 <h2>Geolocation</h2>
 
-<p>Depending on the purpose of your website, you may need to use <strong>geolocation</strong> to automatically determine where your site visitors are located. Smart Map provides the following options:</p>
+<p>Depending on the purpose of your website, you may need to use <strong>geolocation</strong> to automatically detect where your site visitors are located.</p>
 
-<ul class="smartmap-list">
-	<li>
-		<h3>None</h3>
-		<p>Geolocation is disabled.</p>
-	</li>
-	<li>
-		<h3>FreeGeoIp.net</h3>
-		<p>A free service, FreeGeoIp.net can perform IP address lookups automatically.</p>
-	</li>
-	<li>
-		<h3>MaxMind</h3>
-		<p>A paid subscription service, MaxMind provides more accurate results, and a greater guarantee of uptime.</p>
-	</li>
-</ul>
-
-{% macro geolocationOption(label, value, current) %}
+{% macro geolocationOption(label, value, current, description) %}
 	{% if 'none' == value %}
 		{% set checked = (current not in ['freegeoip','maxmind']) %}
 	{% else %}
 		{% set checked = (current == value) %}
 	{% endif %}
-	<li><label><input type="radio" class="smartmap-geolocation-radio" name="geolocation" value="{{ value }}" {{ checked ? 'checked="checked"' }} />{{ label }}</label></li>
+	<li>
+		<label><input type="radio" class="smartmap-geolocation-radio" name="geolocation" value="{{ value }}" {{ checked ? 'checked="checked"' }} />{{ label }}</label>
+		<p>{{ description }}</p>
+	</li>
 {% endmacro %}
 {% import _self as render %}
 
-
-<h2>Select a Geolocation Service</h2>
+<h2>Select a service...</h2>
 
 <ul class="smartmap-geolocation-options">
-	{{ render.geolocationOption('None', 'none', settings.geolocation) }}
-	{{ render.geolocationOption('FreeGeoIp.net', 'freegeoip', settings.geolocation) }}
-	{{ render.geolocationOption('MaxMind', 'maxmind', settings.geolocation) }}
+	{{ render.geolocationOption('None', 'none', settings.geolocation, 
+	    'Geolocation is disabled.'
+	) }}
+	{{ render.geolocationOption('FreeGeoIp.net', 'freegeoip', settings.geolocation, 
+	    'A free service, FreeGeoIp.net can perform IP address lookups automatically.'
+	) }}
+	{{ render.geolocationOption('MaxMind', 'maxmind', settings.geolocation, 
+	    'A paid subscription service, MaxMind provides more accurate results, with a greater guarantee of uptime.'
+	) }}
 </ul>
 
 <div class="smartmap-field-container" id="smartmap-fields-maxmind">

@@ -21,24 +21,15 @@ ul.smartmap-api-keys li {
 	margin-top: 6px;
 }
 
-ul.smartmap-list {
-	list-style: disc;
-	margin: 0px 0px 22px 40px;
-}
-ul.smartmap-list li {
-	margin-top: 8px;
-}
-ul.smartmap-list h3 {
-	margin: 3px 0px 0px;
-}
-ul.smartmap-list p {
-	margin: 3px 0px 0px;
-}
-
 ul.smartmap-geolocation-options {
 	margin-left: 21px;
 }
 ul.smartmap-geolocation-options li {
+	margin-top: 11px;
+}
+ul.smartmap-geolocation-options label {
 	font-weight: bold;
-	margin: 6px 0px;
+}
+ul.smartmap-geolocation-options p {
+	margin: 3px 0px 0px 20px;
 }
