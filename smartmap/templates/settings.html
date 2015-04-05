@@ -16,13 +16,13 @@
 	<li>If your website is on a shared server, or</li>
 	<li>If you expect extremely high traffic to your website.</li>
 </ul>
+<p>To get your Google API keys, <a href="https://craftpl.us/plugins/smart-map/docs/get-a-google-api-key" target="_blank">follow these instructions...</a></p>
 
 <div class="smartmap-field-container" id="smartmap-fields-google">
 
-	<p>To get your Google API keys, <a href="https://craftpl.us/plugins/smart-map/docs/get-a-google-api-key" target="_blank">follow these instructions...</a></p>
-
 	{{ forms.textField({
-		label: "Google API Server Key:"|t,
+		label: "Google API Server Key"|t,
+		instructions: 'Used for address lookups',
 		id: 'googleServerKey',
 		name: 'googleServerKey',
 		value: settings.googleServerKey,
@@ -30,7 +30,8 @@
 	}) }}
 
 	{{ forms.textField({
-		label: "Google API Browser Key:"|t,
+		label: "Google API Browser Key"|t,
+		instructions: 'Used for static & dynamic map rendering',
 		id: 'googleBrowserKey',
 		name: 'googleBrowserKey',
 		value: settings.googleBrowserKey,
@@ -95,10 +96,10 @@
 		errors: settings.getErrors('maxmindService')
 	#}
 
-	<p><strong>Step 3:</strong> Copy your <a href="https://www.maxmind.com/en/my_license_key" target="_blank">security access information</a>, and paste it here...</p>
+	<p><strong>Step 3:</strong> Copy your <a href="https://www.maxmind.com/en/my_license_key" target="_blank">security access information</a> and paste it here...</p>
 
 	{{ forms.textField({
-		label: "User ID:"|t,
+		label: "User ID"|t,
 		id: 'maxmindUserId',
 		name: 'maxmindUserId',
 		value: settings.maxmindUserId,
@@ -106,7 +107,7 @@
 	}) }}
 
 	{{ forms.textField({
-		label: "License Key:"|t,
+		label: "License Key"|t,
 		id: 'maxmindLicenseKey',
 		name: 'maxmindLicenseKey',
 		value: settings.maxmindLicenseKey,
