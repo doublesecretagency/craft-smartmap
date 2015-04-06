@@ -17,8 +17,9 @@ class m150329_000000_smartMap_splitGoogleApiKeys extends BaseMigration
 		$settings = $this->_getSettings('SmartMap');
 
 		// Modify settings
-		$settings['googleServerKey'] = '';
-		$settings['googleBrowserKey'] = (array_key_exists('googleApiKey', $settings) ? $settings['googleApiKey'] : '');
+		$existingKey = (array_key_exists('googleApiKey', $settings) ? $settings['googleApiKey'] : '');
+		$settings['googleServerKey']  = $existingKey;
+		$settings['googleBrowserKey'] = $existingKey;
 		unset($settings['googleApiKey']);
 
 		// Save settings

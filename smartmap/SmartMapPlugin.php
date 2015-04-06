@@ -56,9 +56,9 @@ class SmartMapPlugin extends BasePlugin
 			'googleServerKey'   => array(AttributeType::String, 'label' => 'Google API Server Key'),
 			'googleBrowserKey'  => array(AttributeType::String, 'label' => 'Google API Browser Key'),
 			'geolocation'       => array(AttributeType::String, 'label' => 'Geolocation Service'),
+			'maxmindService'    => array(AttributeType::String, 'label' => 'MaxMind Service'),
 			'maxmindUserId'     => array(AttributeType::String, 'label' => 'MaxMind User ID'),
 			'maxmindLicenseKey' => array(AttributeType::String, 'label' => 'MaxMind License Key'),
-			'maxmindService'    => array(AttributeType::String, 'label' => 'MaxMind Service'),
 			'debugRoute'        => array(AttributeType::String, 'required' => true, 'label' => 'Debug Route', 'default' => 'map/debug'),
 		);
 	}

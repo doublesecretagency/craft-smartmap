@@ -16,20 +16,34 @@ class m150331_000000_smartMap_reorganizeGeolocationOptions extends BaseMigration
 		// Get settings
 		$settings = $this->_getSettings('SmartMap');
 
-		// Get currently enabled
-		$enabled = $settings['enableService'];
+		// Default geolocation service
+		$service = 'none';
 
-		// Set service of choice
-		if (in_array('maxmind', $enabled)) {
-			$service = 'maxmind';
-		} else if (in_array('geolocation', $enabled)) {
-			$service = 'freegeoip';
-		} else {
-			$service = 'none';
+		// If "enableService" value exists
+		if (array_key_exists('enableService', $settings)) {
+
+			// Get currently enabled
+			$enabled = $settings['enableService'];
+
+			// If geolocation is enabled
+			if (in_array('geolocation', $enabled)) {
+
+				// If MaxMind is not enabled, default to FreeGeoIp.net
+				if (in_array('maxmind', $enabled)) {
+					$service = 'maxmind';
+				} else {
+					$service = 'freegeoip';
+				}
+
+			}
+
 		}
 
 		// Set geolocation selection
 		$settings['geolocation'] = $service;
+
+		// Remove "enableService" value
+		unset($settings['enableService']);
 
 		// Save settings
 		$this->_setSettings('SmartMap', $settings);
