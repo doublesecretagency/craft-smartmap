@@ -72,7 +72,7 @@ class m150331_000000_smartMap_reorganizeGeolocationOptions extends BaseMigration
 			->where('class="'.$class.'"')
 		;
 		$oldSettings = $query->queryRow();
-		return json_decode($oldSettings['settings'], true);
+		return @json_decode($oldSettings['settings'], true);
 	}
 
 	/**

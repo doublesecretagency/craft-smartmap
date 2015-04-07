@@ -59,7 +59,7 @@ class m150329_000000_smartMap_splitGoogleApiKeys extends BaseMigration
 			->where('class="'.$class.'"')
 		;
 		$oldSettings = $query->queryRow();
-		return json_decode($oldSettings['settings'], true);
+		return @json_decode($oldSettings['settings'], true);
 	}
 
 	/**
