@@ -16,23 +16,28 @@ class m150329_000000_smartMap_splitGoogleApiKeys extends BaseMigration
 		// Get settings
 		$settings = $this->_getSettings('SmartMap');
 
-		// Validation
-		$enabled = (array_key_exists('enableService', $settings) && in_array('google', $settings['enableService']));
-		$apiKeyExists = array_key_exists('googleApiKey', $settings);
+		// If settings already exist
+		if (is_array($settings)) {
 
-		// Get existing API key
-		$existingKey = '';
-		if ($enabled && $apiKeyExists) {
-			$existingKey = $settings['googleApiKey'];
+			// Validation
+			$enabled = (array_key_exists('enableService', $settings) && in_array('google', $settings['enableService']));
+			$apiKeyExists = array_key_exists('googleApiKey', $settings);
+
+			// Get existing API key
+			$existingKey = '';
+			if ($enabled && $apiKeyExists) {
+				$existingKey = $settings['googleApiKey'];
+			}
+
+			// Modify settings
+			$settings['googleServerKey']  = $existingKey;
+			$settings['googleBrowserKey'] = $existingKey;
+			unset($settings['googleApiKey']);
+
+			// Save settings
+			$this->_setSettings('SmartMap', $settings);
+			
 		}
-
-		// Modify settings
-		$settings['googleServerKey']  = $existingKey;
-		$settings['googleBrowserKey'] = $existingKey;
-		unset($settings['googleApiKey']);
-
-		// Save settings
-		$this->_setSettings('SmartMap', $settings);
 
 		// Return true
 		return true;
