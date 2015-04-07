@@ -28,13 +28,13 @@ $(document).on('keydown', '.smartmap-field input', function (e) {
 // Listen for new blocks
 $(document).on('click', '.smartmap-search-addresses', function () {
 	handle = $(this).closest('.smartmap-field').attr('id');
-	console.log('Searching addresses...');
+	if (logSmartMap) {console.log('Searching addresses...');}
 	findCoords(handle);
 });
 // Listen for new blocks
 $(document).on('click', '.smartmap-drag-pin', function () {
 	handle = $(this).closest('.smartmap-field').attr('id');
-	console.log('Opening drag pin modal...');
+	if (logSmartMap) {console.log('Opening drag pin modal...');}
 	modalDragPin(handle);
 });
 

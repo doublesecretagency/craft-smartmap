@@ -4,6 +4,8 @@ namespace Craft;
 class SmartMap_VariablesService extends BaseApplicationComponent
 {
 
+    private $_needsJs = true;
+
     private $_map = array();
     private $_marker = array();
 
@@ -14,6 +16,25 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         craft()->templates->includeJsFile($api);
         craft()->templates->includeJsResource('smartmap/js/smartmap.js');
         craft()->templates->includeCssResource('smartmap/css/smartmap.css');
+    }
+
+    // Ensure JS has been loaded
+    public function _loadJs()
+    {
+        if ($this->_needsJs) {
+            $this->_needsJs = false;
+            $devMode = (craft()->config->get('devMode') ? 'true' : 'false');
+            $consoleLogDefault =
+'<script type="text/javascript">
+if (!window.console) {
+    window.console = {
+        log: function(obj){}
+    };
+}
+</script>';
+            $logSmartMap = '<script type="text/javascript">var logSmartMap = '.$devMode.';</script>';
+            return $consoleLogDefault.PHP_EOL.$logSmartMap.PHP_EOL;
+        }
     }
 
     // Create dynamic Google Map of locations
@@ -55,7 +76,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         craft()->templates->includeJs($js);
 
         $html = '<div id="'.$mapId.'" class="smartmap-mapcanvas" style="'.$width.$height.'">Loading map...</div>';
-        return TemplateHelper::getRaw(PHP_EOL.$html);
+        return TemplateHelper::getRaw($this->_loadJs().$html);
     }
 
     // Parse location variations into standard format
@@ -273,7 +294,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
         $options = $this->_jsonify($mapOptions);
         $mapJs  = PHP_EOL;
-        $mapJs .= PHP_EOL.'console.log("['.$mapId.'] Drawing map...")';
+        $mapJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$mapId.'] Drawing map...");}';
         $mapJs .= PHP_EOL.'smartMap.createMap("'.$mapId.'", '.$options.');';
         return $mapJs;
     }
@@ -294,7 +315,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
             $options = $this->_jsonify($markerOptions);
             $markerJs .= PHP_EOL;
-            $markerJs .= PHP_EOL.'console.log("['.$mapId.'.'.$markerName.'] Drawing marker...")';
+            $markerJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$mapId.'.'.$markerName.'] Drawing marker...");}';
             $markerJs .= PHP_EOL.'smartMap.createMarker("'.$mapId.'.'.$markerName.'", '.$options.');';
         }
         return $markerJs;
@@ -347,7 +368,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
             $options = $this->_jsonify($infoWindowOptions);
             $infoWindowJs .= PHP_EOL;
-            $infoWindowJs .= PHP_EOL.'console.log("['.$mapId.'.'.$markerName.'] Drawing info window...")';
+            $infoWindowJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$mapId.'.'.$markerName.'] Drawing info window...");}';
             $infoWindowJs .= PHP_EOL.'smartMap.createInfoWindow("'.$mapId.'.'.$markerName.'", '.$options.');';
 
         }
@@ -391,7 +412,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
                 $dimensions .= ' '.$side.'="'.$options[$side].'"';
             }
         }
-        return TemplateHelper::getRaw('<img src="'.$src.'" '.$dimensions.'/>');
+        return TemplateHelper::getRaw($this->_loadJs().'<img src="'.$src.'" '.$dimensions.'/>');
     }
 
     // Get source of static map image
