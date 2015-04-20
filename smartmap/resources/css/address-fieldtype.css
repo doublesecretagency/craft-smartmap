@@ -14,6 +14,14 @@ div.smartmap-top-right {
     text-align: right;
 }
 
+table.superTable div.smartmap-field {
+    margin-top: 22px;
+    margin-bottom: 31px;
+}
+table.superTable div.smartmap-top-right {
+    top: -20px;
+}
+
 span.smartmap-no-results {
     display: none;
     color: #d1202a;
