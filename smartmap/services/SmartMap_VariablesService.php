@@ -6,7 +6,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
     private $_needsJs = true;
 
-    private $_map = array();
+    private $_mapTotal = 1;
     private $_marker = array();
 
     public function init() {
@@ -40,8 +40,9 @@ if (!window.console) {
     // Create dynamic Google Map of locations
     public function dynamicMap($markers = false, $options = array())
     {
+
         // Extract non-Google parameters
-        $mapId             = (array_key_exists('id', $options) ? $options['id'] : 'smartmap-mapcanvas-'.(count($this->_map)+1));
+        $mapId             = (array_key_exists('id', $options) ? $options['id'] : 'smartmap-mapcanvas-'.$this->_mapTotal);
         unset($options['id']);
 
         $width             = (array_key_exists('width', $options)  ? 'width:'.$options['width'].'px;'   : '');
@@ -74,6 +75,9 @@ if (!window.console) {
         $js .= $this->_buildMarkers($mapId, $markerOptions);
         $js .= $this->_buildInfoWindows($mapId, $infoWindowOptions);
         craft()->templates->includeJs($js);
+
+        // Add to map total
+        $this->_mapTotal++;
 
         $html = '<div id="'.$mapId.'" class="smartmap-mapcanvas" style="'.$width.$height.'">Loading map...</div>';
         return TemplateHelper::getRaw($this->_loadJs().$html);
