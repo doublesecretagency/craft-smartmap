@@ -92,4 +92,57 @@ class SmartMap_AddressModel extends BaseModel
         );
     }
 
+    /**
+     * Generates URL of full Google Map
+     *
+     * @return string
+     */
+    public function googleMapUrl()
+    {
+        return craft()->smartMap_variables->linkToGoogle($this);
+    }
+
+    /**
+     * Generates URL for directions
+     *
+     * @return string
+     */
+    public function directionsUrl($startingAddress = false, $destinationTitle = false, $startingTitle = false)
+    {
+        // First parameter is skippable
+        if (is_string($startingAddress)) {
+            $destinationTitle = $startingAddress;
+            $startingAddress = false;
+        }
+        // Prep destination address
+        if ($this->hasCoords()) {
+            $destinationCoords = $this->lat.','.$this->lng;
+        } else {
+            return '#invalid-address-coordinates';
+        }
+        if (!$destinationTitle) {
+            $destinationTitle = $this->format(true, true);
+        }
+        // Prep starting address
+        if (is_a($startingAddress, 'Craft\SmartMap_AddressModel')) {
+            if ($startingAddress->hasCoords()) {
+                $startingCoords = $startingAddress->lat.','.$startingAddress->lng;
+            } else {
+                return '#invalid-starting-address-coordinates';
+            }
+            if (!$startingTitle) {
+                $startingTitle = $startingAddress->format(true, true);
+            }
+        } else {
+            $startingAddress = false;
+        }
+        // Compile URL
+        $url = 'http://maps.google.com/maps?';
+        if ($startingAddress) {
+            $url .= 'saddr='.rawurlencode($startingTitle).'@'.$startingCoords.'&';
+        }
+        $url .= 'daddr='.rawurlencode($destinationTitle).'@'.$destinationCoords;
+        return $url;
+    }
+
 }
