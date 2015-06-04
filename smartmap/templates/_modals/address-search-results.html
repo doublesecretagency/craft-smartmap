@@ -1,9 +1,15 @@
+{% import 'smartmap/_modals/_macros' as modalMacro %}
+
 <div class="content">
 	<div class="main">
 
 		<div class="toolbar">
 			{% set total = searchResults|length %}
-			<h2>Showing {{ total }} search result{{ total != 1 ? 's' }}...</h2>
+			{% if total == 1 %}
+				<h2>{{ "Showing 1 search result..."|t }}</h2>
+			{% else %}
+				<h2>{{ "Showing {total} search results..."|t({'total': total}) }}</h2>
+			{% endif %}
 		</div>
 
 		<div class="elements">
@@ -11,18 +17,18 @@
 				<table class="data fullwidth">
 					<thead>
 						<tr>
-							<th scope="col">Street</th>
-							<th scope="col">City</th>
-							<th scope="col">State</th>
-							<th scope="col">Zip</th>
-							<th scope="col">Country</th>
-							<th scope="col" class="smartmap-modal-coords">Latitude</th>
-							<th scope="col" class="smartmap-modal-coords">Longitude</th>
+							<th scope="col">{{ "Street"|t }}</th>
+							<th scope="col">{{ "City"|t }}</th>
+							<th scope="col">{{ "State"|t }}</th>
+							<th scope="col">{{ "Zip"|t }}</th>
+							<th scope="col">{{ "Country"|t }}</th>
+							<th scope="col" class="smartmap-modal-coords">{{ "Latitude"|t }}</th>
+							<th scope="col" class="smartmap-modal-coords">{{ "Longitude"|t }}</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for a in searchResults %}
-							{% set streetAddress = (a.street_number is defined ? a.street_number)~' '~(a.route is defined ? a.route) %}
+							{% set streetAddress = modalMacro.formatStreetAddress(a) %}
 							<tr class="smartmap-modal-row">
 								<td data-subfield="street1">{{ streetAddress|trim }}</td>
 								<td data-subfield="city">{{ a.locality is defined ? a.locality }}</td>

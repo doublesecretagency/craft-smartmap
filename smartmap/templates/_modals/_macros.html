@@ -1,0 +1,6 @@
+
+{# Format street address #}
+{% macro formatStreetAddress(a) %}
+	{% set streetAddress = (a.street_number is defined ? a.street_number)~' '~(a.route is defined ? a.route) %}
+	{{ streetAddress }}
+{% endmacro %}
