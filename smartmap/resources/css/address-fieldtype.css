@@ -5,6 +5,7 @@ div.smartmap-no-heading {
 
 div.smartmap-field {
     position: relative;
+    z-index: 0;
 }
 div.smartmap-top-right {
     z-index: 90;
