@@ -65,21 +65,24 @@ class SmartMap_AddressFieldType extends BaseFieldType
         return false;
     }
 
-    /* Currently not using any custom settings
-    public function getSettingsHtml()
-    {
-        return craft()->templates->render('smartmap/address/settings', array(
-            //'settings' => $this->getSettings()
-        ));
-    }
-
+    // Field settings
     protected function defineSettings()
     {
         return array(
-            'initialSlots' => array(AttributeType::Number, 'min' => 0)
+            //'fieldLayout' => array(AttributeType::String, 'column' => ColumnType::Text)
         );
     }
-    */
+
+    // Field settings HTML
+    public function getSettingsHtml()
+    {
+        craft()->templates->includeCssFile('//fonts.googleapis.com/css?family=Coming+Soon');
+        craft()->templates->includeCssResource('smartmap/css/fieldtype-settings.css');
+        craft()->templates->includeJsResource('smartmap/js/fieldtype-settings.js');
+        return craft()->templates->render('smartmap/address/fieldtype-settings', array(
+            'settings' => $this->getSettings()
+        ));
+    }
 
     // ==================================================== //
 

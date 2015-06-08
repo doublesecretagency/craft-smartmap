@@ -1,0 +1,34 @@
+#SmartMap_Address .fld-tab {
+	width: 280px;
+}
+
+#SmartMap_Address .fld-container {
+	padding-bottom: 2px;
+}
+
+#SmartMap_Address .fld-field {
+	cursor: default;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+#types-SmartMap_Address-layout-table {
+	float: left;
+	width: 400px;
+	margin-bottom: 20px;
+}
+
+#SmartMap_Address .layout-table-enable {
+	width: 5%;
+}
+
+#SmartMap_Address .layout-table-width {
+	width: 5%;
+}
+#SmartMap_Address .layout-table-width input {
+	width: 50px;
+}
+
+#SmartMap_Address .layout-table-label {
+	text-align: left;
+}

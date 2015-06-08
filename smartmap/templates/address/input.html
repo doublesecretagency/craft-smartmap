@@ -1,75 +1,72 @@
-{% import "_includes/forms" as forms %}
+<style type="text/css">
+div.smartmap-subfields .city {
+	float: left;
+	width: 50%;
+}
+div.smartmap-subfields .state {
+	float: left;
+	width: 14%;
+	margin-left: 1%;
+}
+div.smartmap-subfields .zip {
+	float: left;
+	width: 34%;
+	margin-left: 1%;
+}
+
+div.smartmap-subfields .lat {
+	float: left;
+	width: 50%;
+}
+div.smartmap-subfields .lng {
+	float: left;
+	width: 49%;
+	margin-left: 1%;
+}
+</style>
+
+{#
+MAKE STYLES INLINE!
+
+USE-CASE:
+If someone is using two Address fields, and they are following different layouts.
+
+I know it's controversial, but this is the right answer.
+#}
+
+{% import '_includes/forms' as forms %}
+
+{% set subfieldSettings = {
+	'street1' : 'Street Address',
+	'street2' : 'Apartment or Suite',
+	'city'    : 'City',
+	'state'   : 'State',
+	'zip'     : 'Zip Code',
+	'country' : 'Country',
+	'lat'     : 'Latitude',
+	'lng'     : 'Longitude',
+} %}
 
 <div class="smartmap-field" id="{{ handle }}">
-    <div class="smartmap-top-right">
-        {#
-        <span class="smartmap-link smartmap-google-map-link">Open in Google Maps -&gt;</span>
-         &nbsp;&bull;&nbsp; 
-        #}
-        <span class="smartmap-link smartmap-search-addresses">{{ "Search Addresses"|t }}</span>
-         &nbsp;&bull;&nbsp; 
-        <span class="smartmap-link smartmap-drag-pin">{{ "Drag Pin"|t }}</span>
-    </div>
-    <div class="smartmap-street-address">
-        {{ forms.textField({
-            placeholder: "Street Address"|t,
-            id: handle~'-street1',
-            name: handle~'[street1]',
-            value: street1,
-        }) }}
-        {#
-            errors: street1.getErrors()
-            errors: value.getErrors('street1')
-        #}
-        {{ forms.textField({
-            placeholder: "Apartment or Suite"|t,
-            id: handle~'-street2',
-            name: handle~'[street2]',
-            value: street2,
-        }) }}
-    </div>
-    <div class="smartmap-city-state-zip">
-        {{ forms.textField({
-            placeholder: "City"|t,
-            id: handle~'-city',
-            name: handle~'[city]',
-            value: city,
-        }) }}
-        {{ forms.textField({
-            placeholder: "State"|t,
-            id: handle~'-state',
-            name: handle~'[state]',
-            value: state,
-        }) }}
-        {{ forms.textField({
-            placeholder: "Zip Code"|t,
-            id: handle~'-zip',
-            name: handle~'[zip]',
-            value: zip,
-        }) }}
-    </div>
-    <div class="smartmap-country">
-        {{ forms.textField({
-            placeholder: "Country"|t,
-            id: handle~'-country',
-            name: handle~'[country]',
-            value: country,
-        }) }}
-    </div>
-    <div class="smartmap-coordinates">
-        {{ forms.textField({
-            placeholder: "Latitude"|t,
-            id: handle~'-lat',
-            name: handle~'[lat]',
-            value: (lat ? lat : null),
-        }) }}
-        {{ forms.textField({
-            placeholder: "Longitude"|t,
-            id: handle~'-lng',
-            name: handle~'[lng]',
-            value: (lng ? lng : null),
-        }) }}
-    </div>
+	<div class="smartmap-top-right">
+		<span class="smartmap-link smartmap-search-addresses">{{ "Search Addresses"|t }}</span>
+		 &nbsp;&bull;&nbsp; 
+		<span class="smartmap-link smartmap-drag-pin">{{ "Drag Pin"|t }}</span>
+	</div>
+	<div class="smartmap-subfields">
+	
+		{% for subfield,label in subfieldSettings %}
+			<div class="{{ subfield }}" style="">
+				{{ forms.textField({
+					placeholder: label|t,
+					id: handle~'-'~subfield,
+					name: handle~'['~subfield~']',
+					value: attribute(_context, subfield),
+				}) }}
+			</div>
+		{% endfor %}
+
+	</div>
 </div>
 
 <div class="clear"></div>

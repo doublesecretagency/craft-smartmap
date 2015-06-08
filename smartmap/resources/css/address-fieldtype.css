@@ -7,6 +7,12 @@ div.smartmap-field {
     position: relative;
     z-index: 0;
 }
+
+div.smartmap-subfields div.field {
+    height: 34px;
+    clear: both;
+}
+
 div.smartmap-top-right {
     z-index: 90;
     position: absolute;
@@ -79,52 +85,6 @@ ul.smartmap-matches-options li span {
 }
 ul.smartmap-matches-options li span:hover {
     background-color: #FFE796;
-}
-
-div.smartmap-street-address div.field {
-    margin: 4px 0;
-}
-
-div.smartmap-city-state-zip {
-    padding-top: 4px;
-}
-div.smartmap-city-state-zip div.field {
-    float: left;
-    margin: 0px;
-}
-div.smartmap-city-state-zip div.field:nth-child(1) {
-    width: 50%;
-    margin-right: 1%;
-}
-div.smartmap-city-state-zip div.field:nth-child(2) {
-    width: 14%;
-    margin-right: 1%;
-}
-div.smartmap-city-state-zip div.field:nth-child(3) {
-    width: 34%;
-    margin-right: 0%;
-}
-
-div.smartmap-country {
-    clear: both;
-    padding-top: 4px;
-}
-
-div.smartmap-coordinates {
-    clear: both;
-    padding-top: 4px;
-}
-div.smartmap-coordinates div.field {
-    float: left;
-    margin: 0px;
-}
-div.smartmap-coordinates div.field:nth-child(1) {
-    width: 50%;
-    margin-right: 1%;
-}
-div.smartmap-coordinates div.field:nth-child(2) {
-    width: 49%;
-    margin-right: 0%;
 }
 
 form.smartmap-modal-address-search .toolbar {
