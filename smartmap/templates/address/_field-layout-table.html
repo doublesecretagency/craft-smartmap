@@ -1,3 +1,4 @@
+<div id="layout-values"></div>
 <div id="layout-table">
 	<table class="shadow-box editable">
 		<thead>
@@ -8,55 +9,16 @@
 				<th class="header"></th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr class="layout-table-row" id="layout-table-street1">
-				<td class="layout-table-enable"><input name="" type="checkbox" value="1" checked="checked" /></td>
-				<td class="layout-table-width"><input type="number" value="100" /></td>
-				<td class="layout-table-label">{{ "Street Address"|t }}</td>
-				<td class="thin action"><a class="move icon" title="{{ "Reorder"|t }}"></a></td>
-			</tr>
-			<tr class="layout-table-row" id="layout-table-street2">
-				<td class="layout-table-enable"><input name="" type="checkbox" value="1" checked="checked" /></td>
-				<td class="layout-table-width"><input type="number" value="100" /></td>
-				<td class="layout-table-label">{{ "Apartment or Suite"|t }}</td>
-				<td class="thin action"><a class="move icon" title="{{ "Reorder"|t }}"></a></td>
-			</tr>
-			<tr class="layout-table-row" id="layout-table-city">
-				<td class="layout-table-enable"><input name="" type="checkbox" value="1" checked="checked" /></td>
-				<td class="layout-table-width"><input type="number" value="50" /></td>
-				<td class="layout-table-label">{{ "City"|t }}</td>
-				<td class="thin action"><a class="move icon" title="{{ "Reorder"|t }}"></a></td>
-			</tr>
-			<tr class="layout-table-row" id="layout-table-state">
-				<td class="layout-table-enable"><input name="" type="checkbox" value="1" checked="checked" /></td>
-				<td class="layout-table-width"><input type="number" value="15" /></td>
-				<td class="layout-table-label">{{ "State"|t }}</td>
-				<td class="thin action"><a class="move icon" title="{{ "Reorder"|t }}"></a></td>
-			</tr>
-			<tr class="layout-table-row" id="layout-table-zip">
-				<td class="layout-table-enable"><input name="" type="checkbox" value="1" checked="checked" /></td>
-				<td class="layout-table-width"><input type="number" value="35" /></td>
-				<td class="layout-table-label">{{ "Zip Code"|t }}</td>
-				<td class="thin action"><a class="move icon" title="{{ "Reorder"|t }}"></a></td>
-			</tr>
-			<tr class="layout-table-row" id="layout-table-country">
-				<td class="layout-table-enable"><input name="" type="checkbox" value="1" checked="checked" /></td>
-				<td class="layout-table-width"><input type="number" value="100" /></td>
-				<td class="layout-table-label">{{ "Country"|t }}</td>
-				<td class="thin action"><a class="move icon" title="{{ "Reorder"|t }}"></a></td>
-			</tr>
-			<tr class="layout-table-row" id="layout-table-lat">
-				<td class="layout-table-enable"><input name="" type="checkbox" value="1" checked="checked" /></td>
-				<td class="layout-table-width"><input type="number" value="50" /></td>
-				<td class="layout-table-label">{{ "Latitude"|t }}</td>
-				<td class="thin action"><a class="move icon" title="{{ "Reorder"|t }}"></a></td>
-			</tr>
-			<tr class="layout-table-row" id="layout-table-lng">
-				<td class="layout-table-enable"><input name="" type="checkbox" value="1" checked="checked" /></td>
-				<td class="layout-table-width"><input type="number" value="50" /></td>
-				<td class="layout-table-label">{{ "Longitude"|t }}</td>
-				<td class="thin action"><a class="move icon" title="{{ "Reorder"|t }}"></a></td>
-			</tr>
+		<tbody id="layout-table-rows">
+			{% for subfield,subsetting in settings.layout %}
+				{% set checked = (1 == subsetting.enable ? 'checked="checked"') %}
+				<tr class="layout-table-row" id="layout-table-{{ subfield }}">
+					<td class="layout-table-enable"><input type="checkbox" value="1" {{ checked }} /></td>
+					<td class="layout-table-width"><input type="number" value="{{ subsetting.width }}" /></td>
+					<td class="layout-table-label">{{ craft.smartMap.labelFromHandle(subfield) }}</td>
+					<td class="thin action"><a class="move icon" title="{{ "Reorder"|t }}"></a></td>
+				</tr>
+			{% endfor %}
 		</tbody>
 	</table>
 </div>

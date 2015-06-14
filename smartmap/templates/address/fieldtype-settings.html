@@ -1,4 +1,12 @@
-{% include 'smartmap/address/_field-layout-table.html' %}
-{% include 'smartmap/address/_field-layout-blueprint.html' %}
+<div class="field">
+	<div class="heading">
+		<label>{{ "Address Field Layout"|t }}</label>
+		<div class="instructions">
+			<p>{{ "Manage how the subfields will be arranged."|t }}</p>
+		</div>
+	</div>
+	{% include 'smartmap/address/_field-layout-table.html' %}
+	{% include 'smartmap/address/_field-layout-blueprint.html' %}
+</div>
 
 <div class="clear"></div>

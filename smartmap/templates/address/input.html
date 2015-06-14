@@ -1,51 +1,4 @@
-<style type="text/css">
-div.smartmap-subfields .city {
-	float: left;
-	width: 50%;
-}
-div.smartmap-subfields .state {
-	float: left;
-	width: 14%;
-	margin-left: 1%;
-}
-div.smartmap-subfields .zip {
-	float: left;
-	width: 34%;
-	margin-left: 1%;
-}
-
-div.smartmap-subfields .lat {
-	float: left;
-	width: 50%;
-}
-div.smartmap-subfields .lng {
-	float: left;
-	width: 49%;
-	margin-left: 1%;
-}
-</style>
-
-{#
-MAKE STYLES INLINE!
-
-USE-CASE:
-If someone is using two Address fields, and they are following different layouts.
-
-I know it's controversial, but this is the right answer.
-#}
-
 {% import '_includes/forms' as forms %}
-
-{% set subfieldSettings = {
-	'street1' : 'Street Address',
-	'street2' : 'Apartment or Suite',
-	'city'    : 'City',
-	'state'   : 'State',
-	'zip'     : 'Zip Code',
-	'country' : 'Country',
-	'lat'     : 'Latitude',
-	'lng'     : 'Longitude',
-} %}
 
 <div class="smartmap-field" id="{{ handle }}">
 	<div class="smartmap-top-right">
@@ -54,16 +7,83 @@ I know it's controversial, but this is the right answer.
 		<span class="smartmap-link smartmap-drag-pin">{{ "Drag Pin"|t }}</span>
 	</div>
 	<div class="smartmap-subfields">
-	
-		{% for subfield,label in subfieldSettings %}
-			<div class="{{ subfield }}" style="">
+
+		{# Set defaults #}
+		{% set isFirst = true %}
+		{% set totalWidths = 0 %}
+
+		{# Loop through subfields #}
+		{% for subfield,subsetting in settings.layout %}
+
+			{# If subfield is enabled #}
+			{% if subsetting.enable %}
+
+				{# Reset subfield style #}
+				{% set style = '' %}
+
+				{# Reset total widths counter if 100+ #}
+				{% if (100 <= totalWidths) %}
+					{% set totalWidths = 0 %}
+				{% endif %}
+
+				{# Set whether subfield is first in the row #}
+				{% set isFirst = (0 == totalWidths) %}
+
+				{# Get field width #}
+				{% set width = subsetting.width %}
+
+				{# Add to total widths #}
+				{% set totalWidths = (totalWidths + width) %}
+
+				{# If total widths are more than 100 #}
+				{% if (100 < totalWidths) %}
+
+					{# Set total width to this subfield's width #}
+					{% set totalWidths = width %}
+
+					{# Set subfield as first in the row #}
+					{% set isFirst = true %}
+
+				{% endif %}
+
+				{# If subfield is less than 100% #}
+				{% if width < 100 %}
+
+					{# Float subfield #}
+					{% set style = 'float:left;' %}
+
+					{# If subfield is not first in the row #}
+					{% if not isFirst %}
+
+						{# Adjust subfield width #}
+						{% set width = (width - 1) %}
+
+						{# Add left margin #}
+						{% set style = style ~ ' margin-left:1%;' %}
+
+					{% endif %}
+
+					{# Set field width style#}
+					{% set style = style ~ ' width:' ~ width ~ '%;' %}
+
+				{% endif %}
+
+			{% else %}
+
+				{# Hide subfield #}
+				{% set style = 'display:none;' %}
+
+			{% endif %}
+
+			<div class="{{ subfield }}" style="{{ style }}">
 				{{ forms.textField({
-					placeholder: label|t,
+					placeholder: craft.smartMap.labelFromHandle(subfield),
 					id: handle~'-'~subfield,
 					name: handle~'['~subfield~']',
 					value: attribute(_context, subfield),
 				}) }}
 			</div>
+
 		{% endfor %}
 
 	</div>

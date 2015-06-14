@@ -63,6 +63,12 @@ class SmartMapVariable
         return craft()->smartMap->lookup($target);
     }
 
+    // Get the subfield label from its handle
+    public function labelFromHandle($handle)
+    {
+        return craft()->smartMap_addressFieldType->labelFromHandle($handle);
+    }
+
     // ================================================================== //
     // ================================================================== //
 

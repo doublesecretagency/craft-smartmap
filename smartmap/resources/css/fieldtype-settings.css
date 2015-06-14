@@ -14,7 +14,7 @@
 
 #types-SmartMap_Address-layout-table {
 	float: left;
-	width: 400px;
+	max-width: 400px;
 	margin-bottom: 20px;
 }
 
@@ -31,4 +31,10 @@
 
 #SmartMap_Address .layout-table-label {
 	text-align: left;
+}
+
+@media screen and (max-width: 400px) {
+	#SmartMap_Address .fld-tab {
+		margin-left: 0;
+	}
 }
