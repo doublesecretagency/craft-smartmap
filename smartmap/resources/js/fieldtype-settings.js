@@ -1,4 +1,3 @@
-
 var prefix        = '#types-SmartMap_Address-';
 var $layoutValues = $(prefix + 'layout-values');
 var $layoutTable  = $(prefix + 'layout-table');
@@ -64,52 +63,13 @@ $(fieldtypeSettings.blueprint);
 $layoutTable.on('change', '.layout-table-enable input', fieldtypeSettings.blueprint);
 $layoutTable.on('change', '.layout-table-width input', fieldtypeSettings.blueprint);
 
-
-
-
-
 $(function() {
+	// Configure sortable table of subfields
 	var el = document.getElementById(tableRowsId);
 	var sortable = new Sortable(el, {
-		handle: ".move",  // Drag handle selector within list items
-
-		//ghostClass: "sortable-ghost",  // Class name for the drop placeholder
-
-		// Changed sorting within list
-		onUpdate: fieldtypeSettings.blueprint,
+		handle: '.move',
+		animation: 150,
+		ghostClass: 'sortable-ghost',
+		onUpdate: fieldtypeSettings.blueprint
 	});
 });
-
-
-
-/*
-var sort = new Garnish.DragSort($layoutRows, {
-	handle: '> .actions > .move',
-	axis: 'y',
-	/*
-	filter: $.proxy(function()
-	{
-		// Only return all the selected items if the target item is selected
-		if (this.blockSort.$targetItem.hasClass('sel'))
-		{
-			return this.blockSelect.getSelectedItems();
-		}
-		else
-		{
-			return this.blockSort.$targetItem;
-		}
-	}, this),
-	* /
-	collapseDraggees: true,
-	magnetStrength: 4,
-	helperLagBase: 1.5,
-	helperOpacity: 0.9 // ,
-	/*
-	onSortChange: $.proxy(function() {
-		this.blockSelect.resetItemOrder();
-	}, this)
-	* /
-});
-*/
-
-

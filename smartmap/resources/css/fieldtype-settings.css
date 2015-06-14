@@ -38,3 +38,8 @@
 		margin-left: 0;
 	}
 }
+
+.sortable-ghost td {
+	font-weight: bold;
+	background-color: #ffe4ae !important;
+}
