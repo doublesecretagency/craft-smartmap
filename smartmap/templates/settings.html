@@ -44,7 +44,7 @@
 
 <h2>{{ "Geolocation"|t }}</h2>
 
-<p>{{ "Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located."|t }}</p>
+<p>{{ "Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located."|t|raw }}</p>
 
 {% macro geolocationOption(label, value, current, description) %}
 	{% if 'none' == value %}
@@ -120,8 +120,8 @@
 
 <div class="smartmap-field-container">
 	<h3>{{ "WARNING"|t }}</h3>
-	<p>{{ "FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net."|t }}</p>
-	<p>{{ "<strong>If you require geolocation, MaxMind is a far more reliable service.</strong>"|t }}</p>
+	<p>{{ "FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net."|t|raw }}</p>
+	<p>{{ "<strong>If you require geolocation, MaxMind is a far more reliable service.</strong>"|t|raw }}</p>
 </div>
 
 <hr />
