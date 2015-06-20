@@ -4,25 +4,25 @@
 
 {% set supportEmail = '<a href="mailto:support@doublesecretagency.com?subject=Smart%20Map%20Feedback">support@doublesecretagency.com</a>' %}
 
-<h2>Documentation &amp; Feedback</h2>
-<p>All documentation can be found at <a href="https://craftpl.us/plugins/smart-map/docs/" target="_blank">Craft Plus</a>.</p>
-<p>You can reach us at {{ supportEmail | raw }}. All questions, comments, and suggestions are welcome!</p>
+<h2>{{ "Documentation & Feedback"|t }}</h2>
+<p>{{ 'All documentation can be found at <a href="{url}" target="_blank">Craft Plus</a>.'|t({url:'https://craftpl.us/plugins/smart-map/docs/'})|raw }}</p>
+<p>{{ "You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!"|t({supportEmail:supportEmail})|raw }}</p>
 <hr />
 
-<h2>Google Maps API Keys</h2>
+<h2>{{ "Google Maps API Keys"|t }}</h2>
 
-<p>Using API keys is optional, but you may find it beneficial in many situations:</p>
+<p>{{ "Using API keys is optional, but you may find it beneficial in many situations:"|t }}</p>
 <ul class="smartmap-api-keys">
-	<li>If your website is on a shared server, or</li>
-	<li>If you expect extremely high traffic to your website.</li>
+	<li>{{ "If your website is on a shared server, or"|t }}</li>
+	<li>{{ "If you expect extremely high traffic to your website."|t }}</li>
 </ul>
-<p>To get your Google API keys, <a href="https://craftpl.us/plugins/smart-map/docs/get-a-google-api-key" target="_blank">follow these instructions...</a></p>
+<p>{{ 'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>'|t({url:'https://craftpl.us/plugins/smart-map/docs/get-a-google-api-key'})|raw }}</p>
 
 <div class="smartmap-field-container" id="smartmap-fields-google">
 
 	{{ forms.textField({
 		label: "Google API Server Key"|t,
-		instructions: 'Used for address lookups',
+		instructions: 'Used for address lookups'|t,
 		id: 'googleServerKey',
 		name: 'googleServerKey',
 		value: settings.googleServerKey,
@@ -31,7 +31,7 @@
 
 	{{ forms.textField({
 		label: "Google API Browser Key"|t,
-		instructions: 'Used for static & dynamic map rendering',
+		instructions: 'Used for static & dynamic map rendering'|t,
 		id: 'googleBrowserKey',
 		name: 'googleBrowserKey',
 		value: settings.googleBrowserKey,
@@ -42,9 +42,9 @@
 
 <hr />
 
-<h2>Geolocation</h2>
+<h2>{{ "Geolocation"|t }}</h2>
 
-<p>Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located.</p>
+<p>{{ "Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located."|t }}</p>
 
 {% macro geolocationOption(label, value, current, description) %}
 	{% if 'none' == value %}
@@ -53,13 +53,13 @@
 		{% set checked = (current == value) %}
 	{% endif %}
 	<li>
-		<label><input type="radio" class="smartmap-geolocation-radio" name="geolocation" value="{{ value }}" {{ checked ? 'checked="checked"' }} />{{ label }}</label>
-		<p>{{ description }}</p>
+		<label><input type="radio" class="smartmap-geolocation-radio" name="geolocation" value="{{ value }}" {{ checked ? 'checked="checked"' }} />{{ label|t }}</label>
+		<p>{{ description|t }}</p>
 	</li>
 {% endmacro %}
 {% import _self as render %}
 
-<h2>Select a service...</h2>
+<h2>{{ "Select a service..."|t }}</h2>
 
 <ul class="smartmap-geolocation-options">
 	{{ render.geolocationOption('None', 'none', settings.geolocation, 
@@ -74,15 +74,15 @@
 </ul>
 
 <div class="smartmap-field-container" id="smartmap-fields-maxmind">
-	<h2>MaxMind Configuration</h2>
-	<p><strong>Step 1:</strong> Subscribe to a <a href="https://www.maxmind.com/en/web_services" target="_blank">Web Service...</a></p>
-	<p><strong>Step 2:</strong> Which <a href="https://www.maxmind.com/en/account" target="_blank">Web Service</a> have you subscribed to?</p>
+	<h2>{{ "MaxMind Configuration"|t }}</h2>
+	<p>{{ '<strong>Step 1:</strong> Subscribe to a <a href="{url}" target="_blank">Web Service...</a>'|t({url:'https://www.maxmind.com/en/web_services'})|raw }}</p>
+	<p>{{ '<strong>Step 2:</strong> Which <a href="{url}" target="_blank">Web Service</a> have you subscribed to?'|t({url:'https://www.maxmind.com/en/account'})|raw }}</p>
 
 	{{ forms.selectField({
 		id: 'maxmindService',
 		name: 'maxmindService',
 		options: {
-			''             : '(service disabled)',
+			''             : '(service disabled)'|t,
 			'country'      : 'GeoIP2 Country',
 			'city'         : 'GeoIP2 City',
 			'city_isp_org' : 'GeoIP2 City/ISP/Org',
@@ -97,7 +97,7 @@
 		errors: settings.getErrors('maxmindService')
 	#}
 
-	<p><strong>Step 3:</strong> Copy your <a href="https://www.maxmind.com/en/my_license_key" target="_blank">security access information</a> and paste it here...</p>
+	<p>{{ '<strong>Step 3:</strong> Copy your <a href="{url}" target="_blank">security access information</a> and paste it here...'|t({url:'https://www.maxmind.com/en/my_license_key'})|raw }}</p>
 
 	{{ forms.textField({
 		label: "User ID"|t,
@@ -116,19 +116,19 @@
 	}) }}
 </div>
 
-<p>If you have recently switched services, clear old geolocation results by visiting <strong><a href="{{ url('settings') }}">Settings &nbsp;&gt;&nbsp; Clear Caches &nbsp;&gt;&nbsp; Data caches</a></strong></p>
+<p>{{ 'If you have recently switched services, clear old geolocation results by visiting <strong><a href="{url}">Settings &nbsp;&gt;&nbsp; Clear Caches &nbsp;&gt;&nbsp; Data caches</a></strong>'|t({url:url('settings')})|raw }}</p>
 
 <div class="smartmap-field-container">
-	<h3>WARNING</h3>
-	<p>FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net.</p>
-	<p><strong>If you require geolocation, MaxMind is a far more reliable service.</strong></p>
+	<h3>{{ "WARNING"|t }}</h3>
+	<p>{{ "FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net."|t }}</p>
+	<p>{{ "<strong>If you require geolocation, MaxMind is a far more reliable service.</strong>"|t }}</p>
 </div>
 
 <hr />
 
-<h2>Plugin Debug Page</h2>
+<h2>{{ "Plugin Debug Page"|t }}</h2>
 
-<p>Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site.</p>
+<p>{{ "Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site."|t }}</p>
 
 {% set debugRoute = siteUrl(settings.debugRoute) %}
 

@@ -5,7 +5,7 @@ class SmartMap_AddressFieldType extends BaseFieldType
 {
 	public function getName()
 	{
-		return Craft::t('Address (Smart Map)');
+		return Craft::t('Address').' ('.Craft::t('Smart Map').')';
 	}
 	// ==================================================== //
 

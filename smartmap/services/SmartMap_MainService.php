@@ -27,20 +27,22 @@ class SmartMap_MainService extends BaseApplicationComponent
 				);
 				break;
 			case 'ZERO_RESULTS':
-				$message = 'The geocode was successful but returned no results.';
+				$message = Craft::t('The geocode was successful but returned no results.');
 				break;
 			case 'OVER_QUERY_LIMIT':
-				$message = 'You are over your quota.';
+				$message = Craft::t('You are over your quota. If this is a shared server, enable <a href="{url}">Google Maps API Keys.</a>', array(
+					'url' => UrlHelper::getCpUrl('settings/plugins/smartmap')
+				));
 				break;
 			case 'REQUEST_DENIED':
 				if (array_key_exists('error_message', $response) && $response['error_message']) {
 					$message = $response['error_message'];
 				} else {
-					$message = 'Your request was denied for some reason.';
+					$message = Craft::t('Your request was denied for some reason.');
 				}
 				break;
 			case 'INVALID_REQUEST':
-				$message = 'The query is missing.';
+				$message = Craft::t('The query is missing.');
 				break;
 		}
 
