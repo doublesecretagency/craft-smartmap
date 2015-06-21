@@ -1,40 +1,40 @@
-#SmartMap_Address .fld-tab {
+.smartmap-fieldtype .fld-tab {
 	width: 280px;
 }
 
-#SmartMap_Address .fld-container {
+.smartmap-fieldtype .fld-container {
 	padding-bottom: 2px;
 }
 
-#SmartMap_Address .fld-field {
+.smartmap-fieldtype .fld-field {
 	cursor: default;
 	white-space: nowrap;
 	overflow: hidden;
 }
 
-#types-SmartMap_Address-layout-table {
+.smartmap-fieldtype-layout-table {
 	float: left;
 	max-width: 400px;
 	margin-bottom: 20px;
 }
 
-#SmartMap_Address .layout-table-enable {
+.smartmap-fieldtype .layout-table-enable {
 	width: 5%;
 }
 
-#SmartMap_Address .layout-table-width {
+.smartmap-fieldtype .layout-table-width {
 	width: 5%;
 }
-#SmartMap_Address .layout-table-width input {
+.smartmap-fieldtype .layout-table-width input {
 	width: 50px;
 }
 
-#SmartMap_Address .layout-table-label {
+.smartmap-fieldtype .layout-table-label {
 	text-align: left;
 }
 
 @media screen and (max-width: 400px) {
-	#SmartMap_Address .fld-tab {
+	.smartmap-fieldtype .fld-tab {
 		margin-left: 0;
 	}
 }
