@@ -11,7 +11,7 @@ var SmartMap_FieldLayout = function ($fieldtype) {
 	$layoutTable = $fieldtype.find('.smartmap-fieldtype-layout-table');
 	$layoutTable.on('change', triggerInputs, function () {parent.blueprint();});
 	// Initialize sortable rows
-	$('.layout-table-rows').each(function () {
+	$fieldtype.find('.layout-table-rows').each(function () {
 		new Sortable(this, {
 			handle: '.move',
 			animation: 150,
@@ -82,7 +82,8 @@ SmartMap_FieldLayout.prototype._appendLayoutValue = function(subfield, type, val
 
 // Move a row in the blueprint
 SmartMap_FieldLayout.prototype._moveBlueprintRow = function(subfield) {
-	this.$fieldtype.find('.blueprint-' + subfield).appendTo(this.$bpPanel);
+	var $blueprintSubfield = this.$fieldtype.find('.blueprint-' + subfield);
+	this.$bpPanel.append($blueprintSubfield);
 };
 
 
