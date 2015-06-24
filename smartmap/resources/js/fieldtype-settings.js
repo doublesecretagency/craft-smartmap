@@ -2,10 +2,12 @@
 // Define field layout object
 var SmartMap_FieldLayout = function ($fieldtype) {
 	var parent = this;
+	// Initialize layout
+	this.layout = {};
 	// Define properties
-	this.$fieldtype    = $fieldtype;
-	this.$layoutValues = $fieldtype.find('.smartmap-fieldtype-layout-values');
-	this.$bpPanel      = $fieldtype.find('.blueprint-panel');
+	this.$fieldtype   = $fieldtype;
+	this.$layoutInput = $fieldtype.find('.smartmap-fieldtype-layout-values input');
+	this.$bpPanel     = $fieldtype.find('.blueprint-panel');
 	// Add events
 	var triggerInputs = '.layout-table-enable input, .layout-table-width input';
 	$layoutTable = $fieldtype.find('.smartmap-fieldtype-layout-table');
@@ -29,29 +31,20 @@ SmartMap_FieldLayout.prototype.blueprint = function() {
 	console.log('Running blueprint...');
 
 	var parent = this;
-	//this.$layoutValues.html('');
-	this.$fieldtype.find('.layout-table-row').each(function () {
+	// Clear layout
+	this.layout = {};
+	// Loop through subfields
+	this.$fieldtype.find('.layout-table-subfield').each(function () {
 		var subfield = $(this).data('subfield');
-		parent._subfieldEnabled(subfield, $(this));
+		parent.layout[subfield] = {};
 		parent._subfieldWidth(subfield, $(this));
+		parent._subfieldEnabled(subfield, $(this));
 		parent._moveBlueprintRow(subfield);
 	});
+	// Set layout data
+	this.$layoutInput.val(JSON.stringify(this.layout));
+	// Append clear to bluprint panel
 	this.$bpPanel.find('.clear').appendTo(this.$bpPanel);
-};
-
-// Check if subfield is enabled
-SmartMap_FieldLayout.prototype._subfieldEnabled = function(subfield, $el) {
-	this.$ltRow = this.$fieldtype.find('tr[data-subfield="' + subfield + '"]');
-	this.$bpField = this.$fieldtype.find('.blueprint-' + subfield);
-	var checked  = $el.find('.layout-table-enable input').is(':checked');
-	if (checked) {
-		this.$ltRow.removeClass('disabled');
-		this.$bpField.show();
-	} else {
-		this.$ltRow.addClass('disabled');
-		this.$bpField.hide();
-	}
-	this._appendLayoutValue(subfield, 'enable', (checked ? 1 : 0));
 };
 
 // Check width of subfield
@@ -70,14 +63,22 @@ SmartMap_FieldLayout.prototype._subfieldWidth = function(subfield, $el) {
 		'width': (width - 1) + '%',
 		'margin-left': '1%'
 	});
-	this._appendLayoutValue(subfield, 'width', parseInt(width));
+	this.layout[subfield]['width'] = parseInt(width);
 };
 
-// Keep track of layout values via hidden fields
-SmartMap_FieldLayout.prototype._appendLayoutValue = function(subfield, type, value) {
-	var name = 'types[SmartMap_Address][layout][' + subfield + '][' + type + ']';
-	var hidden = '<input type="hidden" name="' + name + '" value="' + value + '" />';
-	//this.$layoutValues.append(hidden);
+// Check if subfield is enabled
+SmartMap_FieldLayout.prototype._subfieldEnabled = function(subfield, $el) {
+	this.$ltRow = this.$fieldtype.find('tr[data-subfield="' + subfield + '"]');
+	this.$bpField = this.$fieldtype.find('.blueprint-' + subfield);
+	var checked  = $el.find('.layout-table-enable input').is(':checked');
+	if (checked) {
+		this.$ltRow.removeClass('disabled');
+		this.$bpField.show();
+	} else {
+		this.$ltRow.addClass('disabled');
+		this.$bpField.hide();
+	}
+	this.layout[subfield]['enable'] = (checked ? 1 : 0);
 };
 
 // Move a row in the blueprint
@@ -91,6 +92,22 @@ SmartMap_FieldLayout.prototype._moveBlueprintRow = function(subfield) {
 
 // When page loads, initialize each field layout
 $('.smartmap-fieldtype').each(function () {
+	
 	console.log('Looping through settings fields...');
+
+	console.log($(this));
 	new SmartMap_FieldLayout($(this));
+});
+
+// When type select inputs change
+$('.matrix-configurator').on('change', 'select[id$="type"]', function () {
+	if ('SmartMap_Address' == $(this).val()) {
+		
+		console.log('Loading Matrix subfield...');
+
+		var $container = $(this).closest('.items');
+		var $smFieldtype = $container.find('.smartmap-fieldtype');
+		console.log($smFieldtype.length);
+		new SmartMap_FieldLayout($smFieldtype);
+	}
 });

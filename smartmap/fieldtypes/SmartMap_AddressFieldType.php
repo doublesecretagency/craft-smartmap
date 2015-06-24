@@ -99,6 +99,13 @@ class SmartMap_AddressFieldType extends BaseFieldType
 		));
 	}
 
+	// Preps the settings before they’re saved to the database.
+	public function prepSettings($settings)
+	{
+		$settings['layout'] = json_decode($settings['layout'], true);
+		return $settings;
+	}
+
 	// ==================================================== //
 
 	/*

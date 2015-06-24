@@ -1,4 +1,4 @@
-<div class="smartmap-fieldtype-layout-values"></div>
+<div class="smartmap-fieldtype-layout-values"><input type="hidden" name="layout" value="" /></div>
 <div class="smartmap-fieldtype-layout-table">
 	<table class="shadow-box editable">
 		<thead>
@@ -12,7 +12,7 @@
 		<tbody class="layout-table-rows">
 			{% for subfield,subsetting in settings.layout %}
 				{% set checked = (1 == subsetting.enable ? 'checked="checked"') %}
-				<tr class="layout-table-row" data-subfield="{{ subfield }}">
+				<tr class="layout-table-subfield" data-subfield="{{ subfield }}">
 					<td class="layout-table-enable"><input type="checkbox" value="1" {{ checked }} /></td>
 					<td class="layout-table-width"><input type="number" value="{{ subsetting.width }}" /></td>
 					<td class="layout-table-label">{{ craft.smartMap.labelFromHandle(subfield) }}</td>
