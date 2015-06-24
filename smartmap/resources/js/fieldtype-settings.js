@@ -1,35 +1,35 @@
 
 // Define field layout object
 var SmartMap_FieldLayout = function ($fieldtype) {
-	var parent = this;
-	// Initialize layout
-	this.layout = {};
-	// Define properties
-	this.$fieldtype   = $fieldtype;
-	this.$layoutInput = $fieldtype.find('.smartmap-fieldtype-layout-values input');
-	this.$bpPanel     = $fieldtype.find('.blueprint-panel');
-	// Add events
-	var triggerInputs = '.layout-table-enable input, .layout-table-width input';
-	$layoutTable = $fieldtype.find('.smartmap-fieldtype-layout-table');
-	$layoutTable.on('change', triggerInputs, function () {parent.blueprint();});
-	// Initialize sortable rows
-	$fieldtype.find('.layout-table-rows').each(function () {
-		new Sortable(this, {
-			handle: '.move',
-			animation: 150,
-			ghostClass: 'sortable-ghost',
-			onUpdate: function () {parent.blueprint();}
+	if (!$fieldtype.hasClass('blueprint-activated')) {
+		var parent = this;
+		// Initialize layout
+		this.layout = {};
+		// Define properties
+		this.$fieldtype   = $fieldtype;
+		this.$layoutInput = $fieldtype.find('.smartmap-fieldtype-layout-values input');
+		this.$bpPanel     = $fieldtype.find('.blueprint-panel');
+		// Add events
+		var triggerInputs = '.layout-table-enable input, .layout-table-width input';
+		$layoutTable = $fieldtype.find('.smartmap-fieldtype-layout-table');
+		$layoutTable.on('change', triggerInputs, function () {parent.blueprint();});
+		// Initialize sortable rows
+		$fieldtype.find('.layout-table-rows').each(function () {
+			new Sortable(this, {
+				handle: '.move',
+				animation: 150,
+				ghostClass: 'sortable-ghost',
+				onUpdate: function () {parent.blueprint();}
+			});
 		});
-	});
-	// Initialize blueprint
-	this.blueprint();
+		// Initialize blueprint
+		this.blueprint();
+		$fieldtype.addClass('blueprint-activated');
+	}
 };
 
 // Render blueprint of field layout
 SmartMap_FieldLayout.prototype.blueprint = function() {
-
-	console.log('Running blueprint...');
-
 	var parent = this;
 	// Clear layout
 	this.layout = {};
@@ -87,27 +87,18 @@ SmartMap_FieldLayout.prototype._moveBlueprintRow = function(subfield) {
 	this.$bpPanel.append($blueprintSubfield);
 };
 
-
 // =================================================================================================== //
 
 // When page loads, initialize each field layout
 $('.smartmap-fieldtype').each(function () {
-	
-	console.log('Looping through settings fields...');
-
-	console.log($(this));
 	new SmartMap_FieldLayout($(this));
 });
 
 // When type select inputs change
 $('.matrix-configurator').on('change', 'select[id$="type"]', function () {
 	if ('SmartMap_Address' == $(this).val()) {
-		
-		console.log('Loading Matrix subfield...');
-
-		var $container = $(this).closest('.items');
-		var $smFieldtype = $container.find('.smartmap-fieldtype');
-		console.log($smFieldtype.length);
-		new SmartMap_FieldLayout($smFieldtype);
+		$('.smartmap-fieldtype').each(function () {
+			new SmartMap_FieldLayout($(this));
+		});
 	}
 });
