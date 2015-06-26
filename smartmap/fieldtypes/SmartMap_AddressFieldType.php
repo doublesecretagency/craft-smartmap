@@ -103,6 +103,13 @@ class SmartMap_AddressFieldType extends BaseFieldType
 	public function prepSettings($settings)
 	{
 		$settings['layout'] = json_decode($settings['layout'], true);
+
+		// If layout not specified, use defaults
+		if (!$settings['layout']) {
+			$configs = $this->getSettings()->getAttributeConfigs();
+			$settings['layout'] = $configs['layout']['default'];
+		}
+
 		return $settings;
 	}
 
