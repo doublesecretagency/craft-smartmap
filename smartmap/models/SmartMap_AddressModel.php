@@ -3,6 +3,12 @@ namespace Craft;
 
 class SmartMap_AddressModel extends BaseModel
 {
+
+    public function __toString()
+    {
+        return (string) $this->format(true, true);
+    }
+
     protected function defineAttributes()
     {
 
