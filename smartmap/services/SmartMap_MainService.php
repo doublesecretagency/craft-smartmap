@@ -59,14 +59,18 @@ class SmartMap_MainService extends BaseApplicationComponent
 		foreach ($searchResults as $result) {
 			$restructured = array();
 			foreach ($result['address_components'] as $component) {
-				$c = $component['types'][0];
-				switch ($c) {
-					case 'country':
-						$restructured[$c] = $component['long_name'];
-						break;
-					default:
-						$restructured[$c] = $component['short_name'];
-						break;
+				if (empty($component['types'])) {
+					$restructured[$c] = '';
+				} else {
+					$c = $component['types'][0];
+					switch ($c) {
+						case 'country':
+							$restructured[$c] = $component['long_name'];
+							break;
+						default:
+							$restructured[$c] = $component['short_name'];
+							break;
+					}
 				}
 			}
 			$restructured['formatted'] = $result['formatted_address'];
