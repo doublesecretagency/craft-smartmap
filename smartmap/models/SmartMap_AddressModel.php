@@ -107,7 +107,7 @@ class SmartMap_AddressModel extends BaseModel
      *
      * @return string
      */
-    public function directionsUrl($startingAddress = false, $destinationTitle = false, $startingTitle = false)
+    public function directionsUrl($destinationTitle = false, $startingTitle = false, $startingAddress = false)
     {
         // First parameter is skippable
         if (is_string($startingAddress)) {
