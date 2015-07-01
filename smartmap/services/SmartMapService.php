@@ -405,11 +405,34 @@ class SmartMapService extends BaseApplicationComponent
 	public function markerCoords($locations, $options = array())
 	{
 
+		// If no locations set, return default
 		if (!$locations || empty($locations)) {
 			return array(
 				'center'  => $this->defaultCoords(),
 				'markers' => array(),
 			);
+		}
+
+		// If SmartMap_AddressModel, process immediately
+		if (is_object($locations) && is_a($locations, 'Craft\\SmartMap_AddressModel')) {
+
+			// Set markers
+			if ($locations->hasCoords()) {
+				$lat = $locations->lat;
+				$lng = $locations->lng;
+				$markers[] = array(
+					'lat'   => (float) $lat,
+					'lng'   => (float) $lng,
+					'title' => '',
+				);
+			}
+
+			// Return center point and all markers
+			return array(
+				'center'  => array('lat' => $lat, 'lng' => $lng),
+				'markers' => $markers,
+			);
+
 		}
 
 		// If one location, process as an array

@@ -424,7 +424,7 @@ if (!window.console) {
     {
 
         //$filter = SmartMap_FilterCriteriaModel::populateModel($coords, $options = array());
-
+        
         // Decipher map info
         $map = craft()->smartMap->markerCoords($markers, $options);
 
