@@ -32,7 +32,7 @@ return array(
 	'The geocode was successful but returned no results.' => 'X',
 	'You are over your quota. If this is a shared server, enable <a href="{url}">Google Maps API Keys.</a>' => '<a href="{url}">X</a>',
 	'Your request was denied for some reason.' => 'X',
-	'The query is missing.' => 'X',
+	'Invalid request. Please provide more address information.' => 'X',
 
 	// Settings page
 	'Documentation & Feedback' => 'X',
@@ -60,7 +60,7 @@ return array(
 	'(service disabled)' => 'X',
 	'User ID' => 'X',
 	'License Key' => 'X',
-	'If you have recently switched services, clear old geolocation results by visiting <strong><a href="{url}">Settings &nbsp;&gt;&nbsp; Clear Caches &nbsp;&gt;&nbsp; Data caches</a></strong>' => '<a href="{url}">X</a>',
+	'If you have recently switched services, clear old geolocation results by visiting:' => 'X',
 	'WARNING' => 'X',
 	'FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net.' => 'X',
 	'<strong>If you require geolocation, MaxMind is a far more reliable service.</strong>' => 'X',

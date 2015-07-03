@@ -116,7 +116,7 @@
 	}) }}
 </div>
 
-<p>{{ 'If you have recently switched services, clear old geolocation results by visiting <strong><a href="{url}">Settings &nbsp;&gt;&nbsp; Clear Caches &nbsp;&gt;&nbsp; Data caches</a></strong>'|t({url:url('settings')})|raw }}</p>
+<p>{{ "If you have recently switched services, clear old geolocation results by visiting:"|t }}&nbsp; <strong><a href="{{ url('settings') }}">{{ "Settings"|t }} &nbsp;&gt;&nbsp; {{ "Clear Caches"|t }} &nbsp;&gt;&nbsp; {{ "Data caches"|t }}</a></strong></p>
 
 <div class="smartmap-field-container">
 	<h3>{{ "WARNING"|t }}</h3>

@@ -42,7 +42,7 @@ class SmartMap_MainService extends BaseApplicationComponent
 				}
 				break;
 			case 'INVALID_REQUEST':
-				$message = Craft::t('The query is missing.');
+				$message = Craft::t('Invalid request. Please provide more address information.');
 				break;
 		}
 
