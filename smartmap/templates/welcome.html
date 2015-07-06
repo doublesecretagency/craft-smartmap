@@ -1,25 +1,21 @@
 {% extends '_layouts/cp' %}
+{% set title = 'Welcome to Smart Map!' %}
 
-{% set title = 'Introducing Smart Map 2.0'|t %}
+{% set linkChangeLog = 'https://craftpl.us/plugins/smart-map/change-log' %}
+{% set linkNewField  = url('settings/fields/new') %}
 
 {% set content %}
-	<h2>New Features:</h2>
-	<ul style="margin-left:20px; list-style:disc;">
-		<li>Drag &amp; Drop Marker Pins</li>
-		<li>Improved Address Selection UI</li>
-		<li>Refactored Map Generator</li>
-		<li>Full Range of Map API Options</li>
-		<li>Fully Extendable via JavaScript</li>
-		<li>Improved Error Handling</li>
-		<li>Optional Integrations
-			<ul style="margin-left:20px; list-style:circle;">
-				<li>Google Maps for Business</li>
-				<li>MaxMind Geolocation Service</li>
-			</ul>
-		</li>
-	</ul>
-	<h3>Coming Soon</h3>
-	<ul style="margin-left:20px; list-style:disc;">
-		<li>Polygons</li>
-	</ul>
+    <div style="text-align:center; margin:0 auto;">
+        <img src="{{ resourceUrl('smartmap/images/logo.png') }}">
+        <h2>Thanks for using Smart Map!</h2>
+        <p>Feel free to <a href="mailto:support@doublesecretagency.com?subject=Smart+Map+~+Fresh+Installation" target="_blank">contact us</a> with any feature requests, bug reports, or suggestions.</p>
+        <p>
+            <a href="{{ linkNewField }}"><button class="btn submit">Create an Address Field</button></a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="{{ linkChangeLog }}" target="_blank"><button class="btn submit">What's New...</button></a>
+        </p>
+    </div>
+    <script>
+        window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(e){return function(){var n=Array.prototype.slice.call(arguments);return n.unshift(e),window.analytics.push(n),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key)}window.analytics.load=function(e){if(!document.getElementById("analytics-js")){var t=document.createElement("script");t.type="text/javascript",t.id="analytics-js",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)}},window.analytics.SNIPPET_VERSION="2.0.9",window.analytics.load("636oi4pt7l");window.analytics.track("Installed",{"Plugin Name":"Smart Map",source:window.location.host});
+    </script>
 {% endset %}

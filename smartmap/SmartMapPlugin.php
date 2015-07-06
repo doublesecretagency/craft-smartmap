@@ -73,7 +73,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function onAfterInstall()
 	{
-		craft()->request->redirect(UrlHelper::getCpUrl('smartmap/thanks'));
+		craft()->request->redirect(UrlHelper::getCpUrl('smartmap/welcome'));
 	}
 
 }
