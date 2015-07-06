@@ -66,10 +66,10 @@ class SmartMapService extends BaseApplicationComponent
 		}
 	}
 
-	// Automatically detect IP address from $_SERVER['REMOTE_ADDR']
+	// Automatically detect IP address
 	private function _detectMyIp()
 	{
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$ip = craft()->request->userHostAddress;
 		if (('127.0.0.1' == $ip) || (!$this->validIp($ip))) {
 			return false;
 		} else {

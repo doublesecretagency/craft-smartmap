@@ -82,7 +82,7 @@ class SmartMapVariable
     public function debug()
     {
         $debugData = array(
-            'remote_addr'   => $_SERVER['REMOTE_ADDR'],
+            'remote_addr'   => craft()->request->userHostAddress,
             'cookieValue'   => false,
             'cookieExpires' => false,
             'cacheValue'    => false,
