@@ -20,7 +20,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '2.2.0 beta';
+		return '2.2.0';
 	}
 
 	public function getDeveloper()
