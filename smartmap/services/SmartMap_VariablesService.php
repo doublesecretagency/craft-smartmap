@@ -11,7 +11,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
     public function init() {
         parent::init();
-        $api  = '//maps.googleapis.com/maps/api/js';
+        $api  = 'https://maps.googleapis.com/maps/api/js';
         $api .= craft()->smartMap->googleBrowserKey('?');
         craft()->templates->includeJsFile($api);
         craft()->templates->includeJsResource('smartmap/js/smartmap.js');
@@ -431,7 +431,7 @@ if (!window.console) {
         $width  = (array_key_exists('width', $options)  ? $options['width']  : '200');
         $height = (array_key_exists('height', $options) ? $options['height'] : '150');
 
-        $src  = '//maps.googleapis.com/maps/api/staticmap?visual_refresh=true';
+        $src  = 'https://maps.googleapis.com/maps/api/staticmap?visual_refresh=true';
         $src .= craft()->smartMap->googleBrowserKey();
         $src .= '&scale=2'; // Retina
         $src .= '&center='.$map['center']['lat'].','.$map['center']['lng'];

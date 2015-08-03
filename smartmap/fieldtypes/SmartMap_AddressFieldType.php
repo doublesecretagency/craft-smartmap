@@ -36,7 +36,7 @@ class SmartMap_AddressFieldType extends BaseFieldType
 
 		craft()->smartMap->measurementUnit = MeasurementUnit::Miles;
 
-		$api  = '//maps.googleapis.com/maps/api/js';
+		$api  = 'https://maps.googleapis.com/maps/api/js';
 		$api .= craft()->smartMap->googleBrowserKey('?');
 
 		craft()->templates->includeJsFile($api);
@@ -90,7 +90,7 @@ class SmartMap_AddressFieldType extends BaseFieldType
 	// Field settings HTML
 	public function getSettingsHtml()
 	{
-		craft()->templates->includeCssFile('//fonts.googleapis.com/css?family=Coming+Soon');
+		craft()->templates->includeCssFile('https://fonts.googleapis.com/css?family=Coming+Soon');
 		craft()->templates->includeCssResource('smartmap/css/fieldtype-settings.css');
 		craft()->templates->includeJsResource('smartmap/js/Sortable.min.js');
 		craft()->templates->includeJsResource('smartmap/js/fieldtype-settings.js');
