@@ -152,10 +152,15 @@ class SmartMap_AddressFieldType extends BaseFieldType
 			$errors = array();
 		}
 
-		$validLat = array_key_exists('lat', $value) && (!$value['lat'] || is_numeric($value['lat']));
-		$validLng = array_key_exists('lng', $value) && (!$value['lng'] || is_numeric($value['lng']));
+		if (is_object($value)) {
+			$validLat = is_numeric($value->lat) || !$value->lat;
+			$validLng = is_numeric($value->lng) || !$value->lng;
+		} else if (is_array($value)) {
+			$validLat = array_key_exists('lat', $value) && (is_numeric($value['lat']) || !$value['lat']);
+			$validLng = array_key_exists('lng', $value) && (is_numeric($value['lng']) || !$value['lng']);
+		}
 
-		if (!$validLat || !$validLng)
+		if (!($validLat && $validLng))
 		{
 			$errors[] = Craft::t('If coordinates are specified, they must be numbers.');
 		}
