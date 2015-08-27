@@ -44,7 +44,7 @@ return array(
 	'If you expect extremely high traffic to your website.' => 'Si vous prévoyez reçevoir un traffic très élevé.',
 	'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>' => 'Pour obtenir des clés d\'API Googla Maps, <a href="{url}" target="_blank">Veuillez suivre ces instructions</a>.',
 	'Google API Server Key' => 'Clé de serveur',
-	'Used for address lookups' => 'Utilisé pour la recherche d'adresse,
+	'Used for address lookups' => 'Utilisé pour la recherche d\'adresse',
 	'Google API Browser Key' => 'Clé d\'API pour navigateur',
 	'Used for static & dynamic map rendering' => 'Utilisé pour les rendus statique et dynamique',
 	'Geolocation' => 'Géolocalisation',
