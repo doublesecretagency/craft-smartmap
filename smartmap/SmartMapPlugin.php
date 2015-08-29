@@ -76,4 +76,38 @@ class SmartMapPlugin extends BasePlugin
 		craft()->request->redirect(UrlHelper::getCpUrl('smartmap/welcome'));
 	}
 
+	/**
+	 * For compatibility with Import plugin
+	 */
+	public function modifyImportRow($element, $map, $data)
+	{
+		// Map data to fields
+		$fields = array_combine($map, $data);
+
+		// Initialize content array
+		$content = array();
+
+		// Loop through subfields
+		foreach ($fields as $key => $value) {
+			// Get handle & subfield from key
+			if (preg_match('/^(.*)\[(.*)]$/', $key, $matches)) {
+				$handle   = $matches[1];
+				$subfield = $matches[2];
+				// Ensure it's a Smart Map Address field
+				$f = craft()->fields->getFieldByHandle($handle);
+				if ('SmartMap_Address' == $f->fieldType->classHandle) {
+					// Ensure address array exists
+					if (!array_key_exists($handle, $content)) {
+						$content[$handle] = array();
+					}
+					// Set value to subfield of correct address array
+					$content[$handle][$subfield] = $value;
+				}
+			}
+		}
+
+		// Set new content
+		$element->setContentFromPost($content);
+	}
+
 }

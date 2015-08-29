@@ -153,11 +153,15 @@ class SmartMap_AddressFieldType extends BaseFieldType
 		}
 
 		if (is_object($value)) {
-			$validLat = is_numeric($value->lat) || !$value->lat;
-			$validLng = is_numeric($value->lng) || !$value->lng;
+			$hasLat = (bool) $value->lat;
+			$hasLng = (bool) $value->lng;
+			$validLat = ($hasLat ? is_numeric($value->lat) : true);
+			$validLng = ($hasLng ? is_numeric($value->lng) : true);
 		} else if (is_array($value)) {
-			$validLat = array_key_exists('lat', $value) && (is_numeric($value['lat']) || !$value['lat']);
-			$validLng = array_key_exists('lng', $value) && (is_numeric($value['lng']) || !$value['lng']);
+			$hasLat = (array_key_exists('lat', $value) && $value['lat']);
+			$hasLng = (array_key_exists('lng', $value) && $value['lng']);
+			$validLat = ($hasLat ? is_numeric($value['lat']) : true);
+			$validLng = ($hasLng ? is_numeric($value['lng']) : true);
 		}
 
 		if (!($validLat && $validLng))
