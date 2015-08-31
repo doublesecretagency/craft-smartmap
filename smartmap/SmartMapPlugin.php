@@ -76,9 +76,17 @@ class SmartMapPlugin extends BasePlugin
 		craft()->request->redirect(UrlHelper::getCpUrl('smartmap/welcome'));
 	}
 
-	/**
-	 * For compatibility with Import plugin
-	 */
+
+	// =========================================================================== //
+	// For compatibility with Import plugin
+
+	public function registerImportOptionPaths()
+	{
+		return array(
+			'SmartMap_Address' => 'smartmap/_importOption.html',
+		);
+	}
+
 	public function modifyImportRow($element, $map, $data)
 	{
 		// Map data to fields

@@ -1,0 +1,5 @@
+{% for subfield,subsetting in f.settings.layout %}
+	{% set optionHandle = f.handle ~ '[' ~ subfield ~ ']' %}
+	{% set optionLabel  = f.name ~ ' (' ~ craft.smartMap.labelFromHandle(subfield) ~ ')' %}
+	<option value="{{ optionHandle }}" {{ column|lower == subfield|lower ? 'selected' }}>{{ optionLabel }}</option>
+{% endfor %}
