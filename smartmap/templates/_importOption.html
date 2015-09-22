@@ -8,5 +8,6 @@
 {% for subfield in smartMapSubfields %}
 	{% set optionHandle = f.handle ~ '[' ~ subfield ~ ']' %}
 	{% set optionLabel  = f.name ~ ' (' ~ craft.smartMap.labelFromHandle(subfield) ~ ')' %}
-	<option value="{{ optionHandle }}" {{ column|lower == subfield|lower ? 'selected' }}>{{ optionLabel }}</option>
+	{% set match = (column|lower in [optionLabel|lower, subfield|lower] ) %}
+	<option value="{{ optionHandle }}" {{ match ? 'selected' }}>{{ optionLabel }}</option>
 {% endfor %}
