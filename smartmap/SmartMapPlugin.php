@@ -4,6 +4,9 @@ namespace Craft;
 class SmartMapPlugin extends BasePlugin
 {
 
+	// Collection of valid address fields for export
+	private $_exportValidAddressFields = array();
+
 	public function init()
 	{
 		parent::init();
@@ -117,5 +120,63 @@ class SmartMapPlugin extends BasePlugin
 		// Set new content
 		$element->setContentFromPost($content);
 	}
+
+	// =========================================================================== //
+	// For compatibility with Export plugin
+
+	public function registerExportTableRowPaths()
+	{
+		return array(
+			'SmartMap_Address' => 'smartmap/_exportTableRow.html',
+		);
+	}
+
+	public function modifyExportAttributes(&$attributes, BaseElementModel $element)
+	{
+		// Loop through attributes
+		foreach ($attributes as $handle => $value) {
+
+			// Separate at "."
+			$handleParts = explode('.', $handle);
+
+			// If multiple parts
+			if (1 < count($handleParts)) {
+
+				// Set real handle and subfield
+				$realHandle = $handleParts[0];
+				$subfield   = $handleParts[1];
+
+				// If field type not already validated
+				if (!array_key_exists($handle, $this->_exportValidAddressFields)) {
+
+					// Invalid by default
+					$valid = false;
+
+					// Get field model
+					$field = craft()->fields->getFieldByHandle($realHandle);
+
+					// If field exists
+					if ($field) {
+
+						// Set validity of whether it's a Smart Map Address field or not
+						$valid = ('SmartMap_Address' == $field->type);
+
+					}
+
+					// Add to validation array
+					$this->_exportValidAddressFields[$handle] = $valid;
+				}
+
+				// If valid address field
+				if ($this->_exportValidAddressFields[$handle]) {
+
+					// Set proper value for attribute
+					$attributes[$handle] = $element->$realHandle->$subfield;
+				}
+			}
+		}
+	}
+
+	// =========================================================================== //
 
 }

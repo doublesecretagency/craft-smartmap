@@ -1,0 +1,51 @@
+{% set smartMapSubfields = {} %}
+{% set addressField = craft.fields.getFieldByHandle(handle) %}
+
+{% if addressField.settings and addressField.settings.layout is defined %}
+	{% for subfieldHandle,subfieldData in addressField.settings.layout %}
+		{% set smartMapSubfields = smartMapSubfields|merge({(subfieldHandle):subfieldData.enable}) %}
+	{% endfor %}
+{% else %}
+	{% set smartMapSubfields = {
+		'street1': 1,
+		'street2': 1,
+		'city':    1,
+		'state':   1,
+		'zip':     1,
+		'country': 1,
+		'lat':     1,
+		'lng':     1,
+	} %}
+{% endif %}
+
+{% for subfieldHandle,subfieldEnabled in smartMapSubfields %}
+	{% set subfieldLabel = craft.smartMap.labelFromHandle(subfieldHandle) %}
+	{% set mixedHandle = handle ~ '.' ~ subfieldHandle %}
+	<tr>
+		<td>
+			<div class="field">
+				<div class="heading">
+					<label>{{ data.name }} ({{ subfieldLabel }})</label>
+					<input type="hidden" name="fields[{{ mixedHandle }}][name]" value="{{ data.name }} ({{ subfieldLabel }})">
+					{% if data.entrytype is defined %}<input type="hidden" name="fields[{{ mixedHandle }}][entrytype]" value="{{ data.entrytype }}">{% endif %}
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="field">
+				<div class="heading">
+					<label>{{ "as"|t }}</label>
+					<input type="text" class="text" name="fields[{{ mixedHandle }}][label]" value="{{ data.label is defined ? data.label : data.name }} ({{ subfieldLabel }})">
+				</div>
+			</div>
+		</td>
+		<td>
+			{{ forms.checkboxField({
+				label: 'Include in export'|t,
+				instructions: "This value will be included in the export file."|t,
+				name: "fields[" ~ mixedHandle ~ "][checked]",
+				checked: subfieldEnabled
+			}) }}
+		</td>
+	</tr>
+{% endfor %}
