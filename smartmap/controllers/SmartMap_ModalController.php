@@ -9,7 +9,7 @@ class SmartMap_ModalController extends BaseController
 	public function actionAddressSearch()
 	{
 		$this->requireAjaxRequest();
-		
+
 		$address = craft()->request->getPost('address');
 		if (!trim($address)) {
 			$this->returnJson(array(

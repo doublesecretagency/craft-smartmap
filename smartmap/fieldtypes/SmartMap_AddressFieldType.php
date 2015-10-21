@@ -56,12 +56,12 @@ class SmartMap_AddressFieldType extends BaseFieldType
 		craft()->templates->includeJs('here = '.$hereJs.';');
 
 		$variables = array_merge(
-			$model->getAttributes(), 
+			$model->getAttributes(),
 			array('settings' => $this->getSettings())
 		);
 
 		return craft()->templates->render('smartmap/address/input', $variables);
-		
+
 	}
 
 	// Don't put field value into "craft_content" table
@@ -119,7 +119,7 @@ class SmartMap_AddressFieldType extends BaseFieldType
 	// As the data enters the database
 	public function prepValueFromPost($value)
 	{
-		// Called before onAfterSave() 
+		// Called before onAfterSave()
 		return $value;
 	}
 	*/
@@ -135,7 +135,7 @@ class SmartMap_AddressFieldType extends BaseFieldType
 	// ==================================================== //
 
 	/**
-	 * Validates our fields submitted value beyond the checks 
+	 * Validates our fields submitted value beyond the checks
 	 * that were assumed based on the content attribute.
 	 *
 	 * Returns 'true' or any custom validation errors.
@@ -145,6 +145,9 @@ class SmartMap_AddressFieldType extends BaseFieldType
 	 */
 	public function validate($value)
 	{
+		$validLat = false;
+		$validLng = false;
+
 		$errors = parent::validate($value);
 
 		if (!is_array($errors))
@@ -183,10 +186,10 @@ class SmartMap_AddressFieldType extends BaseFieldType
 	// EVENTS
 	// ==================================================== //
 
-	// 
+	//
 	//public function onBeforeSave() {}
 
-	// 
+	//
 	//public function onAfterSave() {}
 
 	// After saving element, save field to plugin table
