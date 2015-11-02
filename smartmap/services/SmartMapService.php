@@ -189,11 +189,15 @@ class SmartMapService extends BaseApplicationComponent
 		// Join with plugin table
 		$query->join(SmartMap_AddressRecord::TABLE_NAME, 'elements.id='.craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.elementId');
 
-		// Filter according to subfield(s)
-		$this->_filterSubfield($query, $params);
-
 		// Search by comparing coordinates
-		$this->_searchCoords($query, $params);
+		if (array_key_exists('target', $params) || array_key_exists('range', $params)) {
+			$this->_searchCoords($query, $params);
+		}
+
+		// Filter according to subfield(s)
+		if (array_key_exists('filter', $params)) {
+			$this->_filterSubfield($query, $params);
+		}
 	}
 
 	// Filter according to subfield(s)
@@ -201,43 +205,41 @@ class SmartMapService extends BaseApplicationComponent
 	{
 		$realSubfields = array('street1','street2','city','state','zip','country');
 
-		if (array_key_exists('filter', $params)) {
-			foreach ($params['filter'] as $subfield => $value) {
-				if (in_array($subfield, $realSubfields)) {
+		foreach ($params['filter'] as $subfield => $value) {
+			if (in_array($subfield, $realSubfields)) {
 
-					// Set full field reference
-					$field = craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.'.$subfield;
+				// Set full field reference
+				$field = craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.'.$subfield;
 
-					// Ensure value is an array
-					if (is_string($value)) {
-						$value = array($value);
-					}
-					// If value is not an array, skip
-					if (!is_array($value)) {
-						continue;
-					}
-
-					// Compile WHERE clause
-					$where = '';
-					$placeholders = array();
-
-					// Loop through filter values
-					foreach ($value as $filterValue) {
-
-						// Generate placeholder token
-						$token = ':a'.preg_replace('/[^0-9]/', '', microtime());
-
-						// Append to WHERE
-						if ($where) {$where .= ' OR ';}
-						$where .= "($field=$token)";
-
-						// Add placeholder
-						$placeholders[$token] = $filterValue;
-					}
-
-					// Append WHERE clause to query
-					$query->andWhere("($where)", $placeholders);
+				// Ensure value is an array
+				if (is_string($value)) {
+					$value = array($value);
 				}
+				// If value is not an array, skip
+				if (!is_array($value)) {
+					continue;
+				}
+
+				// Compile WHERE clause
+				$where = '';
+				$placeholders = array();
+
+				// Loop through filter values
+				foreach ($value as $filterValue) {
+
+					// Generate placeholder token
+					$token = ':a'.preg_replace('/[^0-9]/', '', microtime());
+
+					// Append to WHERE
+					if ($where) {$where .= ' OR ';}
+					$where .= "($field=$token)";
+
+					// Add placeholder
+					$placeholders[$token] = $filterValue;
+				}
+
+				// Append WHERE clause to query
+				$query->andWhere("($where)", $placeholders);
 			}
 		}
 	}
