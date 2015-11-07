@@ -23,7 +23,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '2.2.1 rc4';
+		return '2.2.1 rc5';
 	}
 
 	public function getDeveloper()
@@ -81,12 +81,41 @@ class SmartMapPlugin extends BasePlugin
 
 
 	// =========================================================================== //
+	// For compatibility with Feed Me plugin
+
+	public function registerFeedMeMappingOptions()
+	{
+		return array(
+			'SmartMap_Address' => 'smartmap/_plugins/feedMeOptions',
+		);
+	}
+
+	public function prepForFeedMeFieldType_SmartMap_Address(&$data, $handle)
+	{
+		$content = array();
+
+		// We have a few subfields which contain the actual data we need
+		if (preg_match('/^(.*)\[(.*)]$/', $handle, $matches)) {
+			$fieldHandle    = $matches[1];
+			$subfieldHandle = $matches[2];
+
+			if (!array_key_exists($fieldHandle, $content)) {
+				$content[$fieldHandle] = array();
+			}
+
+			$content[$fieldHandle][$subfieldHandle] = $data;
+		}
+
+		$data = $content;
+	}
+
+	// =========================================================================== //
 	// For compatibility with Import plugin
 
 	public function registerImportOptionPaths()
 	{
 		return array(
-			'SmartMap_Address' => 'smartmap/_importOption.html',
+			'SmartMap_Address' => 'smartmap/_plugins/importOptions',
 		);
 	}
 
@@ -127,7 +156,7 @@ class SmartMapPlugin extends BasePlugin
 	public function registerExportTableRowPaths()
 	{
 		return array(
-			'SmartMap_Address' => 'smartmap/_exportTableRow.html',
+			'SmartMap_Address' => 'smartmap/_plugins/exportTableRow',
 		);
 	}
 

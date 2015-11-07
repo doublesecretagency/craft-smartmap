@@ -1,0 +1,21 @@
+{% macro generateOption(label, value, field, key, feed) %}
+    {% set selected = '' %}
+    {% set value = field.handle ~ '[' ~ value ~ ']' %}
+
+    {% if key in feed.fieldMapping | keys %}
+        {% set selected = (feed.fieldMapping[key] == value) ? 'selected' : '' %}
+    {% endif %}
+
+    <option {{ selected }} value="{{ value }}">{{ label }}</option>
+{% endmacro %}
+
+{% from _self import generateOption %}
+
+{{ generateOption('Address (Street 1)',  'street1', field, key, feed) }}
+{{ generateOption('Address (Street 2)',  'street2', field, key, feed) }}
+{{ generateOption('Address (City)',      'city',    field, key, feed) }}
+{{ generateOption('Address (State)',     'state',   field, key, feed) }}
+{{ generateOption('Address (Zip)',       'zip',     field, key, feed) }}
+{{ generateOption('Address (Country)',   'country', field, key, feed) }}
+{{ generateOption('Address (Latitude)',  'lat',     field, key, feed) }}
+{{ generateOption('Address (Longitude)', 'lng',     field, key, feed) }}
