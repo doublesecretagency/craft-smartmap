@@ -81,7 +81,7 @@ class SmartMapPlugin extends BasePlugin
 
 
 	// =========================================================================== //
-	// For compatibility with Feed Me plugin
+	// For compatibility with Feed Me plugin (v1.3.7)
 
 	public function registerFeedMeMappingOptions()
 	{
@@ -90,27 +90,33 @@ class SmartMapPlugin extends BasePlugin
 		);
 	}
 
-	public function prepForFeedMeFieldType_SmartMap_Address(&$data, $handle)
+	public function prepForFeedMeFieldType($field, &$data, $handle)
 	{
-		$content = array();
+		// Ensure it's a Smart Map Address field
+		if ($field->type == 'SmartMap_Address') {
 
-		// We have a few subfields which contain the actual data we need
-		if (preg_match('/^(.*)\[(.*)]$/', $handle, $matches)) {
-			$fieldHandle    = $matches[1];
-			$subfieldHandle = $matches[2];
+			// Initialize content array
+			$content = array();
 
-			if (!array_key_exists($fieldHandle, $content)) {
-				$content[$fieldHandle] = array();
+			// Separate field handle & subfield handle
+			if (preg_match('/^(.*)\[(.*)]$/', $handle, $matches)) {
+				$fieldHandle    = $matches[1];
+				$subfieldHandle = $matches[2];
+				// Ensure address array exists
+				if (!array_key_exists($fieldHandle, $content)) {
+					$content[$fieldHandle] = array();
+				}
+				// Set value to subfield of correct address array
+				$content[$fieldHandle][$subfieldHandle] = $data;
 			}
 
-			$content[$fieldHandle][$subfieldHandle] = $data;
+			// Modify data
+			$data = $content;
 		}
-
-		$data = $content;
 	}
 
 	// =========================================================================== //
-	// For compatibility with Import plugin
+	// For compatibility with Import plugin (v0.8.26)
 
 	public function registerImportOptionPaths()
 	{
@@ -151,7 +157,7 @@ class SmartMapPlugin extends BasePlugin
 	}
 
 	// =========================================================================== //
-	// For compatibility with Export plugin
+	// For compatibility with Export plugin (v0.5.8)
 
 	public function registerExportTableRowPaths()
 	{

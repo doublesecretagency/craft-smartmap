@@ -12,13 +12,13 @@ class SmartMap_FilterCriteriaModel extends BaseModel
         );
 
         return array(
-            
+
             // Geomapping
             'target' => AttributeType::String,
             'coords' => array(AttributeType::Mixed,  'default' => $defaultCoords),
             'range'  => array(AttributeType::Number, 'default' => 25),
             'units'  => array(AttributeType::String, 'default' => MeasurementUnit::Miles),
-            
+
             // Field
             'elementType'   => array(AttributeType::String, 'default' => ElementType::Entry),
             'sectionHandle' => AttributeType::String,
