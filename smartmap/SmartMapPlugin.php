@@ -107,7 +107,7 @@ class SmartMapPlugin extends BasePlugin
 					$content[$fieldHandle] = array();
 				}
 				// Set value to subfield of correct address array
-				$content[$fieldHandle][$subfieldHandle] = $data;
+				$content[$fieldHandle][$subfieldHandle] = $data[$fieldHandle];
 			}
 
 			// Modify data
