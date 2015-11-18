@@ -282,8 +282,19 @@ if (!window.console) {
     private function _buildMap($mapId, $mapOptions)
     {
         // If not specified, "zoom" defaults to 6
+        $defaultZoom = 6;
+
+        // (1) Convert zoom object to string, or fall back to default
         if (!array_key_exists('zoom', $mapOptions)) {
-            $mapOptions['zoom'] = 6;
+            $mapOptions['zoom'] = $defaultZoom;
+        } else {
+            $mapOptions['zoom'] = (string) $mapOptions['zoom'];
+        }
+        // (2) Convert zoom string to integer, or fall back to default
+        if (!is_numeric($mapOptions['zoom'])) {
+            $mapOptions['zoom'] = $defaultZoom;
+        } else {
+            $mapOptions['zoom'] = (int) $mapOptions['zoom'];
         }
 
         // LEGACY: "scrollZoom" option
