@@ -63,6 +63,12 @@ class SmartMapVariable
         return craft()->smartMap->lookup($target);
     }
 
+    // Lookup a target location, returning only coordinates of first result
+    public function lookupCoords($target)
+    {
+        return craft()->smartMap->lookupCoords($target);
+    }
+
     // Get the subfield label from its handle
     public function labelFromHandle($handle)
     {
@@ -100,5 +106,5 @@ class SmartMapVariable
         }
         return $debugData;
     }
-    
+
 }

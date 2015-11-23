@@ -689,7 +689,6 @@ class SmartMapService extends BaseApplicationComponent
     // Lookup a target location, returning full JSON
 	public function lookup($target)
 	{
-
 		$api  = 'https://maps.googleapis.com/maps/api/geocode/json';
 		$api .= '?address='.rawurlencode($target);
 		$api .= $this->googleServerKey();
@@ -700,7 +699,16 @@ class SmartMapService extends BaseApplicationComponent
 		$response = curl_exec($ch);
 
 		return json_decode($response, true);
+	}
 
+    // Lookup a target location, returning only coordinates of first result
+	public function lookupCoords($target)
+	{
+		$response = $this->lookup($target);
+		if (!empty($response['results'])) {
+			return $response['results'][0]['geometry']['location'];
+		}
+		return false;
 	}
 
 
