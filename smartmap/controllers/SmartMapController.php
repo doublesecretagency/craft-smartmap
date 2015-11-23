@@ -28,6 +28,15 @@ class SmartMapController extends BaseController
 		$this->returnJson($response);
 	}
 
+    // Lookup a target location, returning only coordinates of first result
+	public function actionLookupCoords()
+	{
+		$this->requireAjaxRequest();
+		$target = craft()->request->getPost('target');
+		$response = craft()->smartMap->lookupCoords($target);
+		$this->returnJson($response);
+	}
+
 	// Get location information for debugging
 	public function actionDebug()
 	{
