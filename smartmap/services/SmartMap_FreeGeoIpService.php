@@ -13,8 +13,8 @@ class SmartMap_FreeGeoIpService extends BaseApplicationComponent
 		{
 			// Ping geo location service
 			$results = $this->rawData($ip);
-			// Populate "here" array
-			craft()->smartMap->here = array(
+			// Populate visitor geolocation data
+			craft()->smartMap->visitor = array(
 				'ip'        => (array_key_exists('ip',$results)           ? $results['ip']           : ''),
 				'city'      => (array_key_exists('city',$results)         ? $results['city']         : ''),
 				'state'     => (array_key_exists('region_name',$results)  ? $results['region_name']  : ''),
@@ -24,9 +24,9 @@ class SmartMap_FreeGeoIpService extends BaseApplicationComponent
 				'longitude' => (array_key_exists('longitude',$results)    ? $results['longitude']    : ''),
 			);
 			// If valid IP, set cache & cookie
-			if (craft()->smartMap->validIp(craft()->smartMap->here['ip'])) {
+			if (craft()->smartMap->validIp(craft()->smartMap->visitor['ip'])) {
 				craft()->smartMap->setGeoDataCookie($ip);
-				craft()->smartMap->cacheGeoData(craft()->smartMap->here['ip'], 'FreeGeoIp.net');
+				craft()->smartMap->cacheGeoData(craft()->smartMap->visitor['ip'], 'FreeGeoIp.net');
 			}
 		}
 		catch (\Exception $e)

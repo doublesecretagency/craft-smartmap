@@ -4,11 +4,12 @@ namespace Craft;
 class SmartMapService extends BaseApplicationComponent
 {
 
-	const IP_COOKIE_NAME = 'smartMap_myIp';
+	const IP_COOKIE_NAME = 'SmartMap_VisitorIp';
 
 	public $settings;
 
-	public $here = false;
+	public $here = false; // DEPRECATED
+	public $visitor = false;
 	public $geoInfoSet = false;
 
 	public $cookieData = false;
@@ -20,11 +21,18 @@ class SmartMapService extends BaseApplicationComponent
 
 	public $defaultZoom = 11;
 
+	// Initialize
+	public function init()
+	{
+		// ALIAS
+		$this->here =& $this->visitor;
+	}
+
 	// Load geo data
 	public function loadGeoData()
 	{
-		if (!$this->here) {
-			$this->here = array( // Default to empty container array
+		if (!$this->visitor) {
+			$this->visitor = array( // Default to empty container array
 				'ip'        => false,
 				'city'      => false,
 				'state'     => false,
@@ -51,7 +59,7 @@ class SmartMapService extends BaseApplicationComponent
 	public function currentLocation()
 	{
 		// Detect IP address
-		$ip = $this->_detectMyIp();
+		$ip = $this->_detectVisitorIp();
 		// If IP can't be detected
 		if (!$ip) {
 			if ($this->cookieData) {
@@ -67,7 +75,7 @@ class SmartMapService extends BaseApplicationComponent
 	}
 
 	// Automatically detect IP address
-	private function _detectMyIp()
+	private function _detectVisitorIp()
 	{
 		$ip = craft()->request->userHostAddress;
 		if (('127.0.0.1' == $ip) || (!$this->validIp($ip))) {
@@ -98,10 +106,10 @@ class SmartMapService extends BaseApplicationComponent
 				craft()->smartMap_freeGeoIp->lookupIpData($ip);
 			}
 			// Fire an 'onDetectLocation' event
-			$eventLocation = $this->cacheData['here'];
+			$eventLocation = $this->cacheData['visitor'];
 			unset($eventLocation['ip']);
 			$this->onDetectLocation(new Event($this, array(
-				'ip'               => $this->cacheData['here']['ip'],
+				'ip'               => $this->cacheData['visitor']['ip'],
 				'location'         => $eventLocation,
 				'detectionService' => $this->cacheData['service'],
 				'cacheExpires'     => $this->cacheData['expires'],
@@ -116,7 +124,7 @@ class SmartMapService extends BaseApplicationComponent
 		if ($ip) {
 			$this->cacheData = craft()->fileCache->get($ip);
 			if ($this->cacheData) {
-				$this->here = $this->cacheData['here'];
+				$this->visitor = $this->cacheData['visitor'];
 				return true;
 			} else {
 				return false;
@@ -132,7 +140,7 @@ class SmartMapService extends BaseApplicationComponent
 		if (!$ipSet) {
         	craft()->smartMap->loadGeoData();
 			$this->cookieData = array(
-				'ip'      => $this->here['ip'],
+				'ip'      => $this->visitor['ip'],
 				'expires' => time() + $lifespan,
 			);
 			setcookie(static::IP_COOKIE_NAME, json_encode($this->cookieData), time()+$lifespan, '/');
@@ -145,7 +153,7 @@ class SmartMapService extends BaseApplicationComponent
 		if ($ip) {
         	craft()->smartMap->loadGeoData();
 			$data = array(
-				'here'    => $this->here,
+				'visitor' => $this->visitor,
 				'expires' => time() + $lifespan,
 				'service' => $geoLookupService,
 			);
@@ -327,16 +335,16 @@ class SmartMapService extends BaseApplicationComponent
 		// Set distance property
 		$data = $model->getAttributes();
 		if ($this->targetCoords) {
-			$here = $this->targetCoords;
+			$visitor = $this->targetCoords;
 		} else {
         	craft()->smartMap->loadGeoData();
-			$here = array(
-				'lat' => $this->here['latitude'],
-				'lng' => $this->here['longitude'],
+			$visitor = array(
+				'lat' => $this->visitor['latitude'],
+				'lng' => $this->visitor['longitude'],
 			);
 		}
 		if (is_numeric($data['lat']) && is_numeric($data['lng'])) {
-			$model->distance = $this->_haversinePHP($here, $data);
+			$model->distance = $this->_haversinePHP($visitor, $data);
 		} else {
 			$model->distance = null;
 		}
@@ -749,11 +757,11 @@ class SmartMapService extends BaseApplicationComponent
 			'lng' => -123.393333,
 		);
         craft()->smartMap->loadGeoData();
-		if (array_key_exists('latitude', $this->here) && array_key_exists('longitude', $this->here)) {
+		if (array_key_exists('latitude', $this->visitor) && array_key_exists('longitude', $this->visitor)) {
 			$coords = array(
 				// Current location
-				'lat' => $this->here['latitude'],
-				'lng' => $this->here['longitude'],
+				'lat' => $this->visitor['latitude'],
+				'lng' => $this->visitor['longitude'],
 			);
 		} else {
 			$coords = $defaultCoords;

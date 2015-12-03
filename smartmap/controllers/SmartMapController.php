@@ -44,7 +44,7 @@ class SmartMapController extends BaseController
 		$templatesPath = craft()->path->getPluginsPath().'smartmap/templates/';
 		craft()->path->setTemplatesPath($templatesPath);
 		$this->renderTemplate('_debug', array(
-			'my' => craft()->smartMap->here
+			'visitor' => craft()->smartMap->visitor
 		));
 	}
 

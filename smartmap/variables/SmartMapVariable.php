@@ -4,11 +4,17 @@ namespace Craft;
 class SmartMapVariable
 {
 
-    // Renders details about "my" current location
-    public function my()
+    // Renders details about visitor's current location
+    public function visitor()
     {
         craft()->smartMap->loadGeoData();
-        return craft()->smartMap->here;
+        return craft()->smartMap->visitor;
+    }
+
+    // ALIAS:  visitor()
+    public function my()
+    {
+        return $this->visitor();
     }
 
     // Includes front-end Javascript
@@ -100,7 +106,7 @@ class SmartMapVariable
             $debugData['cookieExpires'] = craft()->smartMap->cookieData['expires'];
         }
         if (craft()->smartMap->cacheData) {
-            $debugData['cacheValue']    = print_r(craft()->smartMap->cacheData['here'], true);
+            $debugData['cacheValue']    = print_r(craft()->smartMap->cacheData['visitor'], true);
             $debugData['cacheExpires']  = craft()->smartMap->cacheData['expires'];
             $debugData['geoService']    = craft()->smartMap->cacheData['service'];
         }

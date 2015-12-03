@@ -32,7 +32,7 @@ function drawMap() {
 	// Draw map
 	var el = document.getElementById('where-am-i');
 	if (el) {
-		var myMap = new google.maps.Map(el, {
+		var visitorMap = new google.maps.Map(el, {
 			zoom: 13,
 			scrollwheel: false,
 			center: center
@@ -43,7 +43,7 @@ function drawMap() {
 	if (coordsJs) {
 		new google.maps.Marker({
 			position: new google.maps.LatLng(js.lat, js.lng),
-			map: myMap,
+			map: visitorMap,
 			title: 'JavaScript',
 			icon: '//www.googlemapsmarkers.com/v1/J/C6CEF2/'
 		});
@@ -52,7 +52,7 @@ function drawMap() {
 	if (coordsPhp) {
 		new google.maps.Marker({
 			position: new google.maps.LatLng(php.lat, php.lng),
-			map: myMap,
+			map: visitorMap,
 			title: 'PHP',
 			icon: '//www.googlemapsmarkers.com/v1/P/FF695F/'
 		});

@@ -42,30 +42,30 @@ class SmartMap_MaxMindService extends BaseApplicationComponent
         	craft()->smartMap->loadGeoData();
 			// Ping geo location service
 			$results = $this->rawData($ip);
-			// Populate "here" array
+			// Populate visitor geolocation data
 			if (array_key_exists('traits',$results)) {
-				craft()->smartMap->here['ip'] = $results['traits']['ip_address'];
+				craft()->smartMap->visitor['ip'] = $results['traits']['ip_address'];
 			}
 			if (array_key_exists('city',$results)) {
-				craft()->smartMap->here['city'] = $results['city']['names']['en'];
+				craft()->smartMap->visitor['city'] = $results['city']['names']['en'];
 			}
 			if (array_key_exists('subdivisions',$results) && !empty($results['subdivisions'])) {
-				craft()->smartMap->here['state'] = $results['subdivisions'][0]['names']['en'];
+				craft()->smartMap->visitor['state'] = $results['subdivisions'][0]['names']['en'];
 			}
 			if (array_key_exists('postal',$results)) {
-				craft()->smartMap->here['zipcode'] = $results['postal']['code'];
+				craft()->smartMap->visitor['zipcode'] = $results['postal']['code'];
 			}
 			if (array_key_exists('country',$results)) {
-				craft()->smartMap->here['country'] = $results['country']['names']['en'];
+				craft()->smartMap->visitor['country'] = $results['country']['names']['en'];
 			}
 			if (array_key_exists('location',$results)) {
-				craft()->smartMap->here['latitude'] = $results['location']['latitude'];
-				craft()->smartMap->here['longitude'] = $results['location']['longitude'];
+				craft()->smartMap->visitor['latitude'] = $results['location']['latitude'];
+				craft()->smartMap->visitor['longitude'] = $results['location']['longitude'];
 			}
 			// If valid IP, set cache & cookie
-			if (craft()->smartMap->validIp(craft()->smartMap->here['ip'])) {
+			if (craft()->smartMap->validIp(craft()->smartMap->visitor['ip'])) {
 				craft()->smartMap->setGeoDataCookie($ip);
-				craft()->smartMap->cacheGeoData(craft()->smartMap->here['ip'], 'MaxMind');
+				craft()->smartMap->cacheGeoData(craft()->smartMap->visitor['ip'], 'MaxMind');
 			} else {
 				/*
 				// Else, grap IP using FreeGeoIp

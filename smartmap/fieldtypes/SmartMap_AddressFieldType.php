@@ -1,7 +1,7 @@
 <?php
 namespace Craft;
 
-class SmartMap_AddressFieldType extends BaseFieldType
+class SmartMap_AddressFieldType extends BaseFieldType implements IPreviewableFieldType
 {
 	public function getName()
 	{
@@ -44,16 +44,16 @@ class SmartMap_AddressFieldType extends BaseFieldType
 		craft()->templates->includeCssResource('smartmap/css/address-fieldtype.css');
 
 		craft()->smartMap->loadGeoData();
-		$here = craft()->smartMap->here;
-		if ($here['latitude'] && $here['longitude']) {
-			$hereJs = json_encode(array(
-				'lat' => $here['latitude'],
-				'lng' => $here['longitude'],
+		$visitor = craft()->smartMap->visitor;
+		if ($visitor['latitude'] && $visitor['longitude']) {
+			$visitorJs = json_encode(array(
+				'lat' => $visitor['latitude'],
+				'lng' => $visitor['longitude'],
 			));
 		} else {
-			$hereJs = 'false';
+			$visitorJs = 'false';
 		}
-		craft()->templates->includeJs('here = '.$hereJs.';');
+		craft()->templates->includeJs('visitor = '.$visitorJs.';');
 
 		$variables = array_merge(
 			$model->getAttributes(),

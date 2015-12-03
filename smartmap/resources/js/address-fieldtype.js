@@ -8,7 +8,7 @@ if (!window.console) {
 }
 // ============================ //
 
-var here;
+var visitor;
 var handle;
 var address = {};
 var dragPin = {};
@@ -69,10 +69,10 @@ function getCoords(handle) {
 		};
 	} else {
 		// Set default map position
-		if (here) {
+		if (visitor) {
 			coords = {
-				'lat': here.lat,
-				'lng': here.lng
+				'lat': visitor.lat,
+				'lng': visitor.lng
 			};
 		} else {
 			coords = {
