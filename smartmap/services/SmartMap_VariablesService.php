@@ -442,6 +442,12 @@ if (!window.console) {
         $width  = (array_key_exists('width', $options)  ? $options['width']  : '200');
         $height = (array_key_exists('height', $options) ? $options['height'] : '150');
 
+        if (array_key_exists('markerOptions', $options) && array_key_exists('icon', $options['markerOptions'])) {
+            $markerIcon = 'icon:'.urlencode($options['markerOptions']['icon']);
+        } else {
+            $markerIcon = 'color:red';
+        }
+
         $src  = 'https://maps.googleapis.com/maps/api/staticmap?visual_refresh=true';
         $src .= craft()->smartMap->googleBrowserKey();
         $src .= '&scale=2'; // Retina
@@ -453,7 +459,7 @@ if (!window.console) {
         $i = 0;
         foreach ($map['markers'] as $marker) {
             if ($i) {$src .= '|';}
-            $src .= '&markers=color:red%7C'.$marker['lat'].','.$marker['lng'];
+            $src .= '&markers='.$markerIcon.'%7C'.$marker['lat'].','.$marker['lng'];
         }
 
         return $src;
