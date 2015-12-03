@@ -21,9 +21,24 @@ class SmartMapPlugin extends BasePlugin
 		return Craft::t('Smart Map');
 	}
 
+	public function getDescription()
+	{
+		return 'Adds a powerful "Address" field, to easily manage locations.';
+	}
+
+	public function getDocumentationUrl()
+	{
+		return 'https://craftpl.us/plugins/smart-map';
+	}
+
 	public function getVersion()
 	{
-		return '2.2.1 rc7';
+		return '2.3.0 rc7';
+	}
+
+	public function getSchemaVersion()
+	{
+		return '2.3.0';
 	}
 
 	public function getDeveloper()

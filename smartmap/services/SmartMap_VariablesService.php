@@ -49,7 +49,7 @@ if (!window.console) {
         $height            = (array_key_exists('height', $options) ? 'height:'.$options['height'].'px;' : '');
         unset($options['width']);
         unset($options['height']);
-        
+
         $markerOptions     = (array_key_exists('markerOptions', $options)     ? $options['markerOptions']     : array());
         $infoWindowOptions = (array_key_exists('infoWindowOptions', $options) ? $options['infoWindowOptions'] : array());
         unset($options['markerOptions']);
@@ -105,7 +105,7 @@ if (!window.console) {
 
         // If multiple locations
         if (!empty($locations) && array_key_exists(0, $locations)) {
-                
+
             $allLats = array();
             $allLngs = array();
 
@@ -168,7 +168,7 @@ if (!window.console) {
             }
 
         } else {
-            
+
             // Set solo marker
             $el = $locations;
 
@@ -435,7 +435,7 @@ if (!window.console) {
     {
 
         //$filter = SmartMap_FilterCriteriaModel::populateModel($coords, $options = array());
-        
+
         // Decipher map info
         $map = craft()->smartMap->markerCoords($markers, $options);
 
