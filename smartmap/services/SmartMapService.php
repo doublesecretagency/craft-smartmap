@@ -19,8 +19,6 @@ class SmartMapService extends BaseApplicationComponent
 
 	public $measurementUnit;
 
-	public $defaultZoom = 11;
-
 	// Initialize
 	public function init()
 	{

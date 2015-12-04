@@ -4,15 +4,18 @@ if (logSmartMap) {console.log('Loading smartMap object...');}
 var smartMap = {
 	map: {},
 	marker: {},
+	bounds: {},
 	infoWindow: {},
 	// Create & delete items
 	createMap: function (mapId, options) {
 		var div = document.getElementById(mapId);
 		this.map[mapId] = new google.maps.Map(div, options);
+		this.bounds[mapId] = new google.maps.LatLngBounds();
 		if (logSmartMap) {console.log('['+mapId+'] Map rendered.');}
 	},
 	createMarker: function (markerName, options) {
 		this.marker[markerName] = new google.maps.Marker(options);
+		this.bounds[options.mapId].extend(this.marker[markerName].position);
 		if (logSmartMap) {console.log('['+markerName+'] Marker rendered.');}
 	},
 	deleteMarker: function (markerName) {
@@ -43,6 +46,11 @@ var smartMap = {
 	// Get coordinates object
 	coords: function (lat, lng) {
 		return new google.maps.LatLng(lat, lng);
+	},
+	// Zoom map to fit all markers
+	fitBounds: function (mapId) {
+		this.map[mapId].fitBounds(this.bounds[mapId]);
+		if (logSmartMap) {console.log('['+mapId+'] Bounds fit.');}
 	},
 	// Zoom in on a marker
 	// SEE DOCS: https://craftpl.us/plugins/smart-map/docs/adding-marker-info-bubbles

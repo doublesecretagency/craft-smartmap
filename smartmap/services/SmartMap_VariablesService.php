@@ -42,13 +42,32 @@ if (!window.console) {
     {
 
         // Extract non-Google parameters
-        $mapId             = (array_key_exists('id', $options) ? $options['id'] : 'smartmap-mapcanvas-'.$this->_mapTotal);
+        $mapId  = (array_key_exists('id', $options) ? $options['id'] : 'smartmap-mapcanvas-'.$this->_mapTotal);
         unset($options['id']);
 
-        $width             = (array_key_exists('width', $options)  ? 'width:'.$options['width'].'px;'   : '');
-        $height            = (array_key_exists('height', $options) ? 'height:'.$options['height'].'px;' : '');
+        $width  = (array_key_exists('width', $options)  ? 'width:'.$options['width'].'px;'   : '');
+        $height = (array_key_exists('height', $options) ? 'height:'.$options['height'].'px;' : '');
         unset($options['width']);
         unset($options['height']);
+
+        // No zoom by default
+        $zoom = false;
+        // (1) Convert zoom object to string (if possible)
+        if (array_key_exists('zoom', $options)) {
+            $zoom = (string) $options['zoom'];
+        }
+        // (2) Convert zoom string to integer (if possible)
+        if (is_numeric($zoom)) {
+            $zoom = (int) $zoom;
+        } else {
+            $zoom = false;
+        }
+        // (3) Set zoom if valid, otherwise remove it
+        if ($zoom) {
+            $options['zoom'] = $zoom;
+        } else {
+            unset($options['zoom']);
+        }
 
         $markerOptions     = (array_key_exists('markerOptions', $options)     ? $options['markerOptions']     : array());
         $infoWindowOptions = (array_key_exists('infoWindowOptions', $options) ? $options['infoWindowOptions'] : array());
@@ -70,10 +89,17 @@ if (!window.console) {
         }
         $options['center'] = 'smartMap.coords('.$center['lat'].','.$center['lng'].')';
 
+        // Set map cleanup data
+        $cleanupData = array(
+            'mapId' => $mapId,
+            'zoom'  => $zoom,
+        );
+
         // Compile JS for map, markers, and info windows
         $js  = $this->_buildMap($mapId, $options);
         $js .= $this->_buildMarkers($mapId, $markerOptions);
         $js .= $this->_buildInfoWindows($mapId, $infoWindowOptions);
+        $js .= $this->_mapCleanup($cleanupData);
         craft()->templates->includeJs($js);
 
         // Add to map total
@@ -281,22 +307,6 @@ if (!window.console) {
     // Create single map
     private function _buildMap($mapId, $mapOptions)
     {
-        // If not specified, "zoom" defaults to 6
-        $defaultZoom = 6;
-
-        // (1) Convert zoom object to string, or fall back to default
-        if (!array_key_exists('zoom', $mapOptions)) {
-            $mapOptions['zoom'] = $defaultZoom;
-        } else {
-            $mapOptions['zoom'] = (string) $mapOptions['zoom'];
-        }
-        // (2) Convert zoom string to integer, or fall back to default
-        if (!is_numeric($mapOptions['zoom'])) {
-            $mapOptions['zoom'] = $defaultZoom;
-        } else {
-            $mapOptions['zoom'] = (int) $mapOptions['zoom'];
-        }
-
         // LEGACY: "scrollZoom" option
         if (!array_key_exists('scrollwheel', $mapOptions)) {
             if (array_key_exists('scrollZoom', $mapOptions)) {
@@ -320,8 +330,8 @@ if (!window.console) {
         $markerJs = '';
         foreach ($this->_marker[$mapId] as $markerName => $marker) {
 
-            // "map" and "position" are required
-            $markerOptions['map'] = 'smartMap.map["'.$mapId.'"]';
+            $markerOptions['mapId']    = $mapId;
+            $markerOptions['map']      = 'smartMap.map["'.$mapId.'"]';
             $markerOptions['position'] = 'smartMap.coords('.$marker['lat'].','.$marker['lng'].')';
 
             if (array_key_exists('title', $marker)) {
@@ -390,6 +400,17 @@ if (!window.console) {
         return $infoWindowJs;
     }
 
+    // Cleanup
+    private function _mapCleanup($data)
+    {
+        $mapJs = '';
+        if (!$data['zoom']) {
+            $mapJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$data['mapId'].'] Fitting bounds...");}';
+            $mapJs .= PHP_EOL.'smartMap.fitBounds("'.$data['mapId'].'");';
+        }
+        return $mapJs;
+    }
+
     // Encode JSON with function calls
     private function _jsonify($dataArr)
     {
@@ -452,9 +473,12 @@ if (!window.console) {
         $src .= craft()->smartMap->googleBrowserKey();
         $src .= '&scale=2'; // Retina
         $src .= '&center='.$map['center']['lat'].','.$map['center']['lng'];
-        $src .= '&zoom='.(array_key_exists('zoom', $options) ? $options['zoom'] : craft()->smartMap->defaultZoom);
         $src .= '&size='.$width.'x'.$height;
         $src .= '&maptype=roadmap';
+
+        if (array_key_exists('zoom', $options)) {
+            $src .= '&zoom='.$options['zoom'];
+        }
 
         $i = 0;
         foreach ($map['markers'] as $marker) {
