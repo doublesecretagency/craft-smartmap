@@ -10,10 +10,10 @@ class SmartMap_AddressFieldType extends BaseFieldType implements IPreviewableFie
 	// ==================================================== //
 
 	// Modify SQL query
-	public function modifyElementsQuery(DbCommand $query, $params, $justIds = false)
+	public function modifyElementsQuery(DbCommand $query, $params)
 	{
 		if ($params !== null) {
-			craft()->smartMap->modifyQuery($query, $params, $justIds);
+			craft()->smartMap->modifyQuery($query, $params);
 		}
 	}
 

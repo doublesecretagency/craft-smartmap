@@ -192,14 +192,14 @@ class SmartMapService extends BaseApplicationComponent
 	// ==================================================== //
 
 	// Modify fieldtype query
-	public function modifyQuery(DbCommand $query, $params = array(), $justIds = false)
+	public function modifyQuery(DbCommand $query, $params = array())
 	{
 		// Join with plugin table
 		$query->join(SmartMap_AddressRecord::TABLE_NAME, 'elements.id='.craft()->db->tablePrefix.SmartMap_AddressRecord::TABLE_NAME.'.elementId');
 
 		// Search by comparing coordinates
 		if (array_key_exists('target', $params) || array_key_exists('range', $params)) {
-			$this->_searchCoords($query, $params, $justIds);
+			$this->_searchCoords($query, $params);
 		}
 
 		// Filter according to subfield(s)
@@ -413,8 +413,12 @@ class SmartMapService extends BaseApplicationComponent
 	}
 
 	// Search by coordinates
-	private function _searchCoords(&$query, $params = array(), $justIds = false)
+	private function _searchCoords(&$query, $params = array())
 	{
+		// Determine if this is an `.ids()` query
+		$justIds = ('`elements`.`id`' == $query->select);
+
+		// If just ids, kick up an error message
 		if ($justIds) {
 			$message = 'The use of `.ids()` is not supported for a proximity search. Instead, use `.find()` to collect and compile an array of element ids.';
 			SmartMapPlugin::log($message, LogLevel::Error);
