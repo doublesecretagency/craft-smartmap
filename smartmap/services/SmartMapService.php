@@ -413,16 +413,6 @@ class SmartMapService extends BaseApplicationComponent
 	// Search by coordinates
 	private function _searchCoords(&$query, $params = array())
 	{
-		// Determine if this is an `.ids()` query
-		$justIds = ('`elements`.`id`' == $query->select);
-
-		// If just ids, kick up an error message
-		if ($justIds) {
-			$message = 'The use of `.ids()` is not supported for a proximity search. Instead, use `.find()` to collect and compile an array of element ids.';
-			SmartMapPlugin::log($message, LogLevel::Error);
-			throw new Exception($message);
-		}
-
 		$filter = $this->_parseFilter($params);
 		// Implement haversine formula
 		$haversine = $this->_haversine(
