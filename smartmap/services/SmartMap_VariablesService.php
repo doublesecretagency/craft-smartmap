@@ -469,24 +469,26 @@ if (!window.console) {
             $markerIcon = 'color:red';
         }
 
-        $src  = 'https://maps.googleapis.com/maps/api/staticmap?visual_refresh=true';
-        $src .= craft()->smartMap->googleBrowserKey();
-        $src .= '&scale=2'; // Retina
-        $src .= '&center='.$map['center']['lat'].','.$map['center']['lng'];
-        $src .= '&size='.$width.'x'.$height;
-        $src .= '&maptype=roadmap';
+        $rootUrl = 'https://maps.googleapis.com/maps/api/staticmap';
+
+        $data  = '?visual_refresh=true';
+        $data .= craft()->smartMap->googleBrowserKey();
+        $data .= '&amp;scale=2'; // Retina
+        $data .= '&amp;center='.$map['center']['lat'].','.$map['center']['lng'];
+        $data .= '&amp;size='.$width.'x'.$height;
+        $data .= '&amp;maptype=roadmap';
 
         if (array_key_exists('zoom', $options)) {
-            $src .= '&zoom='.$options['zoom'];
+            $data .= '&amp;zoom='.$options['zoom'];
         }
 
         $i = 0;
         foreach ($map['markers'] as $marker) {
-            if ($i) {$src .= '|';}
-            $src .= '&markers='.$markerIcon.'%7C'.$marker['lat'].','.$marker['lng'];
+            if ($i) {$data .= '|';}
+            $data .= '&amp;markers='.$markerIcon.'%7C'.$marker['lat'].','.$marker['lng'];
         }
 
-        return $src;
+        return $rootUrl.$data;
 
         // MORE COMPLEX EXAMPLE (https://developers.google.com/maps/documentation/staticmaps/index)
         // http://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Ccolor:red%7Clabel:C%7C40.718217,-73.998284&sensor=false
