@@ -512,7 +512,7 @@ if (!window.console) {
         }
         if ($address->lat && $address->lng) {
             $coords = $address->lat.'+'.$address->lng;
-            return 'http://maps.google.com/maps?q='.($q ? $q : $coords).'&ll='.$coords;
+            return 'http://maps.google.com/maps?q='.($q ? rawurlencode($q) : $coords).'&ll='.$coords;
         } else {
             return '#no-address-coordinates';
         }
