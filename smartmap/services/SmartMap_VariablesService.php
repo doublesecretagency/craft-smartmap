@@ -330,9 +330,18 @@ if (!window.console) {
         $markerJs = '';
         foreach ($this->_marker[$mapId] as $markerName => $marker) {
 
+            $lat = $marker['lat'];
+            $lng = $marker['lng'];
+
+            if (!$lat || !$lng || !is_numeric($lat) || !is_numeric($lng)) {
+                $markerJs .= PHP_EOL;
+                $markerJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$mapId.'.'.$markerName.'] Unable to draw marker, invalid coordinates.");}';
+                continue;
+            }
+
             $markerOptions['mapId']    = $mapId;
             $markerOptions['map']      = 'smartMap.map["'.$mapId.'"]';
-            $markerOptions['position'] = 'smartMap.coords('.$marker['lat'].','.$marker['lng'].')';
+            $markerOptions['position'] = 'smartMap.coords('.$lat.','.$lng.')';
 
             if (array_key_exists('title', $marker)) {
                 $markerOptions['title'] = $marker['title'];
@@ -405,6 +414,7 @@ if (!window.console) {
     {
         $mapJs = '';
         if (!$data['zoom']) {
+            $mapJs .= PHP_EOL;
             $mapJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$data['mapId'].'] Fitting bounds...");}';
             $mapJs .= PHP_EOL.'smartMap.fitBounds("'.$data['mapId'].'");';
         }
