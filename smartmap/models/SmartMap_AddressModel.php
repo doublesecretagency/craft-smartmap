@@ -65,6 +65,13 @@ class SmartMap_AddressModel extends BaseModel
         $formatted .= ($this->state ? $this->state : '').' ';
         $formatted .= ($this->zip ? $this->zip : '');
 
+        // Merge repeated commas
+        $formatted = preg_replace('/(, ){2,}/', ', ', $formatted);
+        // Eliminate leading comma
+        $formatted = preg_replace('/^, /', '', $formatted);
+        // Eliminate trailing comma
+        $formatted = preg_replace('/, $/', '', $formatted);
+
         return TemplateHelper::getRaw(trim($formatted));
     }
 
