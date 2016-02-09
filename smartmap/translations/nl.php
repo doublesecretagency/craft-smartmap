@@ -33,6 +33,9 @@ return array(
 	'You are over your quota. If this is a shared server, enable <a href="{url}">Google Maps API Keys.</a>' => 'Je hebt je quota bereikt. Als dit een gedeelde server is activeer dan <a href="{url}">Google Maps API Keys.</a>',
 	'Your request was denied for some reason.' => 'Je verzoek is om onduidelijke reden geweigerd.',
 	'Invalid request. Please provide more address information.' => 'Onjuist verzoek. Voer a.u.b. meer adres gegevens in.',
+	// 'Response from Google Maps API:' => 'X',
+	// 'Failed to execute cURL command.' => 'X',
+	// 'Unknown cURL response:' => 'X',
 
 	// Settings page
 	'Documentation & Feedback' => 'Documentatie & Feedback',

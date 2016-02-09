@@ -33,6 +33,9 @@ return array(
 	'You are over your quota. If this is a shared server, enable <a href="{url}">Google Maps API Keys.</a>' => '<a href="{url}">X</a>',
 	'Your request was denied for some reason.' => 'X',
 	'Invalid request. Please provide more address information.' => 'X',
+	'Response from Google Maps API:' => 'X',
+	'Failed to execute cURL command.' => 'X',
+	'Unknown cURL response:' => 'X',
 
 	// Settings page
 	'Documentation & Feedback' => 'X',

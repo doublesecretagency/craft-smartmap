@@ -7,6 +7,8 @@ class SmartMap_MainService extends BaseApplicationComponent
 	// Search for address using Google Maps API
 	public function addressSearch($address)
 	{
+		$message = false;
+
 		$api  = 'https://maps.googleapis.com/maps/api/geocode/json';
 		$api .= '?address='.str_replace(' ', '+', $address);
 		$api .= craft()->smartMap->googleServerKey();
@@ -15,6 +17,7 @@ class SmartMap_MainService extends BaseApplicationComponent
 		curl_setopt_array($ch, array(
 			CURLOPT_URL => $api,
 			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_SSL_VERIFYPEER => false,
 		));
 		$response = json_decode(curl_exec($ch), true);
 		curl_close($ch);
@@ -44,6 +47,16 @@ class SmartMap_MainService extends BaseApplicationComponent
 			case 'INVALID_REQUEST':
 				$message = Craft::t('Invalid request. Please provide more address information.');
 				break;
+		}
+
+		if (!$message) {
+			if (!$response) {
+				$message = Craft::t('Failed to execute cURL command.');
+			} else if (array_key_exists('status', $response) && $response['status']) {
+				$message = Craft::t('Response from Google Maps API:').' '.$response['status'];
+			} else {
+				$message = Craft::t('Unknown cURL response:').' '.json_encode($response);
+			}
 		}
 
 		return array(

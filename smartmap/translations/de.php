@@ -33,6 +33,9 @@ return array(
 	'You are over your quota. If this is a shared server, enable <a href="{url}">Google Maps API Keys.</a>' => 'Sie haben Ihr Kontingent an Abfragen überschritten. Falls Sie einen gemeinsam genutzten Server benutzen, aktivieren Sie <a href="{url}">Google Maps API Keys.</a>',
 	'Your request was denied for some reason.' => 'Ihre Anfrage wurde aus unbestimmten Gründen verweigert.', // TODO: "indefinite reasons"
 	//'Invalid request. Please provide more address information.' => 'X', // TODO: not translated
+	// 'Response from Google Maps API:' => 'X',
+	// 'Failed to execute cURL command.' => 'X',
+	// 'Unknown cURL response:' => 'X',
 
 	// Settings page
 	'Documentation & Feedback' => 'Dokumentation & Feedback',

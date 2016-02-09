@@ -33,6 +33,9 @@ return array(
 	'You are over your quota. If this is a shared server, enable <a href="{url}">Google Maps API Keys.</a>' => '最大割り当てが達成されています。このサーバを共有している場合は、<a href="{url}">GoogleマップのAPIキー</a>を有効にしてください。',
 	'Your request was denied for some reason.' => '残念ながら、あなたの要求は拒否されました。',
 	'Invalid request. Please provide more address information.' => 'クエリが欠落しています。',
+	// 'Response from Google Maps API:' => 'X',
+	// 'Failed to execute cURL command.' => 'X',
+	// 'Unknown cURL response:' => 'X',
 
 	// Settings page
 	'Documentation & Feedback' => 'ドキュメント＆フィードバック',
