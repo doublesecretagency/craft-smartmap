@@ -82,9 +82,32 @@ class SmartMapVariable
     }
 
     // ================================================================== //
-    // ================================================================== //
 
-    // Move to SmartMap_InternalVariable.php
+    // Google API Server Key
+    public function serverKey()
+    {
+        return $this->_googleKey('googleServerKey');
+    }
+
+    // Google API Browser Key
+    public function browserKey()
+    {
+        return $this->_googleKey('googleBrowserKey');
+    }
+
+    // Return Google key
+    public function _googleKey($key)
+    {
+        $settings = craft()->smartMap->settings->attributes;
+        if (array_key_exists($key, $settings)) {
+            return $settings[$key];
+        } else {
+            return false;
+        }
+    }
+
+    // ================================================================== //
+    // ================================================================== //
 
     // FOR INTERNAL USE ONLY
     public function settings()
