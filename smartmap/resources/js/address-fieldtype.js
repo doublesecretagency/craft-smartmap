@@ -209,6 +209,9 @@ function openMatches(handle, address) {
 				// Create modal
 				var modal = new Garnish.Modal($modal, {
 					//onHide: $.proxy(this, 'onActionResponse')
+					onShow: function () {
+						$('.smartmap-field input').blur();
+					}
 				});
 
 			}
