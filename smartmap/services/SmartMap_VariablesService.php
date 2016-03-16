@@ -319,7 +319,7 @@ if (!window.console) {
 
         $options = $this->_jsonify($mapOptions);
         $mapJs  = PHP_EOL;
-        $mapJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$mapId.'] Drawing map...");}';
+        $mapJs .= PHP_EOL.'smartMap.log("['.$mapId.'] Drawing map...");';
         $mapJs .= PHP_EOL.'smartMap.createMap("'.$mapId.'", '.$options.');';
         return $mapJs;
     }
@@ -335,7 +335,7 @@ if (!window.console) {
 
             if (!$lat || !$lng || !is_numeric($lat) || !is_numeric($lng)) {
                 $markerJs .= PHP_EOL;
-                $markerJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$mapId.'.'.$markerName.'] Unable to draw marker, invalid coordinates.");}';
+                $markerJs .= PHP_EOL.'smartMap.log("['.$mapId.'.'.$markerName.'] Unable to draw marker, invalid coordinates.");';
                 continue;
             }
 
@@ -349,7 +349,7 @@ if (!window.console) {
 
             $options = $this->_jsonify($markerOptions);
             $markerJs .= PHP_EOL;
-            $markerJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$mapId.'.'.$markerName.'] Drawing marker...");}';
+            $markerJs .= PHP_EOL.'smartMap.log("['.$mapId.'.'.$markerName.'] Drawing marker...");';
             $markerJs .= PHP_EOL.'smartMap.createMarker("'.$mapId.'.'.$markerName.'", '.$options.');';
         }
         return $markerJs;
@@ -402,7 +402,7 @@ if (!window.console) {
 
             $options = $this->_jsonify($infoWindowOptions);
             $infoWindowJs .= PHP_EOL;
-            $infoWindowJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$mapId.'.'.$markerName.'] Drawing info window...");}';
+            $infoWindowJs .= PHP_EOL.'smartMap.log("['.$mapId.'.'.$markerName.'] Drawing info window...");';
             $infoWindowJs .= PHP_EOL.'smartMap.createInfoWindow("'.$mapId.'.'.$markerName.'", '.$options.');';
 
         }
@@ -415,7 +415,7 @@ if (!window.console) {
         $mapJs = '';
         if (!$data['zoom']) {
             $mapJs .= PHP_EOL;
-            $mapJs .= PHP_EOL.'if (logSmartMap) {console.log("['.$data['mapId'].'] Fitting bounds...");}';
+            $mapJs .= PHP_EOL.'smartMap.log("['.$data['mapId'].'] Fitting bounds...");';
             $mapJs .= PHP_EOL.'smartMap.fitBounds("'.$data['mapId'].'");';
         }
         return $mapJs;

@@ -1,4 +1,10 @@
-if (logSmartMap) {console.log('Loading smartMap object...');}
+try {
+	if (logSmartMap) {
+		console.log('Loading smartMap object...');
+	}
+} catch (err) {
+	console.warn(err);
+}
 
 // Smart Map JS object
 var smartMap = {
@@ -6,17 +12,29 @@ var smartMap = {
 	marker: {},
 	bounds: {},
 	infoWindow: {},
+	// Log message
+	log: function (message) {
+		try {
+			if (logSmartMap) {
+				console.log(message);
+			}
+		} catch (err) {
+			// do nothing
+		}
+	},
 	// Create & delete items
 	createMap: function (mapId, options) {
 		var div = document.getElementById(mapId);
 		this.map[mapId] = new google.maps.Map(div, options);
 		this.bounds[mapId] = new google.maps.LatLngBounds();
-		if (logSmartMap) {console.log('['+mapId+'] Map rendered.');}
+		smartMap.log('['+mapId+'] Map rendered.');
+		return this.map[mapId];
 	},
 	createMarker: function (markerName, options) {
 		this.marker[markerName] = new google.maps.Marker(options);
 		this.bounds[options.mapId].extend(this.marker[markerName].position);
-		if (logSmartMap) {console.log('['+markerName+'] Marker rendered.');}
+		smartMap.log('['+markerName+'] Marker rendered.');
+		return this.marker[markerName];
 	},
 	deleteMarker: function (markerName) {
 		this.marker[markerName].setMap(null);
@@ -31,7 +49,8 @@ var smartMap = {
 			}
 			smartMap.infoWindow[markerName].open(map, marker);
 		});
-		if (logSmartMap) {console.log('['+markerName+'] Info window rendered.');}
+		smartMap.log('['+markerName+'] Info window rendered.');
+		return this.infoWindow[markerName];
 	},
 	// List items
 	listMaps: function () {
@@ -50,7 +69,7 @@ var smartMap = {
 	// Zoom map to fit all markers
 	fitBounds: function (mapId) {
 		this.map[mapId].fitBounds(this.bounds[mapId]);
-		if (logSmartMap) {console.log('['+mapId+'] Bounds fit.');}
+		smartMap.log('['+mapId+'] Bounds fit.');
 	},
 	// Zoom in on a marker
 	// SEE DOCS: https://craftpl.us/plugins/smart-map/docs/adding-marker-info-bubbles
@@ -60,4 +79,4 @@ var smartMap = {
 	}
 }
 
-if (logSmartMap) {console.log('smartMap object loaded.');}
+smartMap.log('smartMap object loaded.');
