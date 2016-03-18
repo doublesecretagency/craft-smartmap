@@ -370,10 +370,6 @@ if (!window.console) {
                     if (array_key_exists('title', $marker)) {
                         //$marker['element']['title'] = $marker['title'];
                     }
-                    // Temporarily adjust error handling
-                    set_error_handler(function($errno, $errstr) {
-                        echo $errstr;
-                    }, E_ALL & ~E_NOTICE);
                     try {
                         $markerVars = array(
                             'mapId'      => $marker['mapId'],
@@ -392,8 +388,6 @@ if (!window.console) {
                         $infoWindowOptions['content']  = '<strong>Marker Info Template Error</strong><br />';
                         $infoWindowOptions['content'] .= $e->getMessage();
                     }
-                    // Restore default error handling
-                    restore_error_handler();
                 } else {
                     // Some form of content is required
                     return null;
