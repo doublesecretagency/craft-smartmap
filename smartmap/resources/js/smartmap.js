@@ -1,10 +1,12 @@
-try {
-	if (logSmartMap) {
-		console.log('Loading smartMap object...');
-	}
-} catch (err) {
-	console.warn(err);
+// Mute logging if unavailable
+if (!window.console) {
+    window.console = {
+        log: function(obj){}
+    };
 }
+
+// Log loading
+console.log('Loading smartMap object...');
 
 // Smart Map JS object
 var smartMap = {
@@ -12,10 +14,11 @@ var smartMap = {
 	marker: {},
 	bounds: {},
 	infoWindow: {},
+	enableLogging: false,
 	// Log message
 	log: function (message) {
 		try {
-			if (logSmartMap) {
+			if (smartMap.enableLogging) {
 				console.log(message);
 			}
 		} catch (err) {

@@ -11,29 +11,39 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
     public function init() {
         parent::init();
-        $api  = 'https://maps.googleapis.com/maps/api/js';
-        $api .= craft()->smartMap->googleBrowserKey('?');
-        craft()->templates->includeJsFile($api);
-        craft()->templates->includeJsResource('smartmap/js/smartmap.js');
         craft()->templates->includeCssResource('smartmap/css/smartmap.css');
     }
 
     // Ensure JS has been loaded
-    public function _loadJs()
+    public function loadJs($renderHere = false)
     {
         if ($this->_needsJs) {
             $this->_needsJs = false;
-            $devMode = (craft()->config->get('devMode') ? 'true' : 'false');
-            $consoleLogDefault =
-'<script type="text/javascript">
-if (!window.console) {
-    window.console = {
-        log: function(obj){}
-    };
-}
-</script>';
-            $logSmartMap = '<script type="text/javascript">var logSmartMap = '.$devMode.';</script>';
-            return $consoleLogDefault.PHP_EOL.$logSmartMap.PHP_EOL;
+
+            // Google Maps API
+            $api  = 'https://maps.googleapis.com/maps/api/js';
+            $api .= craft()->smartMap->googleBrowserKey('?');
+
+            // Smart Map JS
+            $resourceUrl = 'smartmap/js/smartmap.js';
+
+            // Enable console logging
+            $devMode = craft()->config->get('devMode');
+            $enableConsoleLogging = 'smartMap.enableLogging = '.($devMode ? 'true' : 'false').';';
+
+            // Render JS
+            if ($renderHere) {
+                // Directly output JS
+                return TemplateHelper::getRaw('
+<script type="text/javascript" src="'.$api.'"></script>
+<script type="text/javascript" src="'.UrlHelper::getResourceUrl($resourceUrl).'"></script>
+<script type="text/javascript">'.$enableConsoleLogging.'</script>'.PHP_EOL);
+            } else {
+                // Queue up JS for footer
+                craft()->templates->includeJsFile($api);
+                craft()->templates->includeJsResource($resourceUrl);
+                craft()->templates->includeJs($enableConsoleLogging, true);
+            }
         }
     }
 
@@ -105,8 +115,9 @@ if (!window.console) {
         // Add to map total
         $this->_mapTotal++;
 
+        $this->loadJs();
         $html = '<div id="'.$mapId.'" class="smartmap-mapcanvas" style="'.$width.$height.'">Loading map...</div>';
-        return TemplateHelper::getRaw($this->_loadJs().$html);
+        return TemplateHelper::getRaw($html);
     }
 
     // Parse location variations into standard format
@@ -452,7 +463,8 @@ if (!window.console) {
                 $dimensions .= ' '.$side.'="'.$options[$side].'"';
             }
         }
-        return TemplateHelper::getRaw($this->_loadJs().'<img src="'.$src.'" '.$dimensions.'/>');
+        $this->loadJs();
+        return TemplateHelper::getRaw('<img src="'.$src.'" '.$dimensions.'/>');
     }
 
     // Get source of static map image

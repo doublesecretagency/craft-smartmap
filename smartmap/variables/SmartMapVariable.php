@@ -4,6 +4,8 @@ namespace Craft;
 class SmartMapVariable
 {
 
+    private $_jsRendered = false;
+
     // Renders details about visitor's current location
     public function visitor()
     {
@@ -18,19 +20,9 @@ class SmartMapVariable
     }
 
     // Includes front-end Javascript
-    public function js($renderHere = false)
+    public function js($renderHere = true)
     {
-        $api  = 'https://maps.googleapis.com/maps/api/js';
-        $api .= craft()->smartMap->googleBrowserKey('?');
-        if ($renderHere) {
-            return '
-<script type="text/javascript" src="'.$api.'"></script>
-<script type="text/javascript" src="'.UrlHelper::getResourceUrl('smartmap/js/smartmap.js').'"></script>
-';
-        } else {
-            craft()->templates->includeJsFile($api);
-            craft()->templates->includeJsResource('smartmap/js/smartmap.js');
-        }
+        return craft()->smartMap_variables->loadJs($renderHere);
     }
 
     // Display a dynamic Google map
