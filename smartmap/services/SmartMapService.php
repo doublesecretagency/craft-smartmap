@@ -474,6 +474,8 @@ class SmartMapService extends BaseApplicationComponent
 		// If SmartMap_AddressModel, process immediately
 		if (is_object($locations) && is_a($locations, 'Craft\\SmartMap_AddressModel')) {
 
+			$markers = array();
+
 			// Set markers
 			if ($locations->hasCoords()) {
 				$lat = $locations->lat;
@@ -483,6 +485,9 @@ class SmartMapService extends BaseApplicationComponent
 					'lng'   => (float) $lng,
 					'title' => '',
 				);
+			} else {
+				$lat = 0;
+				$lng = 0;
 			}
 
 			// Return center point and all markers
