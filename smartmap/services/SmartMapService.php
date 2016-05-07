@@ -234,7 +234,7 @@ class SmartMapService extends BaseApplicationComponent
 				foreach ($value as $filterValue) {
 
 					// Generate placeholder token
-					$token = ':a'.preg_replace('/[^0-9]/', '', microtime());
+					$token = ':a'.md5(str_shuffle(microtime()));
 
 					// Append to WHERE
 					if ($where) {$where .= ' OR ';}

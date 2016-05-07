@@ -33,7 +33,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '2.3.6';
+		return '2.3.7 rc 1';
 	}
 
 	public function getSchemaVersion()
