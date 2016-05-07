@@ -18,6 +18,7 @@ class SmartMap_MainService extends BaseApplicationComponent
 			CURLOPT_URL => $api,
 			CURLOPT_RETURNTRANSFER => 1,
 			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_FOLLOWLOCATION => true,
 		));
 		$response = json_decode(curl_exec($ch), true);
 		curl_close($ch);
