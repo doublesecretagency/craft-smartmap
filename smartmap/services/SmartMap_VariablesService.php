@@ -432,7 +432,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         $tokens = array();
         //array_walk_recursive($dataArr, function ($value, $key) {});
         foreach ($dataArr as $key => $value) {
-            $token = md5(str_shuffle(microtime()));
+            $token = StringHelper::randomString();
             $smartMap  = (0 === strpos((string) $value, 'smartMap.'));
             $googleMap = (0 === strpos((string) $value, 'google.maps.'));
             if ($smartMap || $googleMap) {
