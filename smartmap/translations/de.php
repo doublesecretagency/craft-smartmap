@@ -51,10 +51,10 @@ return array(
 	'Google API Browser Key' => 'Google API Browser Key', // TODO: not translated
 	'Used for static & dynamic map rendering' => 'Wird für das Rendern der statischen und dynamischen Karten benutzt', // TODO: no period?
 	'Geolocation' => 'Geolokalisation',
-	'Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located.' => 'Abhängig vom Einsatzzweck Ihrer Webseite, könnte es nötig sein über <strong>IP Adressen Ermittlung</strong> und <strong>Geolokalisation</strong> den momentanen Aufenthaltsort Ihrer Benutzer automatisch zu ermitteln.',
+	'Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located.' => 'Abhängig vom Einsatzzweck Ihrer Webseite, könnte es nötig sein über <strong>IP-Adressen-Ermittlung</strong> und <strong>Geolokalisation</strong> den momentanen Aufenthaltsort Ihrer Benutzer automatisch zu ermitteln.',
 	'Select a service...' => 'Auswahl des Anbieters...',
 	'Geolocation is disabled.' => 'Geolokalisation ist deaktiviert.',
-	'A free service, FreeGeoIp.net can perform IP address lookups automatically.' => 'Ein kostenloser Anbieter, über den Geolokalisierungs-Abfragen über IP Adressen möglich sind.', // TODO: this means "geolocation lookups" via IP address, right? And, is it ok to leave out "automatically"?
+	'A free service, FreeGeoIp.net can perform IP address lookups automatically.' => 'Ein kostenloser Anbieter, über den Geolokalisierungs-Abfragen über IP-Adressen möglich sind.', // TODO: this means "geolocation lookups" via IP address, right? And, is it ok to leave out "automatically"?
 	'A paid subscription service, MaxMind provides more accurate results, with a greater guarantee of uptime.' => 'Ein kostenpflichtiger Anbieter, der akkuratere Ergebnisse liefert und eine bessere Verfügbarkeit garantieren kann.', // TODO: left out the service's name, cause in german it's easily possible to build the sentence with präpositions instead.
 	'MaxMind Configuration' => 'MaxMind Einstellungen',
 	'<strong>Step 1:</strong> Subscribe to a <a href="{url}" target="_blank">Web Service...</a>' => '<strong>Schritt 1:</strong> Melden Sie sich zu einem der <a href="{url}" target="_blank">angebotenen Web Dienste</a> an...',
