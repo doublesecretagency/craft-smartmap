@@ -741,7 +741,7 @@ class SmartMapService extends BaseApplicationComponent
 	private function _googleKey($setting, $prepend)
 	{
 		if ($this->settings[$setting]) {
-			return $prepend.'key='.$this->settings[$setting];
+			return $prepend.'key='.trim($this->settings[$setting]);
 		} else {
 			return '';
 		}
