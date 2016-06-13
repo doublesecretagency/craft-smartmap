@@ -24,7 +24,9 @@ class SmartMapController extends BaseController
 	{
 		$this->requireAjaxRequest();
 		$target = craft()->request->getPost('target');
-		$response = craft()->smartMap->lookup($target);
+		$components = craft()->request->getPost('components');
+		$components = $this->_explodeComponents($components);
+		$response = craft()->smartMap->lookup($target, $components);
 		$this->returnJson($response);
 	}
 
@@ -33,7 +35,9 @@ class SmartMapController extends BaseController
 	{
 		$this->requireAjaxRequest();
 		$target = craft()->request->getPost('target');
-		$response = craft()->smartMap->lookupCoords($target);
+		$components = craft()->request->getPost('components');
+		$components = $this->_explodeComponents($components);
+		$response = craft()->smartMap->lookupCoords($target, $components);
 		$this->returnJson($response);
 	}
 
@@ -46,6 +50,21 @@ class SmartMapController extends BaseController
 		$this->renderTemplate('_debug', array(
 			'visitor' => craft()->smartMap->visitor
 		));
+	}
+
+	// Convert components string into array
+	private function _explodeComponents($componentsString)
+	{
+		$componentsArray = array();
+		if (!trim($componentsString)) {
+			return $componentsArray;
+		}
+		$mergedComponents = explode('|', trim($componentsString));
+		foreach ($mergedComponents as $keyValue) {
+			$c = explode(':', $keyValue);
+			$componentsArray[$c[0]] = $c[1];
+		}
+		return $componentsArray;
 	}
 
 }

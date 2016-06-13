@@ -400,7 +400,8 @@ class SmartMapService extends BaseApplicationComponent
 				break;
 			case MapApi::GoogleMaps:
 			default:
-				$filter->coords = $this->_geocodeGoogleMapApi($filter->target);
+				$components = (array_key_exists('components', $params) ? $params['components'] : array());
+				$filter->coords = $this->_geocodeGoogleMapApi($filter->target, $components);
 				break;
 		}
 
@@ -447,10 +448,10 @@ class SmartMapService extends BaseApplicationComponent
 	}
 
 	// Get coordinates from Google Maps API
-	private function _geocodeGoogleMapApi($target)
+	private function _geocodeGoogleMapApi($target, $components = array())
 	{
 		// Lookup geocode matches
-		$response = $this->lookup($target);
+		$response = $this->lookup($target, $components);
 		// If no results, use default coords
 		if (empty($response['results'])) {
 			return $this->defaultCoords();
@@ -588,7 +589,8 @@ class SmartMapService extends BaseApplicationComponent
 			// Error was triggered
 			$markers = array();
 			if (array_key_exists('target', $options)) {
-				$center = $this->targetCoords = $this->_geocodeGoogleMapApi($options['target']);
+				$components = (array_key_exists('components', $options) ? $options['components'] : array());
+				$center = $this->targetCoords = $this->_geocodeGoogleMapApi($options['target'], $components);
 			} else {
 				$center = $this->targetCenter();
 			}
@@ -684,12 +686,12 @@ class SmartMapService extends BaseApplicationComponent
 	*/
 
 	// Center coordinates of target
-	public function targetCenter($target = false)
+	public function targetCenter($target = false, $components = array())
 	{
 		$coords =& $this->targetCoords;
 		if (!$coords) {
 			if ($target) {
-				$coords = $this->_geocodeGoogleMapApi($target);
+				$coords = $this->_geocodeGoogleMapApi($target, $components);
 			} else {
 				$coords = $this->defaultCoords();
 			}
@@ -698,11 +700,19 @@ class SmartMapService extends BaseApplicationComponent
 	}
 
     // Lookup a target location, returning full JSON
-	public function lookup($target)
+	public function lookup($target, $components = array())
 	{
 		$api  = 'https://maps.googleapis.com/maps/api/geocode/json';
 		$api .= '?address='.rawurlencode($target);
 		$api .= $this->googleServerKey();
+
+		if (is_array($components) && !empty($components)) {
+			$mergedComponents = array();
+			foreach ($components as $key => $value) {
+				$mergedComponents[] = "$key:$value";
+			}
+			$api .= '&components='.implode('|', $mergedComponents);
+		}
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $api);
@@ -713,9 +723,9 @@ class SmartMapService extends BaseApplicationComponent
 	}
 
     // Lookup a target location, returning only coordinates of first result
-	public function lookupCoords($target)
+	public function lookupCoords($target, $components = array())
 	{
-		$response = $this->lookup($target);
+		$response = $this->lookup($target, $components);
 		if (!empty($response['results'])) {
 			return $response['results'][0]['geometry']['location'];
 		}

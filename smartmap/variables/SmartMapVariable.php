@@ -56,15 +56,15 @@ class SmartMapVariable
     }
 
     // Lookup a target location, returning full JSON
-    public function lookup($target)
+    public function lookup($target, $components = array())
     {
-        return craft()->smartMap->lookup($target);
+        return craft()->smartMap->lookup($target, $components);
     }
 
     // Lookup a target location, returning only coordinates of first result
-    public function lookupCoords($target)
+    public function lookupCoords($target, $components = array())
     {
-        return craft()->smartMap->lookupCoords($target);
+        return craft()->smartMap->lookupCoords($target, $components);
     }
 
     // Get the subfield label from its handle
