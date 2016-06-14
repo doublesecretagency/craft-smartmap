@@ -424,6 +424,7 @@ class SmartMapService extends BaseApplicationComponent
 		// Modify query
 		$query
 			->addSelect($haversine.' AS distance')
+			->andWhere('fieldId = '.$filter->fieldId)
 			->having('distance <= '.$filter->range)
 		;
 	}

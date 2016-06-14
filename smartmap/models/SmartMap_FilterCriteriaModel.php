@@ -23,6 +23,7 @@ class SmartMap_FilterCriteriaModel extends BaseModel
             'elementType'   => array(AttributeType::String, 'default' => ElementType::Entry),
             'sectionHandle' => AttributeType::String,
             'fieldHandle'   => AttributeType::String,
+            'fieldId'       => AttributeType::Number,
 
             // SQL Search Query
             'page'   => array(AttributeType::Number, 'default' => NULL),
