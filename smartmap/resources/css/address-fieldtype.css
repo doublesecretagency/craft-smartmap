@@ -29,6 +29,11 @@ table.superTable div.smartmap-top-right {
     top: -20px;
 }
 
+div.smartmap-top-right.cpFieldLinks {
+    top: -22px;
+    right: 22px;
+}
+
 span.smartmap-no-results {
     display: none;
     color: #d1202a;

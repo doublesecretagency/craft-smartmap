@@ -16,6 +16,10 @@ var dragPin = {};
 // On load
 $(function () {
 	addNoHeadingClass();
+	// Compatibility with CP Field Links
+	if ($('.cpFieldLinks').length > 0) {
+		$('div.smartmap-top-right').addClass('cpFieldLinks');
+	}
 });
 
 // Listen for new blocks
