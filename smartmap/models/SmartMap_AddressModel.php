@@ -150,7 +150,7 @@ class SmartMap_AddressModel extends BaseModel
             $startingAddress = false;
         }
         // Compile URL
-        $url = 'http://maps.google.com/maps?';
+        $url = 'https://maps.google.com/maps?';
         if ($startingAddress) {
             $url .= 'saddr='.rawurlencode($startingTitle).'@'.$startingCoords.'&';
         }

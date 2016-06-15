@@ -507,10 +507,10 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         return $rootUrl.$data;
 
         // MORE COMPLEX EXAMPLE (https://developers.google.com/maps/documentation/staticmaps/index)
-        // http://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Ccolor:red%7Clabel:C%7C40.718217,-73.998284&sensor=false
+        // https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Ccolor:red%7Clabel:C%7C40.718217,-73.998284&sensor=false
 
         // SHOULD ALSO BUILD IN FUNCTIONALITY FOR STREET VIEW MAPS
-        // http://maps.googleapis.com/maps/api/streetview?size=200x200&location=40.720032,-73.988354&heading=235&sensor=false
+        // https://maps.googleapis.com/maps/api/streetview?size=200x200&location=40.720032,-73.988354&heading=235&sensor=false
 
     }
 
@@ -530,7 +530,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         }
         if ($address->lat && $address->lng) {
             $coords = $address->lat.'+'.$address->lng;
-            return 'http://maps.google.com/maps?q='.($q ? rawurlencode($q) : $coords).'&ll='.$coords;
+            return 'https://maps.google.com/maps?q='.($q ? rawurlencode($q) : $coords).'&ll='.$coords;
         } else {
             return '#no-address-coordinates';
         }
@@ -556,7 +556,7 @@ class SmartMap_VariablesService extends BaseApplicationComponent
                 }
             }
         }
-        return 'http://maps.google.com/maps?daddr='.rawurlencode($title).'@'.$coords;
+        return 'https://maps.google.com/maps?daddr='.rawurlencode($title).'@'.$coords;
     }
 
 }
