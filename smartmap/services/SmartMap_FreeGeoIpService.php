@@ -32,7 +32,7 @@ class SmartMap_FreeGeoIpService extends BaseApplicationComponent
 		catch (\Exception $e)
 		{
 			$message = 'The request to FreeGeoIp.net failed: '.$e->getMessage();
-			Craft::log($message, LogLevel::Warning);
+			SmartMapPlugin::log($message, LogLevel::Warning);
 		}
 	}
 

@@ -79,7 +79,7 @@ class SmartMap_MaxMindService extends BaseApplicationComponent
 		catch (\Exception $e)
 		{
 			$message = 'The request to MaxMind failed: '.$e->getMessage();
-			Craft::log($message, LogLevel::Warning);
+			SmartMapPlugin::log($message, LogLevel::Warning);
 			craft()->smartMap_freeGeoIp->lookupIpData($ip);
 		}
 	}

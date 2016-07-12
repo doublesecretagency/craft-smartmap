@@ -716,9 +716,20 @@ class SmartMapService extends BaseApplicationComponent
 		}
 
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $api);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt_array($ch, array(
+			CURLOPT_URL => $api,
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_FOLLOWLOCATION => true,
+		));
 		$response = curl_exec($ch);
+		$error = curl_error($ch);
+
+		if ($error) {
+			SmartMapPlugin::log('cURL error: '.$error, LogLevel::Error);
+		}
+
+		curl_close($ch);
 
 		return json_decode($response, true);
 	}

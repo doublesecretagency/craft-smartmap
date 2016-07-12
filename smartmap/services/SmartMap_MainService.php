@@ -21,6 +21,12 @@ class SmartMap_MainService extends BaseApplicationComponent
 			CURLOPT_FOLLOWLOCATION => true,
 		));
 		$response = json_decode(curl_exec($ch), true);
+		$error = curl_error($ch);
+
+		if ($error) {
+			SmartMapPlugin::log('cURL error: '.$error, LogLevel::Error);
+		}
+
 		curl_close($ch);
 
 		switch ($response['status']) {
