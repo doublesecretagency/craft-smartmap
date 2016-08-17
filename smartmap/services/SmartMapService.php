@@ -722,7 +722,7 @@ class SmartMapService extends BaseApplicationComponent
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_FOLLOWLOCATION => true,
 		));
-		$response = curl_exec($ch);
+		$response = json_decode(curl_exec($ch), true);
 		$error = curl_error($ch);
 
 		if ($error) {
@@ -731,7 +731,37 @@ class SmartMapService extends BaseApplicationComponent
 
 		curl_close($ch);
 
-		return json_decode($response, true);
+		$message = false;
+		switch ($response['status']) {
+			// case 'OK':
+			// 	return array(
+			// 		'success' => true,
+			// 		'results' => $this->_restructureSearchResults($response['results'])
+			// 	);
+			// 	break;
+			// case 'ZERO_RESULTS':
+			// 	$message = Craft::t('The geocode was successful but returned no results.');
+			// 	break;
+			case 'OVER_QUERY_LIMIT':
+				$message = Craft::t('You are over your quota. If this is a shared server, enable Google Maps API Keys.');
+				break;
+			case 'REQUEST_DENIED':
+				if (array_key_exists('error_message', $response) && $response['error_message']) {
+					$message = $response['error_message'];
+				} else {
+					$message = Craft::t('Your request was denied for some reason.');
+				}
+				break;
+			case 'INVALID_REQUEST':
+				$message = Craft::t('Invalid request. Please provide more address information.');
+				break;
+		}
+
+		if ($message) {
+			SmartMapPlugin::log('Google API error: '.$message, LogLevel::Error);
+		}
+
+		return $response;
 	}
 
     // Lookup a target location, returning only coordinates of first result

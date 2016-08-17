@@ -66,6 +66,8 @@ class SmartMap_MainService extends BaseApplicationComponent
 			}
 		}
 
+		SmartMapPlugin::log('Address search error: '.$message, LogLevel::Error);
+
 		return array(
 			'success' => false,
 			'message' => $message
