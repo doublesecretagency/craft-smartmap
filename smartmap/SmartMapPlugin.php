@@ -142,11 +142,14 @@ class SmartMapPlugin extends BasePlugin
 
 	public function modifyImportRow($element, $map, $data)
 	{
+		// Initialize content array
+		$content = array();
+
 		// Map data to fields
 		$fields = array_combine($map, $data);
 
-		// Initialize content array
-		$content = array();
+		// Log import attempt
+		SmartMapPlugin::log('Importing address data: '.var_export($fields, true), LogLevel::Info);
 
 		// Loop through subfields
 		foreach ($fields as $key => $value) {
