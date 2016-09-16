@@ -9,6 +9,9 @@ class SmartMap_FreeGeoIpService extends BaseApplicationComponent
 	// Look up geolocation data based on IP address
 	public function lookupIpData($ip)
 	{
+		// Log lookup
+		SmartMapPlugin::log('Visitor lookup via FreeGeoIp.net');
+		// Attempt lookup
 		try
 		{
 			// Ping geo location service

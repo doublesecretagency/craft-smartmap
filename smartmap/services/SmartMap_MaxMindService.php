@@ -37,6 +37,9 @@ class SmartMap_MaxMindService extends BaseApplicationComponent
 	// Look up geolocation data based on IP address
 	public function lookupIpData($ip)
 	{
+		// Log lookup
+		SmartMapPlugin::log('Visitor lookup via MaxMind');
+		// Attempt lookup
 		try
 		{
         	craft()->smartMap->loadGeoData();
@@ -68,7 +71,7 @@ class SmartMap_MaxMindService extends BaseApplicationComponent
 				craft()->smartMap->cacheGeoData(craft()->smartMap->visitor['ip'], 'MaxMind');
 			} else {
 				/*
-				// Else, grap IP using FreeGeoIp
+				// Else, grab IP using FreeGeoIp
 				$freeGeoIp = craft()->smartMap_freeGeoIp->rawData();
 				if (array_key_exists('ip', $freeGeoIp)) {
 					$this->lookupIpData($freeGeoIp['ip']);
@@ -80,7 +83,7 @@ class SmartMap_MaxMindService extends BaseApplicationComponent
 		{
 			$message = 'The request to MaxMind failed: '.$e->getMessage();
 			SmartMapPlugin::log($message, LogLevel::Warning);
-			craft()->smartMap_freeGeoIp->lookupIpData($ip);
+			// craft()->smartMap_freeGeoIp->lookupIpData($ip);
 		}
 	}
 

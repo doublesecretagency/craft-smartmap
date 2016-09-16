@@ -86,13 +86,34 @@ class SmartMapService extends BaseApplicationComponent
 	// Checks whether IP address is valid
 	public function validIp($ip)
 	{
+		// TODO: THIS ISN'T CHECKING FOR IPv6
 		$ipPattern = '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/';
 		return preg_match($ipPattern, $ip);
+	}
+
+	// Whether this is running in a task
+	private function _isTask()
+	{
+		// Loop through stack trace until we find a task
+		foreach (debug_backtrace() as $caller) {
+			// If called from a task
+			if (array_key_exists('file', $caller) && substr($caller['file'], -8) == 'Task.php') {
+				return true;
+			}
+		}
+		// Apparently not a task
+		return false;
 	}
 
 	//
 	private function _setGeoData($ip = '')
 	{
+		// If running in a task, bail
+		if ($this->_isTask()) {
+			SmartMapPlugin::log('Geolocation lookups are not run in tasks.');
+			return;
+		}
+		// If existing data isn't found, go get it
 		if (!$this->_matchGeoData($ip)) {
 
 			// @TODO
@@ -136,7 +157,7 @@ class SmartMapService extends BaseApplicationComponent
 	public function setGeoDataCookie($ipSet, $lifespan = 300) // Expires in five minutes
 	{
 		if (!$ipSet) {
-        	craft()->smartMap->loadGeoData();
+			craft()->smartMap->loadGeoData();
 			$this->cookieData = array(
 				'ip'      => $this->visitor['ip'],
 				'expires' => time() + $lifespan,
@@ -149,7 +170,7 @@ class SmartMapService extends BaseApplicationComponent
 	public function cacheGeoData($ip, $geoLookupService, $lifespan = 7776000) // 60*60*24*90 // Expires in 90 days
 	{
 		if ($ip) {
-        	craft()->smartMap->loadGeoData();
+			craft()->smartMap->loadGeoData();
 			$data = array(
 				'visitor' => $this->visitor,
 				'expires' => time() + $lifespan,
@@ -301,7 +322,7 @@ class SmartMapService extends BaseApplicationComponent
 		// Save record
 		$saved = $addressRecord->save();
 		if (!$saved) {
-		    $errors = $addressRecord->getErrors();
+			$errors = $addressRecord->getErrors();
 		}
 		return $saved;
 
@@ -327,7 +348,7 @@ class SmartMapService extends BaseApplicationComponent
 		}
 		else
 		{
-            $model = new SmartMap_AddressModel;
+			$model = new SmartMap_AddressModel;
 		}
 
 		// Set distance property
@@ -335,7 +356,7 @@ class SmartMapService extends BaseApplicationComponent
 		if ($this->targetCoords) {
 			$visitor = $this->targetCoords;
 		} else {
-        	craft()->smartMap->loadGeoData();
+			craft()->smartMap->loadGeoData();
 			$visitor = array(
 				'lat' => $this->visitor['latitude'],
 				'lng' => $this->visitor['longitude'],
@@ -700,7 +721,7 @@ class SmartMapService extends BaseApplicationComponent
 		return $coords;
 	}
 
-    // Lookup a target location, returning full JSON
+	// Lookup a target location, returning full JSON
 	public function lookup($target, $components = array())
 	{
 		$api  = 'https://maps.googleapis.com/maps/api/geocode/json';
@@ -764,7 +785,7 @@ class SmartMapService extends BaseApplicationComponent
 		return $response;
 	}
 
-    // Lookup a target location, returning only coordinates of first result
+	// Lookup a target location, returning only coordinates of first result
 	public function lookupCoords($target, $components = array())
 	{
 		$response = $this->lookup($target, $components);
@@ -811,7 +832,7 @@ class SmartMapService extends BaseApplicationComponent
 			'lat' => -48.876667,
 			'lng' => -123.393333,
 		);
-        craft()->smartMap->loadGeoData();
+		craft()->smartMap->loadGeoData();
 		if (array_key_exists('latitude', $this->visitor) && array_key_exists('longitude', $this->visitor)) {
 			$coords = array(
 				// Current location
@@ -864,17 +885,17 @@ class SmartMapService extends BaseApplicationComponent
 	/*
 	// Event returns params:
 	array(
-	    'ip' => 'xx.xx.xx.xx'
-	    'location' => array(
-	        'city' => 'Los Angeles'
-	        'state' => 'California'
-	        'zipcode' => '90000'
-	        'country' => 'United States'
-	        'latitude' => 33.0000
-	        'longitude' => -118.0000
-	    )
-	    'detectionService' => 'MaxMind'
-	    'cacheExpires' => 1413590881
+		'ip' => 'xx.xx.xx.xx'
+		'location' => array(
+			'city' => 'Los Angeles'
+			'state' => 'California'
+			'zipcode' => '90000'
+			'country' => 'United States'
+			'latitude' => 33.0000
+			'longitude' => -118.0000
+		)
+		'detectionService' => 'MaxMind'
+		'cacheExpires' => 1413590881
 	)
 	*/
 
