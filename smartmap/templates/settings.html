@@ -62,13 +62,13 @@
 <h2>{{ "Select a service..."|t }}</h2>
 
 <ul class="smartmap-geolocation-options">
-	{{ render.geolocationOption('None', 'none', settings.geolocation, 
+	{{ render.geolocationOption('None', 'none', settings.geolocation,
 	    'Geolocation is disabled.'
 	) }}
-	{{ render.geolocationOption('FreeGeoIp.net', 'freegeoip', settings.geolocation, 
+	{{ render.geolocationOption('FreeGeoIp.net', 'freegeoip', settings.geolocation,
 	    'A free service, FreeGeoIp.net can perform IP address lookups automatically.'
 	) }}
-	{{ render.geolocationOption('MaxMind', 'maxmind', settings.geolocation, 
+	{{ render.geolocationOption('MaxMind', 'maxmind', settings.geolocation,
 	    'A paid subscription service, MaxMind provides more accurate results, with a greater guarantee of uptime.'
 	) }}
 </ul>

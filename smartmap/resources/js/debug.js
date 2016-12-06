@@ -57,7 +57,7 @@ function drawMap() {
 			icon: '//www.googlemapsmarkers.com/v1/P/FF695F/'
 		});
 	}
-	
+
 }
 
 // ========================================================== //
@@ -107,8 +107,8 @@ function calculateDistance(lat1, lng1, lat2, lng2, units) {
 	var dLat = x1.toRad();
 	var x2 = lng2 - lng1;
 	var dLng = x2.toRad();
-	var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
-			Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+	var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+			Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
 			Math.sin(dLng/2) * Math.sin(dLng/2);
 	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 	var d = R * c;
