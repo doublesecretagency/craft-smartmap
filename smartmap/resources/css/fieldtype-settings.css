@@ -33,6 +33,21 @@
 	text-align: left;
 }
 
+.smartmap-dragpin-defaults {}
+
+.smartmap-dragpin-defaults .lat,
+.smartmap-dragpin-defaults .lng,
+.smartmap-dragpin-defaults .zoom {
+	float: left;
+	margin-bottom: 12px;
+}
+
+.smartmap-dragpin-defaults .map {
+	clear: both;
+	height: 400px;
+	border: 1px solid #999999;
+}
+
 @media screen and (max-width: 400px) {
 	.smartmap-fieldtype .fld-tab {
 		margin-left: 0;

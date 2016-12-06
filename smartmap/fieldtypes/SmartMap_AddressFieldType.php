@@ -85,7 +85,11 @@ class SmartMap_AddressFieldType extends BaseFieldType implements IPreviewableFie
 				'country' => array('enable' => 1, 'width' => 100),
 				'lat'     => array('enable' => 1, 'width' =>  50),
 				'lng'     => array('enable' => 1, 'width' =>  50),
-			))
+			)),
+			'dragPinDefault'   => AttributeType::Bool,
+			'dragPinLatitude'  => array(AttributeType::Number, 'decimals' => 8),
+			'dragPinLongitude' => array(AttributeType::Number, 'decimals' => 8),
+			'dragPinZoom'      => AttributeType::Number,
 		);
 	}
 

@@ -103,17 +103,29 @@ $('.matrix-configurator').on('change', 'select[id$="type"]', function () {
 	}
 });
 
+// =================================================================================================== //
+// =================================================================================================== //
+
+var $fieldSetting, mapCurrent;
 
 $(function () {
+	$fieldSetting = {
+		'lat'  : $('#types-SmartMap_Address-latitude'),
+		'lng'  : $('#types-SmartMap_Address-longitude'),
+		'zoom' : $('#types-SmartMap_Address-zoom')
+	}
+	mapCurrent = {
+		'lat'  : parseInt($fieldSetting.lat.val()),
+		'lng'  : parseInt($fieldSetting.lng.val()),
+		'zoom' : parseInt($fieldSetting.zoom.val())
+	}
 	loadMap();
 });
 
-
 function getCoords() {
 
-	//
-	var lat = $('#types-SmartMap_Address-latitude').val();
-	var lng = $('#types-SmartMap_Address-longitude').val();
+	var lat = mapCurrent.lat;
+	var lng = mapCurrent.lng;
 
 	// Set default map coordinates
 	if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
@@ -155,7 +167,7 @@ function loadMap() {
 
 	// Set map options
 	var mapOptions = {
-		zoom: 4,
+		zoom: mapCurrent.zoom,
 		center: coords,
 		scrollwheel: false,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -175,13 +187,13 @@ function loadMap() {
 	// When marker is dropped
 	google.maps.event.addListener(marker, "dragend", function(event) {
 		map.panTo(event.latLng);
-		$('#types-SmartMap_Address-latitude').val(event.latLng.lat());
-		$('#types-SmartMap_Address-longitude').val(event.latLng.lng());
+		$fieldSetting.lat.val(event.latLng.lat());
+		$fieldSetting.lng.val(event.latLng.lng());
 	});
 
 	// When map is zoomed
 	google.maps.event.addListener(map, "zoom_changed", function(event) {
-		$('#types-SmartMap_Address-zoom').val(map.getZoom());
+		$fieldSetting.zoom.val(map.getZoom());
 	});
 
 }
