@@ -1,10 +1,20 @@
 {% import '_includes/forms' as forms %}
 
+{% set dragPinData %}
+	data-default="{{ settings.dragPinDefault ? 'true' : 'false' }}"
+	{% if settings.dragPinDefault %}
+		data-lat="{{ settings.dragPinLatitude }}"
+		data-lng="{{ settings.dragPinLongitude }}"
+		data-zoom="{{ settings.dragPinZoom }}"
+	{% endif %}
+{% endset %}
+
 <div class="smartmap-field" id="{{ handle }}">
 	<div class="smartmap-top-right">
 		<span class="smartmap-link smartmap-search-addresses">{{ "Search Addresses"|t }}</span>
 		 &nbsp;&bull;&nbsp;
 		<span class="smartmap-link smartmap-drag-pin">{{ "Drag Pin"|t }}</span>
+		<span id="{{ handle }}-drag-pin-data" {{ dragPinData|raw }}></span>
 	</div>
 	<div class="smartmap-subfields">
 

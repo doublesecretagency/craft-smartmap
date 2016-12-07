@@ -58,19 +58,13 @@ function addNoHeadingClass() {
 }
 
 
-function getCoords(handle) {
-
-	var lat = $('#'+handle+'-lat').val();
-	var lng = $('#'+handle+'-lng').val();
+function getCoords(handle, existingCoords) {
 
 	var coords;
 
 	// Set default map coordinates
-	if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
-		coords = {
-			'lat': lat,
-			'lng': lng
-		};
+	if (existingCoords) {
+		coords = existingCoords;
 	} else {
 		// Set default map position
 		if (visitor) {
@@ -97,7 +91,7 @@ function getCoords(handle) {
 	return new google.maps.LatLng(coords.lat, coords.lng);
 }
 
-function _renderMap(handle, mapCanvas, coords) {
+function _renderMap(handle, mapCanvas, coords, zoom) {
 
 	// If map already created
 	if (dragPin[handle]['map']) {
@@ -107,7 +101,7 @@ function _renderMap(handle, mapCanvas, coords) {
 	} else {
 		var mapOptions = {
 			center: coords,
-			zoom: 11,
+			zoom: zoom,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		dragPin[handle]['map'] = new google.maps.Map(mapCanvas, mapOptions);
@@ -158,9 +152,32 @@ function modalDragPin(handle) {
 		// Once canvas has width
 		if ($(mapCanvas).width()) {
 
+			var existingCoords;
+			var zoom = 11;
+
+			var lat = $('#'+handle+'-lat').val();
+			var lng = $('#'+handle+'-lng').val();
+
+			var defaultData = $('#'+handle+'-drag-pin-data').data();
+
+			if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
+				existingCoords = {
+					'lat': lat,
+					'lng': lng
+				};
+			} else if (defaultData.default) {
+				existingCoords = {
+					'lat': defaultData.lat,
+					'lng': defaultData.lng
+				};
+				zoom = defaultData.zoom;
+			} else {
+				existingCoords = false;
+			}
+
 			// Render map
-			var coords = getCoords(handle);
-			var marker = _renderMap(handle, mapCanvas, coords);
+			var coords = getCoords(handle, existingCoords);
+			var marker = _renderMap(handle, mapCanvas, coords, zoom);
 
 			// Set modal close trigger
 			$('.modal-cancel').on('click', function() {
