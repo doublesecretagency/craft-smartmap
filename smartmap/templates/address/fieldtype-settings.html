@@ -24,7 +24,7 @@
 {% set defaultLng  = settings.dragPinLongitude ?? '0' %}
 {% set defaultZoom = settings.dragPinZoom      ?? '4' %}
 
-<div id="dragpin-defaults" class="smartmap-dragpin-defaults">
+<div id="dragpin-defaults" class="smartmap-dragpin-defaults" {{ not settings.dragPinDefault ? 'style="display:none"'|raw }}>
 	<div class="lat" style="width:41%; margin-right:1%;">
 		{{ forms.textField({
 			label: 'Latitude'|t,

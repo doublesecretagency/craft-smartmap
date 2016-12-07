@@ -119,11 +119,24 @@ $(function () {
 		'lng'  : parseInt($fieldSetting.lng.val()),
 		'zoom' : parseInt($fieldSetting.zoom.val())
 	}
-	loadMap();
+	var map = loadMap();
+	// Hide/show map defaults when checkbox is checked
+	$('#types-SmartMap_Address-dragPinDefault').on('change', function () {
+		var $dragPinDefaults = $('#types-SmartMap_Address-dragpin-defaults');
+		if ($(this).is(':checked')) {
+			$dragPinDefaults.slideDown();
+		} else {
+			$dragPinDefaults.slideUp();
+		}
+		google.maps.event.trigger(map,'resize');
+		var center = new google.maps.LatLng(mapCurrent.lat, mapCurrent.lng);
+		map.panTo(center);
+	});
 });
 
 function getCoords() {
 
+	var coords;
 	var lat = mapCurrent.lat;
 	var lng = mapCurrent.lng;
 
@@ -195,5 +208,7 @@ function loadMap() {
 	google.maps.event.addListener(map, "zoom_changed", function(event) {
 		$fieldSetting.zoom.val(map.getZoom());
 	});
+
+	return map;
 
 }
