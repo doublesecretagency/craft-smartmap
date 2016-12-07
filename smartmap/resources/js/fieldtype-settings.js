@@ -119,7 +119,7 @@ $(function () {
 		'lng'  : parseInt($fieldSetting.lng.val()),
 		'zoom' : parseInt($fieldSetting.zoom.val())
 	}
-	var map = loadMap();
+	var g = loadMap();
 	// Hide/show map defaults when checkbox is checked
 	$('#types-SmartMap_Address-dragPinDefault').on('change', function () {
 		var $dragPinDefaults = $('#types-SmartMap_Address-dragpin-defaults');
@@ -128,9 +128,22 @@ $(function () {
 		} else {
 			$dragPinDefaults.slideUp();
 		}
-		google.maps.event.trigger(map,'resize');
+		google.maps.event.trigger(g.map,'resize');
 		var center = new google.maps.LatLng(mapCurrent.lat, mapCurrent.lng);
-		map.panTo(center);
+		g.map.panTo(center);
+	});
+	// Refocus map when values are adjusted
+	$('.default-value input').on('keypress', function (event) {
+		if (event.which == 13) {
+			var center = new google.maps.LatLng(
+				parseInt($fieldSetting.lat.val()),
+				parseInt($fieldSetting.lng.val())
+			);
+			g.map.panTo(center);
+			g.marker.setPosition(center);
+			g.map.setZoom(parseInt($fieldSetting.zoom.val()));
+			event.preventDefault();
+		}
 	});
 });
 
@@ -209,6 +222,9 @@ function loadMap() {
 		$fieldSetting.zoom.val(map.getZoom());
 	});
 
-	return map;
+	return {
+		'map': map,
+		'marker': marker
+	};
 
 }
