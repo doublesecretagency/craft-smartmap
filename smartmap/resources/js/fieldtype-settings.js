@@ -107,6 +107,7 @@ $('.matrix-configurator').on('change', 'select[id$="type"]', function () {
 // =================================================================================================== //
 
 var $fieldSetting, mapCurrent;
+var g;
 
 $(function () {
 	$fieldSetting = {
@@ -119,7 +120,7 @@ $(function () {
 		'lng'  : parseInt($fieldSetting.lng.val()),
 		'zoom' : parseInt($fieldSetting.zoom.val())
 	}
-	var g = loadMap();
+	g = loadMap();
 	// Hide/show map defaults when checkbox is checked
 	$('#types-SmartMap_Address-dragPinDefault').on('change', function () {
 		var $dragPinDefaults = $('#types-SmartMap_Address-dragpin-defaults');
@@ -129,7 +130,10 @@ $(function () {
 			$dragPinDefaults.slideUp();
 		}
 		google.maps.event.trigger(g.map,'resize');
-		var center = new google.maps.LatLng(mapCurrent.lat, mapCurrent.lng);
+		var center = new google.maps.LatLng(
+			parseInt($fieldSetting.lat.val()),
+			parseInt($fieldSetting.lng.val())
+		);
 		g.map.panTo(center);
 	});
 	// Refocus map when values are adjusted
@@ -168,21 +172,19 @@ function getCoords() {
 		// If JS geolocation available, recenter
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function (position) {
+				var geoLat = position.coords.latitude;
+				var geoLng = position.coords.longitude;
 				coords = {
-					'lat': position.coords.latitude,
-					'lng': position.coords.longitude
+					'lat': geoLat,
+					'lng': geoLng
 				};
-				console.log(coords);
-				// var center = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-				// marker.setPosition(center);
-				// map.panTo(center);
+				var center = new google.maps.LatLng(geoLat, geoLng);
+				$fieldSetting.lat.val(geoLat);
+				$fieldSetting.lng.val(geoLng);
+				g.marker.setPosition(center);
 			});
 		}
 	}
-
-	// return new google.maps.LatLng(coords.lat, coords.lng);
-
-	console.log(coords);
 
 	return coords;
 }
