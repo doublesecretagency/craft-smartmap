@@ -476,8 +476,10 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         // Decipher map info
         $map = craft()->smartMap->markerCoords($markers, $options);
 
-        $width  = (array_key_exists('width', $options)  ? $options['width']  : '200');
-        $height = (array_key_exists('height', $options) ? $options['height'] : '150');
+        $width   = (array_key_exists('width', $options)   ? $options['width']   : '200');
+        $height  = (array_key_exists('height', $options)  ? $options['height']  : '150');
+        $scale   = (array_key_exists('scale', $options)   ? $options['scale']   : '2');
+        $maptype = (array_key_exists('maptype', $options) ? $options['maptype'] : 'roadmap');
 
         if (array_key_exists('markerOptions', $options) && array_key_exists('icon', $options['markerOptions'])) {
             $markerIcon = 'icon:'.urlencode($options['markerOptions']['icon']);
@@ -489,10 +491,10 @@ class SmartMap_VariablesService extends BaseApplicationComponent
 
         $data  = '?visual_refresh=true';
         $data .= craft()->smartMap->googleBrowserKey();
-        $data .= '&amp;scale=2'; // Retina
+        $data .= '&amp;scale='.$scale; // Retina
         $data .= '&amp;center='.$map['center']['lat'].','.$map['center']['lng'];
         $data .= '&amp;size='.$width.'x'.$height;
-        $data .= '&amp;maptype=roadmap';
+        $data .= '&amp;maptype='.$maptype;
 
         if (array_key_exists('zoom', $options)) {
             $data .= '&amp;zoom='.$options['zoom'];
