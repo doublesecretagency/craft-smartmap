@@ -202,7 +202,7 @@ function loadMap() {
 	};
 
 	// Draw blank map
-	var mapCanvas = document.getElementById('types-SmartMap_Address-dragpin-map');
+	var mapCanvas = $('#types-SmartMap_Address-dragpin-map');
 	var map = new google.maps.Map(mapCanvas, mapOptions);
 
 	// Set marker for this map
