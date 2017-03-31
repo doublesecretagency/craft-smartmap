@@ -55,6 +55,10 @@ var smartMap = {
 		smartMap.log('['+markerName+'] Info window rendered.');
 		return this.infoWindow[markerName];
 	},
+	// Refresh map
+	refreshMap: function (mapId) {
+		google.maps.event.trigger(this.map[mapId], 'resize');
+	},
 	// List items
 	listMaps: function () {
 		return Object.keys(this.map);
