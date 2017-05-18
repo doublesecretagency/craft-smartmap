@@ -1,0 +1,47 @@
+{% if field.settings %}
+    {% set smartMapSubfields = [] %}
+    {% for subfield,settings in field.settings.layout %}
+        {% if settings.enable %}
+            {% set smartMapSubfields = smartMapSubfields|merge([subfield]) %}
+        {% endif %}
+    {% endfor %}
+{% else %}
+    {% set smartMapSubfields = ['street1','street2','city','state','zip','country','lat','lng'] %}
+{% endif %}
+
+{% for subfield in smartMapSubfields %}
+    {% set optionLabel  = field.name ~ ' (' ~ craft.smartMap.labelFromHandle(subfield) ~ ')' %}
+    {% set optionLabelHandle = field.handle ~ '[' ~ subfield ~ ']' %}
+    {% set optionHandle = field.handle ~ '--' ~ subfield %}
+
+    <tr>
+        <td class="col-field">
+            <div class="field">
+                <div class="heading">
+                    <label>{{ optionLabel }}</label>
+
+                    <div class="instructions">
+                        <code>{{ optionLabelHandle }}</code>
+                    </div>
+                </div>
+            </div>
+        </td>
+
+        <td class="col-map">
+            {% namespace 'fieldMapping' %}
+                {{ forms.selectField({
+                    id: optionHandle,
+                    name: optionHandle,
+                    value: feed.fieldMapping[optionHandle] ?? '',
+                    options: feedData,
+                }) }}
+            {% endnamespace %}
+        </td>
+
+        <td class="col-default">
+            <div class="default-fields">
+
+            </div>
+        </td>
+    </tr>
+{% endfor %}

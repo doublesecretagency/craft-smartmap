@@ -14,6 +14,8 @@ class SmartMapPlugin extends BasePlugin
 		$this->_loadEnums();
 		// Plugin Settings
 		craft()->smartMap->settings = $this->getSettings();
+		// Feed Me integration
+		Craft::import('plugins.smartmap.integrations.feedme.fields.SmartMap_AddressFeedMeFieldType');
 	}
 
 	public function getName()
@@ -33,7 +35,7 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '2.4.1 rc 1';
+		return '2.4.1 rc 2';
 	}
 
 	public function getSchemaVersion()
@@ -92,6 +94,17 @@ class SmartMapPlugin extends BasePlugin
 	public function onAfterInstall()
 	{
 		craft()->request->redirect(UrlHelper::getCpUrl('smartmap/welcome'));
+	}
+
+
+	// =========================================================================== //
+	// For compatibility with Feed Me plugin (v2.x)
+
+	public function registerFeedMeFieldTypes()
+	{
+		return array(
+			new SmartMap_AddressFeedMeFieldType(),
+		);
 	}
 
 
