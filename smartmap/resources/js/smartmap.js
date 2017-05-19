@@ -55,10 +55,6 @@ var smartMap = {
 		smartMap.log('['+markerName+'] Info window rendered.');
 		return this.infoWindow[markerName];
 	},
-	// Refresh map
-	refreshMap: function (mapId) {
-		google.maps.event.trigger(this.map[mapId], 'resize');
-	},
 	// List items
 	listMaps: function () {
 		return Object.keys(this.map);
@@ -77,6 +73,10 @@ var smartMap = {
 	fitBounds: function (mapId) {
 		this.map[mapId].fitBounds(this.bounds[mapId]);
 		smartMap.log('['+mapId+'] Bounds fit.');
+	},
+	// Refresh map
+	refreshMap: function (mapId) {
+		google.maps.event.trigger(this.map[mapId], 'resize');
 	},
 	// Zoom in on a marker
 	// SEE DOCS: https://craftpl.us/plugins/smart-map/docs/adding-marker-info-bubbles
