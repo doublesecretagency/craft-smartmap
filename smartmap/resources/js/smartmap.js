@@ -79,7 +79,7 @@ var smartMap = {
 		google.maps.event.trigger(this.map[mapId], 'resize');
 	},
 	// Zoom in on a marker
-	// SEE DOCS: https://craftpl.us/plugins/smart-map/docs/adding-marker-info-bubbles
+	// SEE DOCS: https://www.doublesecretagency.com/plugins/smart-map/docs/adding-marker-info-bubbles
 	zoomOnMarker: function (mapId, markerName, zoom) {
 		this.map[mapId].setZoom(zoom);
 		this.map[mapId].panTo(this.marker[markerName].position);

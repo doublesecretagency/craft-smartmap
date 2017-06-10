@@ -4,7 +4,7 @@ _The smart way to use Google Maps in your Craft site_
 
 ## Documentation
 
-All documentation can be found at [Craft Plus](https://craftpl.us/plugins/smart-map/docs/).
+All documentation can be found at [doublesecretagency.com](https://www.doublesecretagency.com/plugins/smart-map/docs).
 
 ## Requirements
 

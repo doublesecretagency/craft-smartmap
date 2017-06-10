@@ -1,6 +1,6 @@
 Smart Map License
 ==============
-https://craftpl.us/plugins/smart-map
+https://www.doublesecretagency.com/plugins/smart-map
 Copyright © 2014 Double Secret Agency. All rights reserved.
 
 This license (the "License") is a legal agreement between you (either an individual or a single entity) and Double Secret Agency covering the use, installation, copying or distribution of Smart Map.

@@ -2,10 +2,13 @@
 {% includeJsResource  'smartmap/js/settings.js' %}
 {% includeCssResource 'smartmap/css/settings.css' %}
 
+{% set docsUrl      = 'https://www.doublesecretagency.com/plugins/smart-map/docs' %}
+{% set apiKeysUrl   = 'https://www.doublesecretagency.com/plugins/smart-map/docs/get-a-google-api-key' %}
+
 {% set supportEmail = '<a href="mailto:support@doublesecretagency.com?subject=Smart%20Map%20Feedback">support@doublesecretagency.com</a>' %}
 
 <h2>{{ "Documentation & Feedback"|t }}</h2>
-<p>{{ 'All documentation can be found at <a href="{url}" target="_blank">Craft Plus</a>.'|t({url:'https://craftpl.us/plugins/smart-map/docs/'})|raw }}</p>
+<p>{{ 'All documentation can be found at <a href="{url}" target="_blank">doublesecretagency.com</a>.'|t({url:docsUrl})|raw }}</p>
 <p>{{ "You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!"|t({supportEmail:supportEmail})|raw }}</p>
 <hr />
 
@@ -16,7 +19,7 @@
 	<li>{{ "If your website is on a shared server, or"|t }}</li>
 	<li>{{ "If you expect extremely high traffic to your website."|t }}</li>
 </ul>
-<p>{{ 'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>'|t({url:'https://craftpl.us/plugins/smart-map/docs/get-a-google-api-key'})|raw }}</p>
+<p>{{ 'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>'|t({url:apiKeysUrl})|raw }}</p>
 
 <div class="smartmap-field-container" id="smartmap-fields-google">
 

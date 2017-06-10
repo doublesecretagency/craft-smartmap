@@ -28,11 +28,6 @@ class SmartMapPlugin extends BasePlugin
 		return 'Adds a powerful "Address" field, to easily manage locations.';
 	}
 
-	public function getDocumentationUrl()
-	{
-		return 'https://craftpl.us/plugins/smart-map';
-	}
-
 	public function getVersion()
 	{
 		return '2.4.1 rc 2';
@@ -50,8 +45,12 @@ class SmartMapPlugin extends BasePlugin
 
 	public function getDeveloperUrl()
 	{
-		return 'https://craftpl.us/plugins/smart-map';
-		//return 'http://doublesecretagency.com';
+		return 'https://www.doublesecretagency.com/plugins';
+	}
+
+	public function getDocumentationUrl()
+	{
+		return 'https://www.doublesecretagency.com/plugins/smart-map/docs';
 	}
 
 	public function registerSiteRoutes()
