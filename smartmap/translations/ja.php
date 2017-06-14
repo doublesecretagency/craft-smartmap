@@ -39,7 +39,6 @@ return array(
 
 	// Settings page
 	'Documentation & Feedback' => 'ドキュメント＆フィードバック',
-	'All documentation can be found at <a href="{url}" target="_blank">Craft Plus</a>.' => 'すべてのドキュメントは <a href="{url}">Craft Plus</a>であります。',
 	'You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!' => '{supportEmail}までご連絡ください。ご質問、コメント、提案を歓迎します！',
 	'Google Maps API Keys' => 'Google Maps API Keys',
 	'Using API keys is optional, but you may find it beneficial in many situations:' => 'APIキーの使用はオプションですが、それは多くの状況において有益であり得ます。',

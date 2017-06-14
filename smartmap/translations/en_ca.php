@@ -39,7 +39,6 @@ return array(
 
 	// Settings page
 	// 'Documentation & Feedback' => '',
-	// 'All documentation can be found at <a href="{url}" target="_blank">Craft Plus</a>.' => '',
 	// 'You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!' => '',
 	// 'Google Maps API Keys' => '',
 	// 'Using API keys is optional, but you may find it beneficial in many situations:' => '',

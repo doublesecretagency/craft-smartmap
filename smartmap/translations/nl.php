@@ -39,7 +39,6 @@ return array(
 
 	// Settings page
 	'Documentation & Feedback' => 'Documentatie & Feedback',
-	'All documentation can be found at <a href="{url}" target="_blank">Craft Plus</a>.' => 'De volledige documentatie is hier beschikbaar: <a href="{url}">Craft Plus</a>.',
 	'You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!' => 'Je kunt ons bereiken via {supportEmail}. Suggesties, vragen en opmerkingen worden op prijs gesteld.',
 	'Google Maps API Keys' => 'google Maps API sleutel',
 	'Using API keys is optional, but you may find it beneficial in many situations:' => 'Het gebruik van een API sleutel is optioneel, maar in veel situaties heeft het zijn voordeel:',

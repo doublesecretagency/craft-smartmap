@@ -39,7 +39,6 @@ return array(
 
 	// Settings page
 	'Documentation & Feedback' => 'Dokumentation & Feedback',
-	'All documentation can be found at <a href="{url}" target="_blank">Craft Plus</a>.' => 'Die vollständige Dokumentation finden Sie auf <a href="{url}">Craft Plus</a>.', // TODO: "complete docs" or just "docs"?
 	'You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!' => 'Sie erreichen uns unter {supportEmail}. Fragen, Kommentare oder Vorschläge nehmen wir gerne entgegen!',
 	'Google Maps API Keys' => 'Google Maps API Keys', // TODO: not translated :)
 	'Using API keys is optional, but you may find it beneficial in many situations:' => 'Das Verwenden von API Keys ist optional, kann aber in verschiedenen Situationen von Vorteil sein:', // TODO: "various situations"
