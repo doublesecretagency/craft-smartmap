@@ -38,6 +38,7 @@ class SmartMapService extends BaseApplicationComponent
 				'country'   => false,
 				'latitude'  => false,
 				'longitude' => false,
+				'coords'    => false,
 			);
 			// If using geolocation, get cookie data
 			$geoSelection = $this->settings['geolocation'];
@@ -103,6 +104,25 @@ class SmartMapService extends BaseApplicationComponent
 		}
 		// Apparently not a task
 		return false;
+	}
+
+	//
+	public function appendVisitorCoords()
+	{
+		// Whether coords are valid
+		$validCoords = (
+			$this->visitor['latitude'] &&
+			$this->visitor['longitude'] &&
+			is_numeric($this->visitor['latitude']) &&
+			is_numeric($this->visitor['longitude'])
+		);
+		// If valid, append coords
+		if ($validCoords) {
+			$this->visitor['coords'] = [
+				$this->visitor['latitude'],
+				$this->visitor['longitude']
+			];
+		}
 	}
 
 	//

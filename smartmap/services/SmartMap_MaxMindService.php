@@ -65,6 +65,8 @@ class SmartMap_MaxMindService extends BaseApplicationComponent
 				craft()->smartMap->visitor['latitude'] = $results['location']['latitude'];
 				craft()->smartMap->visitor['longitude'] = $results['location']['longitude'];
 			}
+			// Append visitor coords
+			craft()->smartMap->appendVisitorCoords();
 			// If valid IP, set cache & cookie
 			if (craft()->smartMap->validIp(craft()->smartMap->visitor['ip'])) {
 				craft()->smartMap->setGeoDataCookie($ip);

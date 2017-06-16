@@ -26,6 +26,8 @@ class SmartMap_FreeGeoIpService extends BaseApplicationComponent
 				'latitude'  => (array_key_exists('latitude',$results)     ? $results['latitude']     : ''),
 				'longitude' => (array_key_exists('longitude',$results)    ? $results['longitude']    : ''),
 			);
+			// Append visitor coords
+			craft()->smartMap->appendVisitorCoords();
 			// If valid IP, set cache & cookie
 			if (craft()->smartMap->validIp(craft()->smartMap->visitor['ip'])) {
 				craft()->smartMap->setGeoDataCookie($ip);
