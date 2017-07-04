@@ -32,6 +32,7 @@ class SmartMap_AddressModel extends BaseModel
             'country'   => AttributeType::String,
             'lat'       => $coordColumn,
             'lng'       => $coordColumn,
+            'coords'    => AttributeType::Mixed,
             'distance'  => $coordColumn,
         );
 
@@ -43,6 +44,38 @@ class SmartMap_AddressModel extends BaseModel
         // USE THESE PARAMETERS IN THE "MAP MODEL"
         // https://developers.google.com/maps/documentation/staticmaps/index
 
+    }
+
+    /**
+     * @inheritDoc BaseModel::populateModel()
+     *
+     * @param mixed $attributes
+     *
+     * @return SmartMap_AddressModel
+     */
+    public static function populateModel($attributes)
+    {
+        $address = parent::populateModel($attributes);
+
+        // If address has legitimate coordinates
+        if ($address->hasCoords()) {
+
+            // Set coords array
+            $coords = [
+                $address->lat,
+                $address->lng
+            ];
+
+        } else {
+
+            // Set coords to NULL
+            $coords = null;
+
+        }
+
+        $address->coords = $coords;
+
+        return $address;
     }
 
     /**
