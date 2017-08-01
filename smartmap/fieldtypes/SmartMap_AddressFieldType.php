@@ -99,7 +99,6 @@ class SmartMap_AddressFieldType extends BaseFieldType implements IPreviewableFie
 		$api  = 'https://maps.googleapis.com/maps/api/js';
 		$api .= craft()->smartMap->googleBrowserKey('?');
 		craft()->templates->includeJsFile($api);
-		craft()->templates->includeCssFile('https://fonts.googleapis.com/css?family=Coming+Soon');
 		craft()->templates->includeCssResource('smartmap/css/fieldtype-settings.css');
 		craft()->templates->includeJsResource('smartmap/js/Sortable.min.js');
 		craft()->templates->includeJsResource('smartmap/js/fieldtype-settings.js');
