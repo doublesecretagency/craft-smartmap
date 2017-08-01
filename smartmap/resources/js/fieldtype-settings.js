@@ -88,22 +88,6 @@ SmartMap_FieldLayout.prototype._moveBlueprintRow = function(subfield) {
 };
 
 // =================================================================================================== //
-
-// When page loads, initialize each field layout
-$('.smartmap-fieldtype').each(function () {
-	new SmartMap_FieldLayout($(this));
-});
-
-// When type select inputs change
-$('.matrix-configurator').on('change', 'select[id$="type"]', function () {
-	if ('SmartMap_Address' == $(this).val()) {
-		$('.smartmap-fieldtype').each(function () {
-			new SmartMap_FieldLayout($(this));
-		});
-	}
-});
-
-// =================================================================================================== //
 // =================================================================================================== //
 
 var $fieldSetting, mapCurrent;
@@ -147,6 +131,20 @@ $(function () {
 			g.marker.setPosition(center);
 			g.map.setZoom(parseInt($fieldSetting.zoom.val()));
 			event.preventDefault();
+		}
+	});
+
+	// When page loads, initialize each field layout
+	$('.smartmap-fieldtype').each(function () {
+		new SmartMap_FieldLayout($(this));
+	});
+
+	// When type select inputs change
+	$('.matrix-configurator').on('change', 'select[id$="type"]', function () {
+		if ('SmartMap_Address' == $(this).val()) {
+			$('.smartmap-fieldtype').each(function () {
+				new SmartMap_FieldLayout($(this));
+			});
 		}
 	});
 });
