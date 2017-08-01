@@ -169,8 +169,8 @@ function getCoords() {
 			'lat': 0,
 			'lng': 0
 		};
-		// If JS geolocation available, recenter
-		if (navigator.geolocation) {
+		// If SSL and JS geolocation available, recenter
+		if (('https:' == window.location.protocol) && navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function (position) {
 				var geoLat = position.coords.latitude;
 				var geoLng = position.coords.longitude;
