@@ -116,9 +116,9 @@ $(function () {
 		'zoom' : $('#types-SmartMap_Address-zoom')
 	}
 	mapCurrent = {
-		'lat'  : parseInt($fieldSetting.lat.val()),
-		'lng'  : parseInt($fieldSetting.lng.val()),
-		'zoom' : parseInt($fieldSetting.zoom.val())
+		'lat'  : parseInt($fieldSetting.lat.val())  || 0,
+		'lng'  : parseInt($fieldSetting.lng.val())  || 0,
+		'zoom' : parseInt($fieldSetting.zoom.val()) || 11
 	}
 	g = loadMap();
 	// Hide/show map defaults when checkbox is checked
