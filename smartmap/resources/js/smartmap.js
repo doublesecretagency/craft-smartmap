@@ -78,6 +78,12 @@ var smartMap = {
 	refreshMap: function (mapId) {
 		google.maps.event.trigger(this.map[mapId], 'resize');
 	},
+	// Style map
+	styleMap: function (mapId, styles) {
+
+		console.log(styles);
+		this.map[mapId].setOptions({styles: styles});
+	},
 	// Zoom in on a marker
 	// SEE DOCS: https://www.doublesecretagency.com/plugins/smart-map/docs/adding-marker-info-bubbles
 	zoomOnMarker: function (mapId, markerName, zoom) {
