@@ -133,6 +133,8 @@ class SmartMap_VariablesService extends BaseApplicationComponent
             } else if (is_a($locations, 'Craft\\BaseElementModel')) {
                 $locations = array($locations);
                 return $this->_parseMarkers($mapId, $locations);
+            } else if (!$locations) {
+                throw new Exception('The `locations` parameter cannot be empty.');
             }
         }
 
