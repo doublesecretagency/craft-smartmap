@@ -43,6 +43,18 @@ class SmartMapVariable
         return craft()->smartMap_variables->staticMapSrc($markers, $options);
     }
 
+    // Display map from a KML file
+    public function kml($kmlFile, $options = array())
+    {
+        return craft()->smartMap_variables->kmlMap($kmlFile, $options);
+    }
+
+    // Add a KML layer to an existing map
+    public function kmlLayer($kmlFile, $mapId = false)
+    {
+        return craft()->smartMap_variables->kmlMapLayer($kmlFile, $mapId);
+    }
+
     // Link to the Google map
     public function linkToGoogle($address)
     {

@@ -72,7 +72,11 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         } else {
             $zoom = false;
         }
-        // (3) Set zoom if valid, otherwise remove it
+        // (3) Zoom is required if no markers exist (https://stackoverflow.com/a/11749810/3467557)
+        if (!$zoom && !$markers) {
+            $zoom = 11;
+        }
+        // (4) Set zoom if valid, otherwise remove it
         if ($zoom) {
             $options['zoom'] = $zoom;
         } else {
@@ -517,6 +521,48 @@ class SmartMap_VariablesService extends BaseApplicationComponent
         // https://maps.googleapis.com/maps/api/streetview?size=200x200&location=40.720032,-73.988354&heading=235&sensor=false
 
     }
+
+
+    // ================================================================== //
+    // ================================================================== //
+
+
+    // Load a KML map file
+    public function kmlMap($kmlFile, $options = array())
+    {
+        if (!$kmlFile || !is_a($kmlFile, 'Craft\AssetFileModel')) {
+            return 'Invalid KML file';
+        }
+        // Create a new map
+        $mapId = (array_key_exists('id', $options) ? $options['id'] : 'smartmap-mapcanvas-'.$this->_mapTotal);
+        $html  = $this->dynamicMap(array(), $options);
+        // Apply KML layer
+        $this->kmlMapLayer($kmlFile, $mapId);
+        return TemplateHelper::getRaw($html);
+    }
+
+
+    // Add a KML map layer
+    public function kmlMapLayer($kmlFile, $mapId)
+    {
+        if (!$kmlFile || !is_a($kmlFile, 'Craft\AssetFileModel')) {
+            return 'Invalid KML file';
+        }
+        // Include JS to apply KML layer
+        craft()->templates->includeJs('
+$(function () {
+    var src = "'.$kmlFile->url.'";
+    new google.maps.KmlLayer(src, {
+        map: smartMap.map["'.$mapId.'"]
+    });
+});
+');
+    }
+
+
+    // ================================================================== //
+    // ================================================================== //
+
 
     // Get a link to open the Google map
     public function linkToGoogle($address)
