@@ -80,8 +80,6 @@ var smartMap = {
 	},
 	// Style map
 	styleMap: function (mapId, styles) {
-
-		console.log(styles);
 		this.map[mapId].setOptions({styles: styles});
 	},
 	// Zoom in on a marker
