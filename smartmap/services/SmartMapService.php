@@ -579,6 +579,17 @@ class SmartMapService extends BaseApplicationComponent
 				// Loop through locations
 				foreach ($locations as $loc) {
 					if (is_object($loc)) {
+						// If MatrixBlockModel, get new set of field handles
+						if (is_a($loc, 'Craft\\MatrixBlockModel')) {
+							// Find all Smart Map Address field fieldIds related specifically to this matrix block type
+							$fieldHandles = array();
+							$typeId = $loc->type->id;
+							foreach (craft()->fields->getAllFields(null, "matrixBlockType:$typeId") as $field) {
+								if ($field->type == 'SmartMap_Address') {
+									$fieldHandles[] = $field->handle;
+								}
+							}
+						}
 						// If location is an object
 						if (!empty($fieldHandles)) {
 							foreach ($fieldHandles as $fieldHandle) {
