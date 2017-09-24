@@ -23,9 +23,29 @@ class SmartMap_AddressFeedMeFieldType extends BaseFeedMeFieldType
 
         $data = Hash::get($fieldData, 'data');
 
-        foreach ($data as $subfieldHandle => $subfieldData) {
-            // Set value to subfield of correct address array
-            $content[$subfieldHandle] = Hash::get($subfieldData, 'data');
+        // Normalise array indexes due to multitude of different ways we can be supplied data
+        $attributes = array(
+            'street1',
+            'street2',
+            'city',
+            'state',
+            'zip',
+            'country',
+            'lat',
+            'lng',
+        );
+
+        foreach (Hash::flatten($data) as $key => $value) {
+            foreach ($attributes as $attribute) {
+                if (strstr($key, $attribute)) {
+                    $newKey = $attribute;
+                    break;
+                }
+            }
+
+            if ($newKey) {
+                $content[$newKey] = $value;
+            }
         }
 
         // Return data
