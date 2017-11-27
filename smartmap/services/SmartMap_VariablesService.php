@@ -527,6 +527,10 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     // ================================================================== //
 
 
+    /**
+     * TODO:
+     * - Allow a string for the first parameter. KML files may be remote (and must be publicly accessible).
+     */
     // Load a KML map file
     public function kmlMap($kmlFile, $options = array())
     {
@@ -542,6 +546,11 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     }
 
 
+    /**
+     * TODO:
+     * - Allow a string for the first parameter. KML files may be remote (and must be publicly accessible).
+     * - Remove jQuery requirement. That's just bad practice.
+     */
     // Add a KML map layer
     public function kmlMapLayer($kmlFile, $mapId)
     {
