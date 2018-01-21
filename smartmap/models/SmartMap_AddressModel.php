@@ -92,7 +92,7 @@ class SmartMap_AddressModel extends BaseModel
         $formatted .= ($this->street1 ? $this->street1 : '');
         $formatted .= ($this->street1 && $this->street2 ? $unitGlue : '');
         $formatted .= ($this->street2 ? $this->street2 : '');
-        $formatted .= ($this->city || $this->state ? $cityGlue : '');
+        $formatted .= (($this->street1 || $this->street2) && ($this->city || $this->state) ? $cityGlue : '');
         $formatted .= ($this->city ? $this->city : '');
         $formatted .= (($this->city && $this->state) ? ', ' : '');
         $formatted .= ($this->state ? $this->state : '').' ';
