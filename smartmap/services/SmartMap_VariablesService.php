@@ -436,16 +436,25 @@ class SmartMap_VariablesService extends BaseApplicationComponent
     private function _jsonify($dataArr)
     {
         $tokens = array();
-        //array_walk_recursive($dataArr, function ($value, $key) {});
         foreach ($dataArr as $key => $value) {
-            $token = StringHelper::randomString();
-            $smartMap  = (0 === strpos((string) $value, 'smartMap.'));
-            $googleMap = (0 === strpos((string) $value, 'google.maps.'));
+
+            // Recursive
+            if (is_array($value)) {
+                $value = $this->_jsonify($value);
+            }
+
+            // Identify special strings
+            $smartMap  = (false !== strpos((string) $value, 'smartMap.'));
+            $googleMap = (false !== strpos((string) $value, 'google.maps.'));
+
+            // Parse special strings back to JS
             if ($smartMap || $googleMap) {
+                $token = StringHelper::randomString();
                 $dataArr[$key]  = '%'.$token.'%';
                 $tokens[]       = '"%'.$token.'%"';
                 $replacements[] = $value;
             }
+
         }
         $json = json_encode($dataArr);
         if ($tokens) {
