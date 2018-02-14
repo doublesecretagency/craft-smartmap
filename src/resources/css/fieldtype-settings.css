@@ -1,0 +1,60 @@
+.smartmap-fieldtype .fld-tab {
+    width: 280px;
+}
+
+.smartmap-fieldtype .fld-container {
+    padding-bottom: 2px;
+}
+
+.smartmap-fieldtype .fld-field {
+    cursor: default;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.smartmap-layout-table {
+    float: left;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+.smartmap-fieldtype .layout-table-enable {
+    width: 5%;
+}
+
+.smartmap-fieldtype .layout-table-width {
+    width: 5%;
+}
+.smartmap-fieldtype .layout-table-width input {
+    width: 50px;
+}
+
+.smartmap-fieldtype .layout-table-label {
+    text-align: left;
+}
+
+.smartmap-dragpin-defaults {}
+
+.smartmap-dragpin-defaults .lat,
+.smartmap-dragpin-defaults .lng,
+.smartmap-dragpin-defaults .zoom {
+    float: left;
+    margin-bottom: 12px;
+}
+
+.smartmap-dragpin-defaults .dragpin-map {
+    clear: both;
+    height: 480px;
+    border: 1px solid #999999;
+}
+
+@media screen and (max-width: 400px) {
+    .smartmap-fieldtype .fld-tab {
+        margin-left: 0;
+    }
+}
+
+.sortable-ghost td {
+    font-weight: bold;
+    background-color: #ffe4ae !important;
+}

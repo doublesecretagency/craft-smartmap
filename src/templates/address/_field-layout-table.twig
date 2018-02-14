@@ -1,0 +1,24 @@
+<input type="hidden" name="layout" class="smartmap-layout-values" value="" />
+<div class="smartmap-layout-table">
+    <table class="shadow-box editable">
+        <thead>
+            <tr>
+                <th class="header" scope="col">{{ "Enable"|t('smart-map') }}</th>
+                <th class="header" scope="col">{{ "Width"|t('smart-map') }} (%)</th>
+                <th class="header" scope="col">{{ "Label"|t('smart-map') }}</th>
+                <th class="header"></th>
+            </tr>
+        </thead>
+        <tbody class="layout-table-rows">
+            {% for subfield,subsetting in settings.layout %}
+                {% set checked = (1 == subsetting.enable ? 'checked="checked"') %}
+                <tr class="layout-table-subfield" data-subfield="{{ subfield }}">
+                    <td class="layout-table-enable"><input type="checkbox" value="1" {{ checked }} /></td>
+                    <td class="layout-table-width"><input type="number" value="{{ subsetting.width }}" /></td>
+                    <td class="layout-table-label">{{ craft.smartMap.labelFromHandle(subfield) }}</td>
+                    <td class="thin action"><a class="move icon" title="{{ "Reorder"|t('smart-map') }}"></a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

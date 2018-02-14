@@ -1,0 +1,42 @@
+{
+    "name": "doublesecretagency/craft-smartmap",
+    "description": "The most comprehensive proximity search and mapping tool for Craft.",
+    "type": "craft-plugin",
+    "version": "3.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "smart-map",
+        "map",
+        "google-maps",
+        "proximity-search",
+        "address",
+        "locations"
+    ],
+    "support": {
+        "docs": "https://www.doublesecretagency.com/plugins/smart-map/docs",
+        "issues": "https://github.com/doublesecretagency/craft-smartmap/issues"
+    },
+    "license": "Craft",
+    "authors": [
+        {
+            "name": "Double Secret Agency",
+            "homepage": "https://www.doublesecretagency.com/plugins"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC4"
+    },
+    "autoload": {
+        "psr-4": {
+          "doublesecretagency\\smartmap\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Smart Map",
+        "handle": "smart-map",
+        "class": "doublesecretagency\\smartmap\\SmartMap"
+    }
+}

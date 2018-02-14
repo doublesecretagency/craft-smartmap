@@ -1,0 +1,102 @@
+{% import '_includes/forms' as forms %}
+
+{% set dragPinData %}
+    data-default="{{ field.dragPinDefault ? 'true' : 'false' }}"
+    {% if field.dragPinDefault %}
+        data-lat="{{ field.dragPinLatitude }}"
+        data-lng="{{ field.dragPinLongitude }}"
+        data-zoom="{{ field.dragPinZoom }}"
+    {% endif %}
+{% endset %}
+
+<div class="smartmap-field" id="{{ name }}">
+    <div class="smartmap-top-right">
+        <span class="smartmap-link smartmap-search-addresses">{{ "Search Addresses"|t('smart-map') }}</span>
+         &nbsp;&bull;&nbsp;
+        <span class="smartmap-link smartmap-drag-pin">{{ "Drag Pin"|t('smart-map') }}</span>
+        <span id="{{ name }}-drag-pin-data" {{ dragPinData|raw }}></span>
+    </div>
+    <div class="smartmap-subfields">
+
+        {# Set defaults #}
+        {% set isFirst = true %}
+        {% set totalWidths = 0 %}
+
+        {# Loop through subfields #}
+        {% for subfield,subsetting in field.layout %}
+
+            {# If subfield is enabled #}
+            {% if subsetting.enable %}
+
+                {# Reset subfield style #}
+                {% set style = '' %}
+
+                {# Reset total widths counter if 100+ #}
+                {% if (100 <= totalWidths) %}
+                    {% set totalWidths = 0 %}
+                {% endif %}
+
+                {# Set whether subfield is first in the row #}
+                {% set isFirst = (0 == totalWidths) %}
+
+                {# Get field width #}
+                {% set width = subsetting.width %}
+
+                {# Add to total widths #}
+                {% set totalWidths = (totalWidths + width) %}
+
+                {# If total widths are more than 100 #}
+                {% if (100 < totalWidths) %}
+
+                    {# Set total width to this subfield's width #}
+                    {% set totalWidths = width %}
+
+                    {# Set subfield as first in the row #}
+                    {% set isFirst = true %}
+
+                {% endif %}
+
+                {# If subfield is less than 100% #}
+                {% if width < 100 %}
+
+                    {# Float subfield #}
+                    {% set style = 'float:left;' %}
+
+                    {# If subfield is not first in the row #}
+                    {% if not isFirst %}
+
+                        {# Adjust subfield width #}
+                        {% set width = (width - 1) %}
+
+                        {# Add left margin #}
+                        {% set style = style ~ ' margin-left:1%;' %}
+
+                    {% endif %}
+
+                    {# Set field width style#}
+                    {% set style = style ~ ' width:' ~ width ~ '%;' %}
+
+                {% endif %}
+
+            {% else %}
+
+                {# Hide subfield #}
+                {% set style = 'display:none;' %}
+
+            {% endif %}
+
+            <div class="{{ subfield }}" style="{{ style }}">
+                {{ forms.textField({
+                    placeholder: craft.smartMap.labelFromHandle(subfield),
+                    id: name~'-'~subfield,
+                    name: name~'['~subfield~']',
+                    value: attribute(value, subfield),
+                }) }}
+            </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+<div class="clear"></div>

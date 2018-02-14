@@ -1,0 +1,48 @@
+{% import 'smart-map/_modals/_macros' as modalMacro %}
+
+<div class="content">
+    <div class="main">
+
+        <div class="toolbar">
+            {% set total = searchResults|length %}
+            {% if total == 1 %}
+                <h2>{{ "Showing 1 search result..."|t('smart-map') }}</h2>
+            {% else %}
+                <h2>{{ "Showing {total} search results..."|t('smart-map', {'total': total}) }}</h2>
+            {% endif %}
+        </div>
+
+        <div class="elements">
+            <div class="tableview">
+                <table class="data fullwidth">
+                    <thead>
+                        <tr>
+                            <th scope="col">{{ "Street Address"|t('smart-map') }}</th>
+                            <th scope="col">{{ "City"|t('smart-map') }}</th>
+                            <th scope="col">{{ "State"|t('smart-map') }}</th>
+                            <th scope="col">{{ "Zip Code"|t('smart-map') }}</th>
+                            <th scope="col">{{ "Country"|t('smart-map') }}</th>
+                            <th scope="col" class="smartmap-modal-coords">{{ "Latitude"|t('smart-map') }}</th>
+                            <th scope="col" class="smartmap-modal-coords">{{ "Longitude"|t('smart-map') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in searchResults %}
+                            {% set streetAddress = modalMacro.formatStreetAddress(a) %}
+                            <tr class="smartmap-modal-row">
+                                <td data-subfield="street1">{{ streetAddress|trim }}</td>
+                                <td data-subfield="city">{{ a.locality is defined ? a.locality }}</td>
+                                <td data-subfield="state">{{ a.administrative_area_level_1 is defined ? a.administrative_area_level_1 }}</td>
+                                <td data-subfield="zip">{{ a.postal_code is defined ? a.postal_code }}</td>
+                                <td data-subfield="country">{{ a.country is defined ? a.country }}</td>
+                                <td data-subfield="lat" class="smartmap-modal-coords">{{ a.coords.lat is defined ? a.coords.lat }}</td>
+                                <td data-subfield="lng" class="smartmap-modal-coords">{{ a.coords.lng is defined ? a.coords.lng }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

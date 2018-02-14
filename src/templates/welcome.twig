@@ -1,0 +1,17 @@
+{% extends '_layouts/cp' %}
+{% set title = 'Welcome to Smart Map!'|t('smart-map') %}
+
+{% set iconUrl = view.getAssetManager().getPublishedUrl('@doublesecretagency/smartmap/icon.svg', true) %}
+
+{% set content %}
+    <div style="text-align:center; margin:0 auto;">
+        <img src="{{ iconUrl }}" width="200" style="margin:12px;">
+        <h2>{{ 'Thanks for using Smart Map!'|t('smart-map') }}</h2>
+        <p>{{ 'Feel free to contact us with any feature requests, bug reports, or suggestions.'|t('smart-map') }}</p>
+        <div>
+            <a href="{{ craft.smartMap.docsUrl }}" target="_blank" class="btn submit">{{ 'View full documentation'|t('smart-map') }}</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="{{ cpUrl('settings/fields/new') }}" class="btn submit">{{ 'Create an Address field...'|t('smart-map') }}</a>
+        </div>
+    </div>
+{% endset %}

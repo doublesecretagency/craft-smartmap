@@ -1,0 +1,150 @@
+{% import '_includes/forms' as forms %}
+
+{% set apiKeysUrl = docsUrl ~ '/get-a-google-api-key' %}
+
+{% set supportEmail = '<a href="mailto:support@doublesecretagency.com?subject=Smart%20Map%20Feedback" target="_blank">support@doublesecretagency.com</a>' %}
+
+{% macro configWarning(setting, docsUrl) -%}
+    {{ "This is being overridden by the {setting} config setting."|t('app', {
+        setting: '<a href="'~docsUrl~'" target="_blank">'~setting~'</a>'
+    })|raw }}
+{%- endmacro %}
+
+{% macro geolocationOption(label, value, current, description) %}
+    {% if 'none' == value %}
+        {% set checked = (current not in ['freegeoip','maxmind']) %}
+    {% else %}
+        {% set checked = (current == value) %}
+    {% endif %}
+    <li>
+        <label><input type="radio" class="smartmap-geolocation-radio" name="geolocation" value="{{ value }}" {{ checked ? 'checked="checked"' }} />{{ label|t('smart-map') }}</label>
+        <p>{{ description|t('smart-map') }}</p>
+    </li>
+{% endmacro %}
+
+{% from _self import configWarning %}
+{% from _self import geolocationOption %}
+
+<h2>{{ "Documentation & Feedback"|t('smart-map') }}</h2>
+<p>{{ 'All documentation can be found at <a href="{url}" target="_blank">doublesecretagency.com</a>.'|t('smart-map', {url:docsUrl})|raw }}</p>
+<p>{{ "You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!"|t('smart-map', {supportEmail:supportEmail})|raw }}</p>
+<hr />
+
+<h2>{{ "Google Maps API Keys"|t('smart-map') }}</h2>
+
+<p>{{ "Using API keys is optional, but you may find it beneficial in many situations:"|t('smart-map') }}</p>
+<ul class="smartmap-api-keys">
+    <li>{{ "If your website is on a shared server, or"|t('smart-map') }}</li>
+    <li>{{ "If you expect extremely high traffic to your website."|t('smart-map') }}</li>
+</ul>
+<p>{{ 'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>'|t('smart-map', {url:apiKeysUrl})|raw }}</p>
+
+<div class="smartmap-field-container" id="smartmap-fields-google">
+
+    {{ forms.textField({
+        label: "Google API Server Key"|t('smart-map'),
+        instructions: "Used for address lookups"|t('smart-map'),
+        id: 'googleServerKey',
+        name: 'googleServerKey',
+        value: settings.googleServerKey,
+        disabled: 'googleServerKey' in overrideKeys,
+        warning: 'googleServerKey' in overrideKeys ? configWarning('googleServerKey', docsUrl)
+    }) }}
+
+    {{ forms.textField({
+        label: "Google API Browser Key"|t('smart-map'),
+        instructions: "Used for static & dynamic map rendering"|t('smart-map'),
+        id: 'googleBrowserKey',
+        name: 'googleBrowserKey',
+        value: settings.googleBrowserKey,
+        disabled: 'googleBrowserKey' in overrideKeys,
+        warning: 'googleBrowserKey' in overrideKeys ? configWarning('googleBrowserKey', docsUrl)
+    }) }}
+
+</div>
+
+<hr />
+
+<h2>{{ "Geolocation"|t('smart-map') }}</h2>
+
+<p>{{ "Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located."|t('smart-map')|raw }}</p>
+
+<h2>{{ "Select a service..."|t('smart-map') }}</h2>
+
+<ul class="smartmap-geolocation-options">
+    {{ geolocationOption('None', 'none', settings.geolocation,
+        'Geolocation is disabled.'
+    ) }}
+    {{ geolocationOption('FreeGeoIp.net', 'freegeoip', settings.geolocation,
+        'A free service, FreeGeoIp.net can perform IP address lookups automatically.'
+    ) }}
+    {{ geolocationOption('MaxMind', 'maxmind', settings.geolocation,
+        'A paid subscription service, MaxMind provides more accurate results, with a greater guarantee of uptime.'
+    ) }}
+</ul>
+
+<div class="smartmap-field-container" id="smartmap-fields-maxmind">
+    <h2>{{ "MaxMind Configuration"|t('smart-map') }}</h2>
+    <p>{{ '<strong>Step 1:</strong> Subscribe to a <a href="{url}" target="_blank">Web Service...</a>'|t('smart-map', {url:'https://www.maxmind.com/en/web_services'})|raw }}</p>
+    <p>{{ '<strong>Step 2:</strong> Which <a href="{url}" target="_blank">Web Service</a> have you subscribed to?'|t('smart-map', {url:'https://www.maxmind.com/en/account'})|raw }}</p>
+
+    {{ forms.selectField({
+        id: 'maxmindService',
+        name: 'maxmindService',
+        options: {
+            ''             : '(service disabled)'|t('smart-map'),
+            'country'      : 'GeoIP2 Country',
+            'city'         : 'GeoIP2 City',
+            'city_isp_org' : 'GeoIP2 City/ISP/Org',
+            'omni'         : 'GeoIP2 Omni',
+        },
+        value: settings.maxmindService,
+        disabled: 'maxmindService' in overrideKeys,
+        warning: 'maxmindService' in overrideKeys ? configWarning('maxmindService', docsUrl)
+    }) }}
+
+    <p>{{ '<strong>Step 3:</strong> Copy your <a href="{url}" target="_blank">security access information</a> and paste it here...'|t('smart-map', {url:'https://www.maxmind.com/en/my_license_key'})|raw }}</p>
+
+    {{ forms.textField({
+        label: "User ID"|t('smart-map'),
+        id: 'maxmindUserId',
+        name: 'maxmindUserId',
+        value: settings.maxmindUserId,
+        disabled: 'maxmindUserId' in overrideKeys,
+        warning: 'maxmindUserId' in overrideKeys ? configWarning('maxmindUserId', docsUrl)
+    }) }}
+
+    {{ forms.textField({
+        label: "License Key"|t('smart-map'),
+        id: 'maxmindLicenseKey',
+        name: 'maxmindLicenseKey',
+        value: settings.maxmindLicenseKey,
+        disabled: 'maxmindLicenseKey' in overrideKeys,
+        warning: 'maxmindLicenseKey' in overrideKeys ? configWarning('maxmindLicenseKey', docsUrl)
+    }) }}
+</div>
+
+<p>{{ "If you have recently switched services, clear old geolocation results by visiting:"|t('smart-map') }}&nbsp; <strong><a href="{{ cpUrl('utilities/clear-caches') }}">{{ "Utilities"|t('smart-map') }} &nbsp;&gt;&nbsp; {{ "Clear Caches"|t('smart-map') }} &nbsp;&gt;&nbsp; {{ "Data caches"|t('smart-map') }}</a></strong></p>
+
+<div class="smartmap-field-container">
+    <h3>{{ "WARNING"|t('smart-map') }}</h3>
+    <p>{{ "FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net."|t('smart-map')|raw }}</p>
+    <p>{{ "<strong>If you require geolocation, MaxMind is a far more reliable service.</strong>"|t('smart-map')|raw }}</p>
+</div>
+
+<hr />
+
+<h2>{{ "Plugin Debug Page"|t('smart-map') }}</h2>
+
+<p>{{ "Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site."|t('smart-map') }}</p>
+
+{% set debugRoute = siteUrl(settings.debugRoute) %}
+
+{{ forms.textField({
+    instructions: '<a href="'~debugRoute~'" target="_blank">'~debugRoute~'</a>',
+    id: 'debugRoute',
+    name: 'debugRoute',
+    value: settings.debugRoute,
+    disabled: 'debugRoute' in overrideKeys,
+    warning: 'debugRoute' in overrideKeys ? configWarning('debugRoute', docsUrl)
+}) }}

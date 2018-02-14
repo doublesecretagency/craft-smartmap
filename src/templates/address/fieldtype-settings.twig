@@ -1,0 +1,66 @@
+{% import '_includes/forms' as forms %}
+
+<div id="{{ containerId }}" class="smartmap-fieldtype-container">
+    <div class="field smartmap-fieldtype">
+        <div class="heading">
+            <label>{{ "Address Field Layout"|t('smart-map') }}</label>
+            <div class="instructions">
+                <p>{{ "Manage how the subfields will be arranged."|t('smart-map') }}</p>
+            </div>
+        </div>
+        {% include 'smart-map/address/_field-layout-table' %}
+        {% include 'smart-map/address/_field-layout-blueprint' %}
+    </div>
+    <hr style="clear:both"/>
+    <div class="field smartmap-fieldtype">
+        <div class="heading">
+            <label>{{ 'Set defaults for "Drag Pin" modal map'|t('smart-map') }}</label>
+            <div class="instructions">
+                <p>{{ 'When specifying a location via the "Drag Pin" modal, you may set default coordinates and zoom level.'|t('smart-map') }}</p>
+            </div>
+        </div>
+        <div class="dragpin-checkbox">
+            {{ forms.checkboxField({
+                label: 'Set a default pin location for modal?'|t('smart-map'),
+                name: 'dragPinDefault',
+                checked: settings.dragPinDefault ?? false
+            }) }}
+        </div>
+    </div>
+
+    {% set defaultLat  = settings.dragPinLatitude  ?? '0' %}
+    {% set defaultLng  = settings.dragPinLongitude ?? '0' %}
+    {% set defaultZoom = settings.dragPinZoom      ?? '4' %}
+
+    <div class="smartmap-dragpin-defaults" {{ not settings.dragPinDefault ? 'style="display:none"'|raw }}>
+        <div class="default-value lat" style="width:41%; margin-right:1%;">
+            {{ forms.textField({
+                label: 'Latitude'|t('smart-map'),
+                id: 'latitude',
+                name: 'dragPinLatitude',
+                value: defaultLat
+            }) }}
+        </div>
+        <div class="default-value lng" style="width:41%; margin-right:1%;">
+            {{ forms.textField({
+                label: 'Longitude'|t('smart-map'),
+                id: 'longitude',
+                name: 'dragPinLongitude',
+                value: defaultLng
+            }) }}
+        </div>
+        <div class="default-value zoom" style="width:16%;">
+            {{ forms.textField({
+                label: 'Zoom'|t('smart-map'),
+                id: 'zoom',
+                name: 'dragPinZoom',
+                value: defaultZoom
+            }) }}
+        </div>
+        <div class="dragpin-map"></div>
+    </div>
+</div>
+
+{%- js %}
+    new SmartMap.Address('#{{ containerId|namespaceInputId }}');
+{% endjs %}
