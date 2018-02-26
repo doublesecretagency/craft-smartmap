@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.1 - 2018-02-26
+
+### Fixed
+- Properly return JSON responses.
+- Fixed bug when `mapId` is not specified.
+
 ## 3.0.0 - 2018-02-14
 
 ### Added
