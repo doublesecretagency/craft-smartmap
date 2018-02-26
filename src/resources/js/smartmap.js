@@ -36,7 +36,9 @@ var smartMap = {
     },
     createMarker: function (markerName, options) {
         this.marker[markerName] = new google.maps.Marker(options);
-        this.bounds[options.mapId].extend(this.marker[markerName].position);
+        if (options.mapId) {
+            this.bounds[options.mapId].extend(this.marker[markerName].position);
+        }
         smartMap.log('['+markerName+'] Marker rendered.');
         return this.marker[markerName];
     },
