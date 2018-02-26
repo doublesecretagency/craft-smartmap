@@ -43,7 +43,7 @@ class LookupController extends Controller
         $components = $request->getBodyParam('components');
         $components = $this->_explodeComponents($components);
         $response = SmartMap::$plugin->smartMap->lookup($target, $components);
-        $this->asJson($response);
+        return $this->asJson($response);
     }
 
     // Lookup a target location, returning only coordinates of first result
@@ -57,7 +57,7 @@ class LookupController extends Controller
         $components = $request->getBodyParam('components');
         $components = $this->_explodeComponents($components);
         $response = SmartMap::$plugin->smartMap->lookupCoords($target, $components);
-        $this->asJson($response);
+        return $this->asJson($response);
     }
 
     // Convert components string into array
