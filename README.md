@@ -5,6 +5,14 @@ Smart Map plugin for Craft CMS
 
 ![](src/resources/img/example-header.png)
 
+***
+
+>This version is for Craft 3. To install it, visit the Plugin Store in your site's Control Panel.
+>
+>For the Craft 2 version, see [doublesecretagency.com/plugins/smart-map](https://www.doublesecretagency.com/plugins/smart-map)
+
+***
+
 Here are some of the many, many things you can do with Smart Map...
 
  - [Proximity Search](#proximity-search)
@@ -22,7 +30,7 @@ Here are some of the many, many things you can do with Smart Map...
  - [Apply KML Files](#apply-kml-files)
  - [Link to Google Directions](#link-to-google-directions)
  - [Fully Translatable](#fully-translatable)
- 
+
 **We also provide some of the best customer support in the business.** Find us on [Craft Slack](https://craftcms.com/community#slack), or via the [Intercom widget](https://www.doublesecretagency.com/plugins/) or [contact form](https://www.doublesecretagency.com/contact) on our website. Or simply email us at <support@doublesecretagency.com>.
 
 ***
