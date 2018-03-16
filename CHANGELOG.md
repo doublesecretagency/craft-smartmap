@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.3 - 2018-03-16
+
+### Fixed
+- Fixed bug in recursive JSON.
+
 ## 3.0.2 - 2018-03-15
 
 ### Fixed
