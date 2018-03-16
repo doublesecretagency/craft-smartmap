@@ -361,7 +361,7 @@ class SmartMapService extends Component
         ]);
 
         // Load Address model
-        if (Craft::$app->request->getIsPost() && $value) {
+        if (is_array($value)) {
             $model = new AddressModel($value);
         } else if ($record) {
             $model = new AddressModel($record->getAttributes());

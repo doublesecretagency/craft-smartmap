@@ -65,9 +65,11 @@ class Address extends Model
 
     public function __construct($attributes = [], array $config = [])
     {
-        foreach ($attributes as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this[$key] = $value;
+        if (is_array($attributes)) {
+            foreach ($attributes as $key => $value) {
+                if (property_exists($this, $key)) {
+                    $this[$key] = $value;
+                }
             }
         }
 
