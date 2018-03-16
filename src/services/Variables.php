@@ -485,8 +485,16 @@ class Variables extends Component
     // Encode JSON with function calls
     private function _jsonify($dataArr)
     {
+        // Don't tokenize these key values
+        $protected = ['content'];
+
         $tokens = [];
         foreach ($dataArr as $key => $value) {
+
+            // Skip tokenizing specified key values
+            if (in_array($key, $protected)) {
+                continue;
+            }
 
             // Recursive
             if (is_array($value)) {
