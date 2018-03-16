@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.2 - 2018-03-15
+
+### Fixed
+- Fixed bug affecting CLI compatibility.
+
 ## 3.0.1 - 2018-02-26
 
 ### Fixed
