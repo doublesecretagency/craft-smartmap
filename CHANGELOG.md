@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.4 - 2018-03-19
+
+### Fixed
+- Disabled old code which could lead to confusing behavior.
+
 ## 3.0.3 - 2018-03-16
 
 ### Fixed
