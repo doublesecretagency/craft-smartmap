@@ -371,22 +371,30 @@ class SmartMapService extends Component
         }
         $model->handle = $field->handle;
 
-        // Set distance property
-        $data = $model->getAttributes();
-        if ($this->targetCoords) {
-            $visitor = $this->targetCoords;
-        } else {
-            $this->loadGeoData();
-            $visitor = [
-                'lat' => $this->visitor['latitude'],
-                'lng' => $this->visitor['longitude'],
-            ];
-        }
-        if (is_numeric($data['lat']) && is_numeric($data['lng'])) {
-            $model->distance = $this->_haversinePHP($visitor, $data);
-        } else {
-            $model->distance = null;
-        }
+// This is bad, remove this from the next version.
+// It was determining "distance" with relation to the geolocated user,
+// even if no proximity search was conducted. It is not a behavior that
+// people would expect, and can be very confusing.
+
+// On a similar note, make `haversinePHP` a publicly accessible service.
+// It can be useful in one-off calculations.
+
+//        // Set distance property
+//        $data = $model->getAttributes();
+//        if ($this->targetCoords) {
+//            $visitor = $this->targetCoords;
+//        } else {
+//            $this->loadGeoData();
+//            $visitor = [
+//                'lat' => $this->visitor['latitude'],
+//                'lng' => $this->visitor['longitude'],
+//            ];
+//        }
+//        if (is_numeric($data['lat']) && is_numeric($data['lng'])) {
+//            $model->distance = $this->_haversinePHP($visitor, $data);
+//        } else {
+//            $model->distance = null;
+//        }
 
         return $model;
     }
