@@ -152,7 +152,9 @@ class Variables extends Component
         $js .= $this->_buildInfoWindows($mapId, $infoWindowOptions);
         $js .= $this->_mapCleanup($cleanupData);
 
-        Craft::$app->getView()->registerJs($js);
+        // Register JS
+        $view = Craft::$app->getView();
+        $view->registerJs($js, $view::POS_END);
 
         // Add to map total
         $this->_mapTotal++;
@@ -625,23 +627,24 @@ class Variables extends Component
         // Get view
         $view = Craft::$app->getView();
         // Log attempt
-        $view->registerJs('
-smartMap.log("['.$mapId.'] Adding KML layer...");');
+        $js = '
+smartMap.log("['.$mapId.'] Adding KML layer...");';
         // Apply KML layer
         if (UrlHelper::isAbsoluteUrl($kmlFile->url)) {
             // Success
-            $view->registerJs('
+            $js .= '
 new google.maps.KmlLayer("'.$kmlFile->url.'", {
     map: smartMap.map["'.$mapId.'"]
-});');
+});';
             $message = 'KML layer applied.';
         } else {
             // Failure
             $message = 'Error: URL for KML file must be absolute.';
         }
+        $js .= '
+smartMap.log("['.$mapId.'] '.$message.'");';
         // Output response message
-        $view->registerJs('
-smartMap.log("['.$mapId.'] '.$message.'");');
+        $view->registerJs($js, $view::POS_END);
     }
 
 

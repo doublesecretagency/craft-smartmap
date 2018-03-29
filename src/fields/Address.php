@@ -168,7 +168,7 @@ class Address extends Field implements PreviewableFieldInterface
 //        } else {
 //            $visitorJs = 'false';
 //        }
-//        $view->registerJs('visitor = '.$visitorJs.';');
+//        $view->registerJs('visitor = '.$visitorJs.';', $view::POS_END);
 
 
         return $view->renderTemplate('smart-map/address/input', [
