@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.5 - 2018-03-29
+
+### Fixed
+- Moved JS injection to the correct place
+- Updated Matrix Block class reference
+
 ## 3.0.4 - 2018-03-19
 
 ### Fixed
