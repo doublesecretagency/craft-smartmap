@@ -190,7 +190,7 @@ class Variables extends Component
             $allLngs = [];
 
             // If location elements are Matrix fields
-            if (is_a($locations[0], 'Craft\\MatrixBlockModel')) {
+            if (is_a($locations[0], 'craft\\elements\\MatrixBlock')) {
                 // Get all Address field handles within Matrix
                 $handles = [];
                 $matrixFieldId = $locations[0]->fieldId;

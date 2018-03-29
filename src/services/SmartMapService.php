@@ -520,7 +520,7 @@ class SmartMapService extends Component
             ];
         }
 
-        // If SmartMap_AddressModel, process immediately
+        // If Address model, process immediately
         if (is_object($locations) && is_a($locations, 'doublesecretagency\\smartmap\\models\\Address')) {
 
             $markers = [];
@@ -585,8 +585,8 @@ class SmartMapService extends Component
                 // Loop through locations
                 foreach ($locations as $loc) {
                     if (is_object($loc)) {
-                        // If MatrixBlockModel, get new set of field handles
-                        if (is_a($loc, 'Craft\\MatrixBlockModel')) {
+                        // If Matrix Block model, get new set of field handles
+                        if (is_a($loc, 'craft\\elements\\MatrixBlock')) {
                             // Find all Smart Map Address field fieldIds related specifically to this matrix block type
                             $fieldHandles = [];
                             $typeId = $loc->type->id;
