@@ -34,6 +34,7 @@ use doublesecretagency\smartmap\services\MaxMind;
 use doublesecretagency\smartmap\services\Variables;
 use doublesecretagency\smartmap\variables\SmartMapVariable;
 use doublesecretagency\smartmap\web\assets\SettingsAssets;
+use doublesecretagency\smartmap\listeners\GetAddressFieldSchema;
 
 /**
  * Class SmartMap
@@ -69,18 +70,6 @@ class SmartMap extends Plugin
             'smartMap_variables' => Variables::class,
         ]);
 
-        // Register site routes
-        Event::on(
-            Plugins::class,
-            Plugins::EVENT_AFTER_INSTALL_PLUGIN,
-            function (Event $event) {
-                if ('smart-map' == $event->plugin->handle) {
-                    $url = UrlHelper::cpUrl('smart-map/welcome');
-                    Craft::$app->getResponse()->redirect($url)->send();
-                }
-            }
-        );
-
         // Register field type
         Event::on(
             Fields::class,
@@ -110,6 +99,27 @@ class SmartMap extends Plugin
                 $event->rules[$debugRoute] = 'smart-map/debug';
             }
         );
+
+        // Register CP site routes
+        Event::on(
+            Plugins::class,
+            Plugins::EVENT_AFTER_INSTALL_PLUGIN,
+            function (Event $event) {
+                if ('smart-map' == $event->plugin->handle) {
+                    $url = UrlHelper::cpUrl('smart-map/welcome');
+                    Craft::$app->getResponse()->redirect($url)->send();
+                }
+            }
+        );
+
+        // Support for CraftQL plugin
+        if (class_exists(\markhuot\CraftQL\CraftQL::class)) {
+            Event::on(
+                Address::class,
+                'craftQlGetFieldSchema',
+                [new GetAddressFieldSchema, 'handle']
+            );
+        }
 
     }
 
