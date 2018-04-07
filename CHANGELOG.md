@@ -1,10 +1,15 @@
 # Changelog
 
+## 3.1.0 - 2018-04-06
+
+### Added
+- Added support for [CraftQL](https://github.com/markhuot/craftql) plugin.
+
 ## 3.0.5 - 2018-03-29
 
 ### Fixed
-- Moved JS injection to the correct place
-- Updated Matrix Block class reference
+- Moved JS injection to the correct place.
+- Updated Matrix Block class reference.
 
 ## 3.0.4 - 2018-03-19
 
