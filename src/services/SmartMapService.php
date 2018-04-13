@@ -154,13 +154,13 @@ class SmartMapService extends Component
                 SmartMap::$plugin->smartMap_freeGeoIp->lookupIpData($ip);
             }
 
-            // Fire an 'onDetectLocation' event
+            // Fire an 'afterDetectLocation' event
             $eventLocation = $this->cacheData['visitor'];
             unset($eventLocation['ip']);
 
             // Trigger event after location detection
-            if ($this->hasEventHandlers(SmartMap::EVENT_AFTER_DETECT_LOCATION)) {
-                $this->trigger(SmartMap::EVENT_AFTER_DETECT_LOCATION, new DetectLocationEvent([
+            if (Event::hasHandlers(SmartMap::class, SmartMap::EVENT_AFTER_DETECT_LOCATION)) {
+                Event::trigger(SmartMap::class, SmartMap::EVENT_AFTER_DETECT_LOCATION, new DetectLocationEvent([
                     'ip'               => $this->cacheData['visitor']['ip'],
                     'location'         => $eventLocation,
                     'detectionService' => $this->cacheData['service'],
