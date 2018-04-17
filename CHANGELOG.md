@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.1 - 2018-XX-XX
+
+### Fixed
+- Fixed `EVENT_AFTER_DETECT_LOCATION` event
+
 ## 3.1.0 - 2018-04-06
 
 ### Added
