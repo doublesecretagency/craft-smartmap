@@ -90,7 +90,7 @@
                     placeholder: craft.smartMap.labelFromHandle(subfield),
                     id: name~'-'~subfield,
                     name: name~'['~subfield~']',
-                    value: attribute(value, subfield),
+                    value: (value and attribute(value, subfield) ? attribute(value, subfield)),
                 }) }}
             </div>
 

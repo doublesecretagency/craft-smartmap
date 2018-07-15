@@ -4,6 +4,7 @@
 
 ### Fixed
 - Fixed `EVENT_AFTER_DETECT_LOCATION` event.
+- Fixed bug which occurred when an Address field appears in a widget.
 
 ## 3.1.0 - 2018-04-06
 
