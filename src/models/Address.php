@@ -80,7 +80,7 @@ class Address extends Model
         parent::__construct($config);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->format(true, true);
     }

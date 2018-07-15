@@ -100,7 +100,7 @@ class SmartMap extends Plugin
             }
         );
 
-        // Register CP site routes
+        // Redirect to welcome page after install
         Event::on(
             Plugins::class,
             Plugins::EVENT_AFTER_INSTALL_PLUGIN,

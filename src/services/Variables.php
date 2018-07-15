@@ -172,11 +172,14 @@ class Variables extends Component
             // If $locations is an ElementCriteriaModel
             if (is_a($locations, 'craft\\elements\\db\\ElementQuery')) {
                 return $this->_parseMarkers($mapId, $locations->all());
+            }
             // If $locations is a single element
-            } else if (is_a($locations, 'craft\\base\\Element')) {
+            if (is_a($locations, 'craft\\base\\Element')) {
                 $locations = [$locations];
                 return $this->_parseMarkers($mapId, $locations);
-            } else if (!$locations) {
+            }
+            // No locations, throw exception
+            if (!$locations) {
                 throw new Exception('The `locations` parameter cannot be empty.');
             }
         }
