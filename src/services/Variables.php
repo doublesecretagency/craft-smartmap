@@ -169,7 +169,7 @@ class Variables extends Component
     {
         // Organize markers
         if (!is_array($locations)) {
-            // If $locations is an ElementCriteriaModel
+            // If $locations is an ElementQuery
             if (is_a($locations, 'craft\\elements\\db\\ElementQuery')) {
                 return $this->_parseMarkers($mapId, $locations->all());
             }
@@ -200,6 +200,20 @@ class Variables extends Component
                 $handles = [];
                 $matrixFieldId = $locations[0]->fieldId;
                 $blockTypes = Craft::$app->matrix->getBlockTypesByFieldId($matrixFieldId);
+                foreach ($blockTypes as $blockType) {
+                    $allFields = $blockType->getFields();
+                    $newHandles = $this->_listFieldHandles($allFields);
+                    $handles = array_merge($handles, $newHandles);
+                }
+            } else if (is_a($locations[0], 'verbb\\supertable\\elements\\SuperTableBlockElement')) {
+                if (!class_exists(\verbb\supertable\SuperTable::class)) {
+                    throw new Exception('Super Table is not installed.');
+                }
+                // Get all Address field handles within Super Table
+                $handles = [];
+                $supertableFieldId = $locations[0]->fieldId;
+                $superTable = \verbb\supertable\SuperTable::$plugin->service;
+                $blockTypes = $superTable->getBlockTypesByFieldId($supertableFieldId);
                 foreach ($blockTypes as $blockType) {
                     $allFields = $blockType->getFields();
                     $newHandles = $this->_listFieldHandles($allFields);

@@ -1,10 +1,11 @@
 # Changelog
 
-## 3.1.1 - 2018-XX-XX
+## 3.1.1 - 2018-07-16
 
 ### Fixed
 - Fixed `EVENT_AFTER_DETECT_LOCATION` event.
 - Fixed bug which occurred when an Address field appears in a widget.
+- Patched small issue with Super Table compatibility.
 
 ## 3.1.0 - 2018-04-06
 
