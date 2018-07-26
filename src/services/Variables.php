@@ -711,7 +711,7 @@ smartMap.log("['.$mapId.'] '.$message.'");';
                }
            }
        }
-       return 'https://maps.google.com/maps?daddr='.rawurlencode($title).'@'.$coords;
+       return 'https://maps.google.com/maps?destination='.rawurlencode($title).'@'.$coords;
    }
 
 }

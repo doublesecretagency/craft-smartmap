@@ -227,9 +227,9 @@ class Address extends Model
         // Compile URL
         $url = 'https://maps.google.com/maps?';
         if ($startingAddress) {
-            $url .= 'saddr='.rawurlencode($startingTitle).'@'.$startingCoords.'&';
+            $url .= 'origin='.rawurlencode($startingTitle).'@'.$startingCoords.'&';
         }
-        $url .= 'daddr='.rawurlencode($destinationTitle).'@'.$destinationCoords;
+        $url .= 'destination='.rawurlencode($destinationTitle).'@'.$destinationCoords;
         return $url;
     }
 
