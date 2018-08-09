@@ -41,9 +41,7 @@ return [
     'Documentation & Feedback' => 'Dokumentation & Feedback',
     'You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!' => 'Sie erreichen uns unter {supportEmail}. Fragen, Kommentare oder Vorschläge nehmen wir gerne entgegen!',
     'Google Maps API Keys' => 'Google Maps API Keys', // TODO: not translated :)
-    'Using API keys is optional, but you may find it beneficial in many situations:' => 'Das Verwenden von API Keys ist optional, kann aber in verschiedenen Situationen von Vorteil sein:', // TODO: "various situations"
-    'If your website is on a shared server, or' => 'Ihre Webseite befindet sich auf einem gemeinsam genutzten Server, oder',
-    'If you expect extremely high traffic to your website.' => 'Sie rechnen mit sehr hohem Besucheraufkommen auf Ihrer Seite.',
+    // 'As of July 16th 2018, all uses of the Maps API now require a project with a billing account attached to it.' => 'X',
     'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>' => 'Eine Anleitung zum Erstellen von Google API Keys <a href="{url}" target="_blank">finden Sie hier</a>.', // TODO: "create/generate keys"
     'Google API Server Key' => 'Google API Server Key', // TODO: not translated
     'Used for address lookups' => 'Wird für Adressabfragen benutzt', // TODO: no period?

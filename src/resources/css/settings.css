@@ -13,14 +13,6 @@ input.smartmap-geolocation-radio {
     margin-right: 7px;
 }
 
-ul.smartmap-api-keys {
-    list-style: disc;
-    margin: 0px 0px 16px 40px;
-}
-ul.smartmap-api-keys li {
-    margin-top: 6px;
-}
-
 ul.smartmap-geolocation-options {
     margin-left: 21px;
 }
