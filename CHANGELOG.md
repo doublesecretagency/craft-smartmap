@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.1.2 - 2018-08-08
+ 
+### Changed
+- Settings page now specifies that API keys are required, not optional.
+- Replaced `daddr/saddr` with `destination/origin` in directions links.
+
+### Fixed
+- If installed via console, don’t automatically redirect to welcome page.
+
 ## 3.1.1 - 2018-07-16
 
 ### Fixed
