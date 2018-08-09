@@ -105,7 +105,9 @@ class SmartMap extends Plugin
             Plugins::class,
             Plugins::EVENT_AFTER_INSTALL_PLUGIN,
             function (Event $event) {
-                if ('smart-map' == $event->plugin->handle) {
+                $installingSmartMap = ('smart-map' == $event->plugin->handle);
+                $installedViaConsole = Craft::$app->getRequest()->getIsConsoleRequest();
+                if ($installingSmartMap && !$installedViaConsole) {
                     $url = UrlHelper::cpUrl('smart-map/welcome');
                     Craft::$app->getResponse()->redirect($url)->send();
                 }
