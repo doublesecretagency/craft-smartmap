@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.3 - 2018-08-14
+
+### Fixed
+- Fixed filter bug.
+
 ## 3.1.2 - 2018-08-08
  
 ### Changed

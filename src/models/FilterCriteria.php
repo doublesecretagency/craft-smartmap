@@ -35,6 +35,9 @@ class FilterCriteria extends Model
     /** @var string|null  $units  Explanation. */
     public $units = MeasurementUnit::Miles;
 
+    /** @var array|null  $filter  Explanation. */
+    public $filter = [];
+
     /** @var string|null  $elementType  Explanation. */
     public $elementType = Entry::class;
 
