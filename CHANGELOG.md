@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.x - 2018-xx-xx
+
+### Added
+- Added ability to override Google API keys.
+
 ## 3.1.3 - 2018-08-14
 
 ### Fixed

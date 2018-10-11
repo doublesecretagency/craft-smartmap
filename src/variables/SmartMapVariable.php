@@ -99,6 +99,22 @@ class SmartMapVariable
 
     // ========================================================================= //
 
+    // Set Google API Server Key
+    public function setServerKey($key)
+    {
+        SmartMap::$plugin->getSettings()->setAttributes([
+            'googleServerKey' => $key
+        ], false);
+    }
+
+    // Set Google API Browser Key
+    public function setBrowserKey($key)
+    {
+        SmartMap::$plugin->getSettings()->setAttributes([
+            'googleBrowserKey' => $key
+        ], false);
+    }
+
     // Google API Server Key
     public function serverKey()
     {
