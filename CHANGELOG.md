@@ -5,6 +5,9 @@
 ### Added
 - Added ability to override Google API keys.
 
+### Fixed
+- Fixed Exception error.
+
 ## 3.1.3 - 2018-08-14
 
 ### Fixed

@@ -11,6 +11,8 @@
 
 namespace doublesecretagency\smartmap\services;
 
+use yii\base\Exception;
+
 use Craft;
 use craft\base\Component;
 use craft\helpers\StringHelper;
