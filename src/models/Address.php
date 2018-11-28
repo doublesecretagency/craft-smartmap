@@ -13,6 +13,7 @@ namespace doublesecretagency\smartmap\models;
 
 use Craft;
 use craft\base\Model;
+use craft\elements\Entry;
 use craft\helpers\Template;
 
 use doublesecretagency\smartmap\SmartMap;
@@ -202,35 +203,49 @@ class Address extends Model
             $destinationTitle = $startingAddress;
             $startingAddress = false;
         }
-        // Prep destination address
-        if ($this->hasCoords()) {
-            $destinationCoords = $this->lat.','.$this->lng;
-        } else {
-            return '#invalid-address-coordinates';
-        }
-        if (!$destinationTitle) {
-            $destinationTitle = $this->format(true, true);
-        }
-        // Prep starting address
-        if (is_a($startingAddress, 'Craft\SmartMap_AddressModel')) {
-            if ($startingAddress->hasCoords()) {
-                $startingCoords = $startingAddress->lat.','.$startingAddress->lng;
-            } else {
-                return '#invalid-starting-address-coordinates';
-            }
-            if (!$startingTitle) {
-                $startingTitle = $startingAddress->format(true, true);
-            }
-        } else {
+        // If starting address isn't an Address model, set it to false
+        if (!is_a($startingAddress, 'doublesecretagency\\smartmap\\models\\Address')) {
             $startingAddress = false;
         }
         // Compile URL
-        $url = 'https://maps.google.com/maps?';
+        $url = 'https://www.google.com/maps/dir/?api=1&';
         if ($startingAddress) {
-            $url .= 'origin='.rawurlencode($startingTitle).'@'.$startingCoords.'&';
+            $url .= 'origin='.$this->_formatForDirections($startingAddress, $startingTitle).'&';
         }
-        $url .= 'destination='.rawurlencode($destinationTitle).'@'.$destinationCoords;
+        $url .= 'destination='.$this->_formatForDirections($this, $destinationTitle);
         return $url;
     }
 
+    /**
+     * Format address for directions URL
+     *
+     * @return string
+     */
+    public function _formatForDirections($address, $title)
+    {
+        $output = false;
+        // 1. Comma-separated latitude/longitude coordinates
+        if ($address->hasCoords()) {
+            $output = $address->lat.','.$address->lng;
+        }
+        // 2. Address
+        if (!$output && !$address->isEmpty()) {
+            $output = urlencode((string) $address->format(true, true));
+        }
+        // 3A. Place name (custom title)
+        if (!$output) {
+            $output = urlencode($title);
+        }
+        // 3B. Place name (entry title)
+        if (!$output) {
+            $element = Entry::find()->id($address->elementId)->one();
+            if ($element) {
+                $output = urlencode($element->title);
+            }
+        }
+        // Return URL component
+        return $output;
+    }
+
 }
+
