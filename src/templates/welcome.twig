@@ -1,17 +1,20 @@
 {% extends '_layouts/cp' %}
 {% set title = 'Welcome to Smart Map!'|t('smart-map') %}
 
+{% set emailLink = 'mailto:support@doublesecretagency.com?subject=Smart+Map+~+Fresh+Installation' %}
+
 {% set iconUrl = view.getAssetManager().getPublishedUrl('@doublesecretagency/smartmap/icon.svg', true) %}
 
 {% set content %}
     <div style="text-align:center; margin:0 auto;">
-        <img src="{{ iconUrl }}" width="200" style="margin:12px;">
+        <img src="{{ iconUrl }}" alt="" width="200" style="margin:12px;">
         <h2>{{ 'Thanks for using Smart Map!'|t('smart-map') }}</h2>
-        <p>{{ 'Feel free to contact us with any feature requests, bug reports, or suggestions.'|t('smart-map') }}</p>
-        <div>
-            <a href="{{ craft.smartMap.docsUrl }}" target="_blank" class="btn submit">{{ 'View full documentation'|t('smart-map') }}</a>
-            &nbsp;&nbsp;&nbsp;
-            <a href="{{ cpUrl('settings/fields/new') }}" class="btn submit">{{ 'Create an Address field...'|t('smart-map') }}</a>
+        <p>{{ 'Feel free to <a href="{emailLink}" target="_blank">contact us</a> with any feature requests, bug reports, or suggestions.'|t('smart-map', {emailLink:emailLink})|raw }}</p>
+        <div class="btngroup" style="display:inline-block; margin-right:20px;">
+            <a class="btn submit" href="{{ cpUrl('settings/fields/new') }}">{{ 'Create an Address field'|t('smart-map') }}</a>
+        </div>
+        <div class="btngroup" style="display:inline-block">
+            <a class="btn submit" href="{{ craft.smartMap.docsUrl }}" target="_blank">{{ 'View full documentation'|t('smart-map') }}</a>
         </div>
     </div>
 {% endset %}
