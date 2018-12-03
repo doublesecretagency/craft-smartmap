@@ -63,7 +63,7 @@ class FreeGeoIp extends Component
     public function rawData($ip = null)
     {
         // Create Guzzle client
-        $client = Craft::createGuzzleClient();
+        $client = Craft::createGuzzleClient(['timeout' => 4, 'connect_timeout' => 4]);
         // Set IP address for lookup
         $url = $this->_freegeoipApi.($ip ? $ip : 'me');
         // Get API response
