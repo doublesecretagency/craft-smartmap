@@ -5,6 +5,13 @@ return [
     // Plugin title
     // 'Smart Map' => '',
 
+    // Welcome page
+    // 'Welcome to Smart Map!' => 'X',
+    // 'Thanks for using Smart Map!' => 'X',
+    // 'Feel free to <a href="{emailLink}" target="_blank">contact us</a> with any feature requests, bug reports, or suggestions.' => 'X <a href="{emailLink}" target="_blank">X</a>',
+    // 'Create an Address field' => 'X',
+    // 'View full documentation' => 'X',
+
     // Fieldtype configuration
     // 'Address' => '',
     // 'Address Field Layout' => '',
@@ -37,22 +44,35 @@ return [
     // 'Failed to execute cURL command.' => '',
     // 'Unknown cURL response:' => '',
 
+    // Address field settings
+    // 'Set defaults for "Drag Pin" modal map' => 'X',
+    // 'When specifying a location via the "Drag Pin" modal, you may set default coordinates and zoom level.' => 'X',
+    // 'Set a default pin location for modal?' => 'X',
+    // 'Zoom' => 'X',
+
     // Settings page
     // 'Documentation & Feedback' => '',
+    // 'All documentation can be found at <a href="{url}" target="_blank">doublesecretagency.com</a>.' => 'X <a href="{url}" target="_blank">X</a>',
     // 'You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!' => '',
+
     // 'Google Maps API Keys' => '',
-    // 'As of July 16th 2018, all uses of the Maps API now require a project with a billing account attached to it.' => 'X',
+    // 'As of June 11, 2018, all Google Maps API requests must include an API key. <strong>Keyless access is no longer supported.</strong>' => 'X <strong>X</strong>',
     // 'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>' => '',
     // 'Google API Server Key' => '',
     // 'Used for address lookups' => '',
     // 'Google API Browser Key' => '',
     // 'Used for static & dynamic map rendering' => '',
+
     // 'Geolocation' => '',
     // 'Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located.' => '',
     // 'Select a service...' => '',
     // 'Geolocation is disabled.' => '',
-    // 'A free service, FreeGeoIp.net can perform IP address lookups automatically.' => '',
+    // 'A free service, ipstack can perform IP address lookups automatically. Formerly known as FreeGeoIp.net.' => 'X',
     // 'A paid subscription service, MaxMind provides more accurate results, with a greater guarantee of uptime.' => '',
+
+    // 'ipstack Configuration' => 'X',
+    // 'Copy your <a href="{url}" target="_blank">API Access Key</a> and paste it here...' => 'X <a href="{url}" target="_blank">X</a>',
+
     // 'MaxMind Configuration' => '',
     // '<strong>Step 1:</strong> Subscribe to a <a href="{url}" target="_blank">Web Service...</a>' => '',
     // '<strong>Step 2:</strong> Which <a href="{url}" target="_blank">Web Service</a> have you subscribed to?' => '',
@@ -61,17 +81,8 @@ return [
     // 'User ID' => '',
     // 'License Key' => '',
     // 'If you have recently switched services, clear old geolocation results by visiting:' => '',
-    // 'WARNING' => '',
-    // 'FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net.' => '',
-    // '<strong>If you require geolocation, MaxMind is a far more reliable service.</strong>' => '',
+
     // 'Plugin Debug Page' => '',
     // 'Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site.' => '',
-
-    // Welcome page
-    // 'Welcome to Smart Map!' => '',
-    // 'Thanks for using Smart Map!' => '',
-    // 'Feel free to contact us with any feature requests, bug reports, or suggestions.' => '',
-    // 'View full documentation' => '',
-    // 'Create an Address field...' => '',
 
 ];

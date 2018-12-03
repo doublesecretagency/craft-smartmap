@@ -5,6 +5,13 @@ return [
     // Plugin title
     'Smart Map' => 'スマートマップ',
 
+    // Welcome page
+    // 'Welcome to Smart Map!' => 'X',
+    // 'Thanks for using Smart Map!' => 'X',
+    // 'Feel free to <a href="{emailLink}" target="_blank">contact us</a> with any feature requests, bug reports, or suggestions.' => 'X <a href="{emailLink}" target="_blank">X</a>',
+    // 'Create an Address field' => 'X',
+    // 'View full documentation' => 'X',
+
     // Fieldtype configuration
     'Address' => '住所',
     'Address Field Layout' => 'アドレスフィールドの設計',
@@ -37,22 +44,35 @@ return [
     // 'Failed to execute cURL command.' => 'X',
     // 'Unknown cURL response:' => 'X',
 
+    // Address field settings
+    // 'Set defaults for "Drag Pin" modal map' => 'X',
+    // 'When specifying a location via the "Drag Pin" modal, you may set default coordinates and zoom level.' => 'X',
+    // 'Set a default pin location for modal?' => 'X',
+    // 'Zoom' => 'X',
+
     // Settings page
     'Documentation & Feedback' => 'ドキュメント＆フィードバック',
+    // 'All documentation can be found at <a href="{url}" target="_blank">doublesecretagency.com</a>.' => 'X <a href="{url}" target="_blank">X</a>',
     'You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!' => '{supportEmail}までご連絡ください。ご質問、コメント、提案を歓迎します！',
+
     'Google Maps API Keys' => 'Google Maps API Keys',
-    // 'As of July 16th 2018, all uses of the Maps API now require a project with a billing account attached to it.' => 'X',
+    // 'As of June 11, 2018, all Google Maps API requests must include an API key. <strong>Keyless access is no longer supported.</strong>' => 'X <strong>X</strong>',
     'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>' => 'GoogleのAPIキーを取得するには、<a href="{url}" target="_blank">次の手順に従い...</a>',
     'Google API Server Key' => 'GoogleのAPIサーバキー',
     'Used for address lookups' => 'アドレス参照に使用されます',
     'Google API Browser Key' => 'GoogleのAPIブラウザキー',
     'Used for static & dynamic map rendering' => 'スタティック＆ダイナミックマップのレンダリングに使用されます',
+
     'Geolocation' => 'ジオロケーション',
     'Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located.' => 'ウェブサイトの使用状況に応じて、あなたのサイトの訪問者がどこにあるかを自動的に検出するために、<strong>IP検出</strong>と<strong>ジオロケーション</strong>を使用する必要があります。',
     'Select a service...' => 'サービスを選択してください...',
     'Geolocation is disabled.' => 'ジオロケーションが有効になっていません。',
-    'A free service, FreeGeoIp.net can perform IP address lookups automatically.' => '無料サービスは、FreeGeoIp.netは自動的にIPアドレスの検索を行うことができます。',
+    // 'A free service, ipstack can perform IP address lookups automatically. Formerly known as FreeGeoIp.net.' => 'X',
     'A paid subscription service, MaxMind provides more accurate results, with a greater guarantee of uptime.' => 'あなたは、サービスのMaxmindを支払うことができます。MaxMindは、稼働時間のより大きな保証と、より正確な結果を提供します。',
+
+    // 'ipstack Configuration' => 'X',
+    // 'Copy your <a href="{url}" target="_blank">API Access Key</a> and paste it here...' => 'X <a href="{url}" target="_blank">X</a>',
+
     'MaxMind Configuration' => 'MaxMindを構成します',
     '<strong>Step 1:</strong> Subscribe to a <a href="{url}" target="_blank">Web Service...</a>' => '<strong>ステップ1</strong><a href="{url}">Webサービス</a>を購読します...',
     '<strong>Step 2:</strong> Which <a href="{url}" target="_blank">Web Service</a> have you subscribed to?' => '<strong>ステップ2</strong>どの<a href="{url}">Webサービス</a>あなたがを購読していますか？',
@@ -61,17 +81,8 @@ return [
     'User ID' => 'ユーザーID',
     'License Key' => 'ライセンスキー',
     'If you have recently switched services, clear old geolocation results by visiting:' => 'あなたは最近、にアクセスしてサービスを、明確な古いジオロケーション結果を切り替えた場合。',
-    'WARNING' => '警告',
-    'FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net.' => 'FreeGeoIp.netはあなたのウェブサイトに<u>悪影響を及ぼす可能性があり</u>、予期しないダウンタイムを有することができます！それは非常FreeGeoIp.netに依存することは推奨されません。',
-    '<strong>If you require geolocation, MaxMind is a far more reliable service.</strong>' => '<strong>あなたのウェブサイトは、ジオロケーションを必要とする場合、MaxMindは、はるかに信頼性の高いサービスです。</strong>',
+
     'Plugin Debug Page' => 'プラグインのデバッグページ',
     'Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site.' => '時には、プラグインの能力について少し詳細を知る必要があります。このページには、あなたのウェブサイトの地理位置能力をお知らせします。',
-
-    // Welcome page
-    // 'Welcome to Smart Map!' => 'X',
-    // 'Thanks for using Smart Map!' => 'X',
-    // 'Feel free to contact us with any feature requests, bug reports, or suggestions.' => 'X',
-    // 'View full documentation' => 'X',
-    // 'Create an Address field...' => 'X',
 
 ];

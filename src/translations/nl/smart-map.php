@@ -5,6 +5,13 @@ return [
     // Plugin title
     'Smart Map' => 'Smart Map',
 
+    // Welcome page
+    // 'Welcome to Smart Map!' => 'X',
+    // 'Thanks for using Smart Map!' => 'X',
+    // 'Feel free to <a href="{emailLink}" target="_blank">contact us</a> with any feature requests, bug reports, or suggestions.' => 'X <a href="{emailLink}" target="_blank">X</a>',
+    // 'Create an Address field' => 'X',
+    // 'View full documentation' => 'X',
+
     // Fieldtype configuration
     'Address' => 'Adres',
     'Address Field Layout' => 'Adres veld lay-out',
@@ -37,22 +44,35 @@ return [
     // 'Failed to execute cURL command.' => 'X',
     // 'Unknown cURL response:' => 'X',
 
+    // Address field settings
+    // 'Set defaults for "Drag Pin" modal map' => 'X',
+    // 'When specifying a location via the "Drag Pin" modal, you may set default coordinates and zoom level.' => 'X',
+    // 'Set a default pin location for modal?' => 'X',
+    // 'Zoom' => 'X',
+
     // Settings page
     'Documentation & Feedback' => 'Documentatie & Feedback',
+    // 'All documentation can be found at <a href="{url}" target="_blank">doublesecretagency.com</a>.' => 'X <a href="{url}" target="_blank">X</a>',
     'You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!' => 'Je kunt ons bereiken via {supportEmail}. Suggesties, vragen en opmerkingen worden op prijs gesteld.',
+
     'Google Maps API Keys' => 'google Maps API sleutel',
-    // 'As of July 16th 2018, all uses of the Maps API now require a project with a billing account attached to it.' => 'X',
+    // 'As of June 11, 2018, all Google Maps API requests must include an API key. <strong>Keyless access is no longer supported.</strong>' => 'X <strong>X</strong>',
     'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>' => 'Om je Google API Sleutels te  krijgen <a href="{url}" target="_blank">volg deze instructies</a>.',
     'Google API Server Key' => 'Google API Server sleutel',
     'Used for address lookups' => 'Gebruikt voor het opzoeken van adressen',
     'Google API Browser Key' => 'Google API Browser sleutel',
     'Used for static & dynamic map rendering' => 'Gebruikt voor het statische en dynamische renderen van een kaart',
+
     'Geolocation' => 'Geolocatie',
     'Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located.' => 'Afhankelijk van het doel van de website, kun je <strong>IP detectie</strong> en <strong>Geolocatie</strong> instellen om automatisch te detecteren wat de locatie is van je bezoekers.',
     'Select a service...' => 'Selecteer een service...',
     'Geolocation is disabled.' => 'Geolocatie is inactief.',
-    'A free service, FreeGeoIp.net can perform IP address lookups automatically.' => 'Een gratis IP service, FreeGeoIp.net kan automatisch IP adressen opzoeken.',
+    // 'A free service, ipstack can perform IP address lookups automatically. Formerly known as FreeGeoIp.net.' => 'X',
     'A paid subscription service, MaxMind provides more accurate results, with a greater guarantee of uptime.' => 'Een betaald abonnement service, MaxMind heeft een betere nauwkeurigheid en hogere uptime kans.',
+
+    // 'ipstack Configuration' => 'X',
+    // 'Copy your <a href="{url}" target="_blank">API Access Key</a> and paste it here...' => 'X <a href="{url}" target="_blank">X</a>',
+
     'MaxMind Configuration' => 'MaxMind configuratie',
     '<strong>Step 1:</strong> Subscribe to a <a href="{url}" target="_blank">Web Service...</a>' => '<strong>Stap 1:</strong> Meld je aan bij een <a href="{url}" target="_blank">Web service...</a>',
     '<strong>Step 2:</strong> Which <a href="{url}" target="_blank">Web Service</a> have you subscribed to?' => '<strong>Stap 2:</strong> Bij welke <a href="{url}" target="_blank">Web service</a> ben je geregistreerd?',
@@ -61,17 +81,8 @@ return [
     'User ID' => 'Gebruiker ID',
     'License Key' => 'Licentiesleutel',
     'If you have recently switched services, clear old geolocation results by visiting:' => 'Als je recent van service gewisseld bent, leeg dan je oude geolocatie resultaten hier:',
-    'WARNING' => 'WAARSCHUWING',
-    'FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net.' => 'FreeGeoIp kan onverwacht onbereikbaar zijn <u>wat een negatieve impact heeft op je website!</u> Het wordt sterk aanbevolen <strong>niet</strong> volledig te vertrouwen op de resultaten van FreeGeoIp.net.',
-    '<strong>If you require geolocation, MaxMind is a far more reliable service.</strong>' => 'Als geolocatie noodzakelijk is, dan is MaxMind de betere keuze door zijn betrouwbare service.',
+
     'Plugin Debug Page' => 'Debug pagina van de plugin',
     'Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site.' => 'Soms is het beter wat meer te weten over wat de plugin precies doet. Deze, speciale pagina, kan je meer inzicht geven in de geolocatie mogelijkheden van je website.',
-
-    // Welcome page
-    // 'Welcome to Smart Map!' => 'X',
-    // 'Thanks for using Smart Map!' => 'X',
-    // 'Feel free to contact us with any feature requests, bug reports, or suggestions.' => 'X',
-    // 'View full documentation' => 'X',
-    // 'Create an Address field...' => 'X',
 
 ];

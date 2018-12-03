@@ -5,6 +5,13 @@ return [
     // Plugin title
     'Smart Map' => 'Smart Map',
 
+    // Welcome page
+    // 'Welcome to Smart Map!' => 'X',
+    // 'Thanks for using Smart Map!' => 'X',
+    // 'Feel free to <a href="{emailLink}" target="_blank">contact us</a> with any feature requests, bug reports, or suggestions.' => 'X <a href="{emailLink}" target="_blank">X</a>',
+    // 'Create an Address field' => 'X',
+    // 'View full documentation' => 'X',
+
     // Fieldtype configuration
     'Address' => 'Adresse',
     'Address Field Layout' => 'Adressen Feld-Layout', // TODO: Maybe use just "Field Layout" in EN?
@@ -32,27 +39,40 @@ return [
     'The geocode was successful but returned no results.' => 'Die Geokodierung war erfolgreich, führte jedoch zu keinen Suchergebnissen.',
     'You are over your quota. If this is a shared server, enable <a href="{url}">Google Maps API Keys.</a>' => 'Sie haben Ihr Kontingent an Abfragen überschritten. Falls Sie einen gemeinsam genutzten Server benutzen, aktivieren Sie <a href="{url}">Google Maps API Keys.</a>',
     'Your request was denied for some reason.' => 'Ihre Anfrage wurde aus unbestimmten Gründen verweigert.', // TODO: "indefinite reasons"
-    // 'Invalid request. Please provide more address information.' => 'X', // TODO: not translated
+    //'Invalid request. Please provide more address information.' => 'X', // TODO: not translated
     // 'Response from Google Maps API:' => 'X',
     // 'Failed to execute cURL command.' => 'X',
     // 'Unknown cURL response:' => 'X',
 
+    // Address field settings
+    // 'Set defaults for "Drag Pin" modal map' => 'X',
+    // 'When specifying a location via the "Drag Pin" modal, you may set default coordinates and zoom level.' => 'X',
+    // 'Set a default pin location for modal?' => 'X',
+    // 'Zoom' => 'X',
+
     // Settings page
     'Documentation & Feedback' => 'Dokumentation & Feedback',
+    // 'All documentation can be found at <a href="{url}" target="_blank">doublesecretagency.com</a>.' => 'X <a href="{url}" target="_blank">X</a>',
     'You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!' => 'Sie erreichen uns unter {supportEmail}. Fragen, Kommentare oder Vorschläge nehmen wir gerne entgegen!',
+
     'Google Maps API Keys' => 'Google Maps API Keys', // TODO: not translated :)
-    // 'As of July 16th 2018, all uses of the Maps API now require a project with a billing account attached to it.' => 'X',
+    // 'As of June 11, 2018, all Google Maps API requests must include an API key. <strong>Keyless access is no longer supported.</strong>' => 'X <strong>X</strong>',
     'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>' => 'Eine Anleitung zum Erstellen von Google API Keys <a href="{url}" target="_blank">finden Sie hier</a>.', // TODO: "create/generate keys"
     'Google API Server Key' => 'Google API Server Key', // TODO: not translated
     'Used for address lookups' => 'Wird für Adressabfragen benutzt', // TODO: no period?
     'Google API Browser Key' => 'Google API Browser Key', // TODO: not translated
     'Used for static & dynamic map rendering' => 'Wird für das Rendern der statischen und dynamischen Karten benutzt', // TODO: no period?
+
     'Geolocation' => 'Geolokalisation',
     'Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located.' => 'Abhängig vom Einsatzzweck Ihrer Webseite, könnte es nötig sein über <strong>IP-Adressen-Ermittlung</strong> und <strong>Geolokalisation</strong> den momentanen Aufenthaltsort Ihrer Benutzer automatisch zu ermitteln.',
     'Select a service...' => 'Auswahl des Anbieters...',
     'Geolocation is disabled.' => 'Geolokalisation ist deaktiviert.',
-    'A free service, FreeGeoIp.net can perform IP address lookups automatically.' => 'Ein kostenloser Anbieter, über den Geolokalisierungs-Abfragen über IP-Adressen möglich sind.', // TODO: this means "geolocation lookups" via IP address, right? And, is it ok to leave out "automatically"?
+    // 'A free service, ipstack can perform IP address lookups automatically. Formerly known as FreeGeoIp.net.' => 'X',
     'A paid subscription service, MaxMind provides more accurate results, with a greater guarantee of uptime.' => 'Ein kostenpflichtiger Anbieter, der akkuratere Ergebnisse liefert und eine bessere Verfügbarkeit garantieren kann.', // TODO: left out the service's name, cause in german it's easily possible to build the sentence with präpositions instead.
+
+    // 'ipstack Configuration' => 'X',
+    // 'Copy your <a href="{url}" target="_blank">API Access Key</a> and paste it here...' => 'X <a href="{url}" target="_blank">X</a>',
+
     'MaxMind Configuration' => 'MaxMind Einstellungen',
     '<strong>Step 1:</strong> Subscribe to a <a href="{url}" target="_blank">Web Service...</a>' => '<strong>Schritt 1:</strong> Melden Sie sich zu einem der <a href="{url}" target="_blank">angebotenen Web Dienste</a> an...',
     '<strong>Step 2:</strong> Which <a href="{url}" target="_blank">Web Service</a> have you subscribed to?' => '<strong>Schritt 2:</strong> Zu welchem <a href="{url}" target="_blank">Web Dienst</a> sind Sie angemeldet?',
@@ -61,17 +81,8 @@ return [
     'User ID' => 'Benutzer ID',
     'License Key' => 'Lizenz Key',
     'If you have recently switched services, clear old geolocation results by visiting:' => 'Nach dem Wechsel des Anbieters können Sie hier Ihre bisherigen Geolokalisierungs-Daten löschen:', // TODO: "geolocation data"
-    'WARNING' => 'WARNUNG',
-    'FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net.' => 'Bei FreeGeoIp.net könnte möglicherweise mit unerwarteten Ausfallzeiten zu rechnen sein, <u>die negative Einflüsse auf Ihre Webseite haben!</u> Es wird dringend empfohlen, sich <strong>nicht</strong> auf FreeGeoIp.net zu verlassen.', // TODO: remove "möglicherweise" in case FreeGeoIp.net is really bad :D
-    '<strong>If you require geolocation, MaxMind is a far more reliable service.</strong>' => '<strong>MaxMind ist der weitaus zuverlässigere Anbieter. Bitte beachten Sie dies, falls Sie auf Geolokalisation angewiesen sind.</strong>',
+
     'Plugin Debug Page' => 'Plugin Debug Seite',
     'Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site.' => 'Es kann vorkommen, dass Sie etwas genauer wissen müssen, was das Plugin macht. Diese Seite ermöglicht Ihnen Einblicke in die Möglichkeiten zur Geolokalisation mit Ihrer Seite.',
-
-    // Welcome page
-    // 'Welcome to Smart Map!' => 'X',
-    // 'Thanks for using Smart Map!' => 'X',
-    // 'Feel free to contact us with any feature requests, bug reports, or suggestions.' => 'X',
-    // 'View full documentation' => 'X',
-    // 'Create an Address field...' => 'X',
 
 ];
