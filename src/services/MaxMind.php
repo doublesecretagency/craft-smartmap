@@ -11,10 +11,11 @@
 
 namespace doublesecretagency\smartmap\services;
 
+use doublesecretagency\smartmap\SmartMap;
+
 use Craft;
 use craft\base\Component;
-
-use doublesecretagency\smartmap\SmartMap;
+use craft\helpers\UrlHelper;
 
 /**
  * Class MaxMind
@@ -58,6 +59,22 @@ class MaxMind extends Component
     {
         // Log lookup
         Craft::info('Visitor lookup via MaxMind', __METHOD__);
+
+        // If no access key exists
+        if (!$this->_maxmindUserId || !$this->_maxmindLicenseKey) {
+            // Log deprecation
+            $settingsPage = UrlHelper::cpUrl('settings/plugins/smart-map#settings-geolocation');
+            $logMessage = 'Your MaxMind <a href="'.$settingsPage.'">API keys</a> are missing.';
+            Craft::$app->getDeprecator()->log('SmartMap_MaxMindService::lookupIpData()', $logMessage);
+            // Bail
+            return;
+        }
+
+        // If not available, bail
+        if (!$this->available) {
+            return;
+        }
+
         // Attempt lookup
         try
         {
@@ -90,14 +107,6 @@ class MaxMind extends Component
             if (SmartMap::$plugin->smartMap->validIp(SmartMap::$plugin->smartMap->visitor['ip'])) {
                 SmartMap::$plugin->smartMap->setGeoDataCookie($ip);
                 SmartMap::$plugin->smartMap->cacheGeoData(SmartMap::$plugin->smartMap->visitor['ip'], 'MaxMind');
-            } else {
-                /*
-                // Else, grab IP using FreeGeoIp
-                $freeGeoIp = SmartMap::$plugin->smartMap_freeGeoIp->rawData();
-                if (array_key_exists('ip', $freeGeoIp)) {
-                    $this->lookupIpData($freeGeoIp['ip']);
-                }
-                */
             }
         }
         catch (\Exception $e)

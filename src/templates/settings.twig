@@ -10,14 +10,21 @@
     })|raw }}
 {%- endmacro %}
 
-{% macro geolocationOption(label, value, current, description) %}
+{% macro geolocationOption(label, value, link, current, description) %}
     {% if 'none' == value %}
-        {% set checked = (current not in ['freegeoip','maxmind']) %}
+        {% set checked = (current not in ['ipstack','maxmind']) %}
     {% else %}
         {% set checked = (current == value) %}
     {% endif %}
+    {% set label %}
+        {% if link %}
+            {{ label|t('smart-map') }} &nbsp;&bull;&nbsp; <a href="{{ link }}" target="_blank">{{ link }}</a>
+        {% else %}
+            {{ label|t('smart-map') }}
+        {% endif %}
+    {% endset %}
     <li>
-        <label><input type="radio" class="smartmap-geolocation-radio" name="geolocation" value="{{ value }}" {{ checked ? 'checked="checked"' }} />{{ label|t('smart-map') }}</label>
+        <label><input type="radio" class="smartmap-geolocation-radio" name="geolocation" value="{{ value }}" {{ checked ? 'checked="checked"' }} />{{ label|trim|raw }}</label>
         <p>{{ description|t('smart-map') }}</p>
     </li>
 {% endmacro %}
@@ -32,7 +39,7 @@
 
 <h2>{{ "Google Maps API Keys"|t('smart-map') }}</h2>
 
-<p>{{ "As of July 16th 2018, all uses of the Maps API now require a project with a billing account attached to it."|t('smart-map') }}</p>
+<p>{{ "As of June 11, 2018, all Google Maps API requests must include an API key. <strong>Keyless access is no longer supported.</strong>"|t('smart-map')|raw }}</p>
 <p>{{ 'To get your Google API keys, <a href="{url}" target="_blank">follow these instructions...</a>'|t('smart-map', {url:apiKeysUrl})|raw }}</p>
 
 <div class="smartmap-field-container" id="smartmap-fields-google">
@@ -61,23 +68,49 @@
 
 <hr/>
 
-<h2>{{ "Geolocation"|t('smart-map') }}</h2>
+<h2 id="geolocation">{{ "Geolocation"|t('smart-map') }}</h2>
 
 <p>{{ "Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located."|t('smart-map')|raw }}</p>
 
 <h2>{{ "Select a service..."|t('smart-map') }}</h2>
 
 <ul class="smartmap-geolocation-options">
-    {{ geolocationOption('None', 'none', settings.geolocation,
+    {{ geolocationOption(
+        'None',
+        'none',
+        null,
+        settings.geolocation,
         'Geolocation is disabled.'
     ) }}
-    {{ geolocationOption('FreeGeoIp.net', 'freegeoip', settings.geolocation,
-        'A free service, FreeGeoIp.net can perform IP address lookups automatically.'
+    {{ geolocationOption(
+        'ipstack',
+        'ipstack',
+        'https://ipstack.com/',
+        settings.geolocation,
+        'A free service, ipstack can perform IP address lookups automatically. Formerly known as FreeGeoIp.net.'
     ) }}
-    {{ geolocationOption('MaxMind', 'maxmind', settings.geolocation,
+    {{ geolocationOption(
+        'MaxMind',
+        'maxmind',
+        'https://www.maxmind.com/',
+        settings.geolocation,
         'A paid subscription service, MaxMind provides more accurate results, with a greater guarantee of uptime.'
     ) }}
 </ul>
+
+<div class="smartmap-field-container" id="smartmap-fields-ipstack">
+    <h2>{{ "ipstack Configuration"|t }}</h2>
+    <p>{{ 'Copy your <a href="{url}" target="_blank">API Access Key</a> and paste it here...'|t({url:'https://ipstack.com/dashboard'})|raw }}</p>
+
+    {{ forms.textField({
+        label: "API Access Key"|t,
+        id: 'ipstackAccessKey',
+        name: 'ipstackAccessKey',
+        value: settings.ipstackAccessKey,
+        disabled: 'ipstackAccessKey' in overrideKeys,
+        warning: 'ipstackAccessKey' in overrideKeys ? configWarning('ipstackAccessKey', docsUrl)
+    }) }}
+</div>
 
 <div class="smartmap-field-container" id="smartmap-fields-maxmind">
     <h2>{{ "MaxMind Configuration"|t('smart-map') }}</h2>
@@ -121,12 +154,6 @@
 </div>
 
 <p>{{ "If you have recently switched services, clear old geolocation results by visiting:"|t('smart-map') }}&nbsp; <strong><a href="{{ cpUrl('utilities/clear-caches') }}">{{ "Utilities"|t('smart-map') }} &nbsp;&gt;&nbsp; {{ "Clear Caches"|t('smart-map') }} &nbsp;&gt;&nbsp; {{ "Data caches"|t('smart-map') }}</a></strong></p>
-
-<div class="smartmap-field-container">
-    <h3>{{ "WARNING"|t('smart-map') }}</h3>
-    <p>{{ "FreeGeoIp.net may experience unexpected downtime, <u>which could have a negative impact on your website!</u> It is highly recommended <strong>not</strong> to rely on FreeGeoIp.net."|t('smart-map')|raw }}</p>
-    <p>{{ "<strong>If you require geolocation, MaxMind is a far more reliable service.</strong>"|t('smart-map')|raw }}</p>
-</div>
 
 <hr/>
 

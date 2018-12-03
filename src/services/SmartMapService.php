@@ -64,7 +64,7 @@ class SmartMapService extends Component
             ];
             // If using geolocation, get cookie data
             $geoSelection = SmartMap::$plugin->getSettings()->geolocation;
-            $geoServices  = ['freegeoip','maxmind'];
+            $geoServices  = ['ipstack','maxmind'];
             $usingGeo     = in_array($geoSelection, $geoServices);
             if ($usingGeo) {
                 $ipCookie = static::IP_COOKIE_NAME;
@@ -148,10 +148,13 @@ class SmartMapService extends Component
             // @TODO
             // Use Google Maps Geolocation API (as default service)
 
-            if (SmartMap::$plugin->smartMap_maxMind->available) {
-                SmartMap::$plugin->smartMap_maxMind->lookupIpData($ip);
-            } else {
-                SmartMap::$plugin->smartMap_freeGeoIp->lookupIpData($ip);
+            switch (SmartMap::$plugin->getSettings()->geolocation) {
+                case 'ipstack':
+                    SmartMap::$plugin->smartMap_ipstack->lookupIpData($ip);
+                    break;
+                case 'maxmind':
+                    SmartMap::$plugin->smartMap_maxMind->lookupIpData($ip);
+                    break;
             }
 
             // Fire an 'afterDetectLocation' event
@@ -234,10 +237,10 @@ class SmartMapService extends Component
                 break;
         }
         // Set coordinates
-        $lat_1 = $coords_1['lat'];
-        $lng_1 = $coords_1['lng'];
-        $lat_2 = $coords_2['lat'];
-        $lng_2 = $coords_2['lng'];
+        $lat_1 = (float) $coords_1['lat'];
+        $lng_1 = (float) $coords_1['lng'];
+        $lat_2 = (float) $coords_2['lat'];
+        $lng_2 = (float) $coords_2['lng'];
         // Calculate haversine formula
         return ($unitVal * acos(cos(deg2rad($lat_1)) * cos(deg2rad($lat_2)) * cos(deg2rad($lng_2) - deg2rad($lng_1)) + sin(deg2rad($lat_1)) * sin(deg2rad($lat_2))));
     }

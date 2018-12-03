@@ -29,6 +29,9 @@ class Settings extends Model
     /** @var string|null  $geolocation  Currently selected geolocation service. */
     public $geolocation;
 
+    /** @var string|null  $ipstackAccessKey  ipstack API Access Key. */
+    public $ipstackAccessKey;
+
     /** @var string|null  $maxmindService  MaxMind Service. */
     public $maxmindService;
 

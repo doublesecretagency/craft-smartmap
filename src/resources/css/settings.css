@@ -5,6 +5,7 @@ div.smartmap-field-container {
     background: #eef0f1;
     border: 1px solid #d5d7d8;
 }
+div#settings-smartmap-fields-ipstack,
 div#settings-smartmap-fields-maxmind {
     display: none;
 }

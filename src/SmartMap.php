@@ -16,19 +16,17 @@ use yii\base\Event;
 use Craft;
 use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
-use craft\events\RegisterTemplateRootsEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\helpers\UrlHelper;
 use craft\services\Fields;
 use craft\services\Plugins;
 use craft\web\UrlManager;
-use craft\web\View;
 use craft\web\twig\variables\CraftVariable;
 
 use doublesecretagency\smartmap\fields\Address;
 use doublesecretagency\smartmap\models\Settings;
 use doublesecretagency\smartmap\services\SmartMapService;
-use doublesecretagency\smartmap\services\FreeGeoIp;
+use doublesecretagency\smartmap\services\Ipstack;
 use doublesecretagency\smartmap\services\Main;
 use doublesecretagency\smartmap\services\MaxMind;
 use doublesecretagency\smartmap\services\Variables;
@@ -65,7 +63,7 @@ class SmartMap extends Plugin
         $this->setComponents([
             'smartMap'           => SmartMapService::class,
             'smartMap_main'      => Main::class,
-            'smartMap_freeGeoIp' => FreeGeoIp::class,
+            'smartMap_ipstack'   => Ipstack::class,
             'smartMap_maxMind'   => MaxMind::class,
             'smartMap_variables' => Variables::class,
         ]);
