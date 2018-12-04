@@ -13,6 +13,14 @@ div.smartmap-subfields div.field {
     clear: both;
 }
 
+/* Stack all subfields vertically below breakpoint */
+@media (max-width: 360px) {
+    div.smartmap-subfields > div {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+}
+
 div.smartmap-top-right {
     z-index: 90;
     position: absolute;
