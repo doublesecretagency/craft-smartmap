@@ -21,13 +21,10 @@ div.smartmap-top-right {
     text-align: right;
 }
 
-table.superTable div.smartmap-field {
-    margin-top: 22px;
-    margin-bottom: 31px;
+table.superTable-table div.smartmap-field {
+    margin-bottom: 25px;
 }
-table.superTable div.smartmap-top-right {
-    top: -20px;
-}
+table.superTable-table div.smartmap-top-right {}
 
 div.smartmap-top-right.cpFieldLinks {
     top: -22px;
