@@ -2,9 +2,11 @@
 {# Format street address according to country format #}
 {% macro formatStreetAddress(a) %}
     {%- spaceless -%}
+
         {# Abbreviate variables #}
         {% set streetNumber = (a.street_number is defined ? a.street_number) %}
         {% set streetName   = (a.route is defined ? a.route) %}
+
         {# Countries whose street number preceeds the name #}
         {% set numberFirst = [
             'Australia',
@@ -13,7 +15,6 @@
             'Hong Kong',
             'India',
             'Ireland',
-            'Malaysia',
             'Malaysia',
             'New Zealand',
             'Pakistan',
@@ -24,11 +25,20 @@
             'United Kingdom',
             'United States',
         ] %}
+
+        {# Countries with comma after the name #}
+        {% set commaAfterStreet = [
+            'Italy',
+        ] %}
+
         {# If one of those countries, use that format #}
         {% if a.country in numberFirst %}
             {{ streetNumber ~ ' ' ~ streetName }}
+        {% elseif a.country in commaAfterStreet %}
+            {{ streetName ~ ', ' ~ streetNumber }}
         {% else %}
             {{ streetName ~ ' ' ~ streetNumber }}
         {% endif %}
+
     {%- endspaceless -%}
 {% endmacro %}
