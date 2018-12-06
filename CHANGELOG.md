@@ -1,11 +1,26 @@
 # Changelog
 
-## 3.1.x - 2018-xx-xx
+## 3.2.0 - 2018-12-06
 
 ### Added
+- Added ipstack geolocation.
+- Added caching for geolocation lookups. (ipstack, MaxMind)
+- Added caching for search target lookups. (Google Maps API)
+- Added a timeout to geolocation calls.
 - Added ability to override Google API keys.
+- Added Italian translation.
+
+### Changed
+- Removed FreeGeoIp.net geolocation.
+- Google API Keys are now required.
+- Subfields stack vertically on mobile.
+- Improved compatibility with Super Table.
+- Improved compatibility with CP Field Inspect.
 
 ### Fixed
+- Fixed formatting for Italian street addresses.
+- Fixed problematic `directionsUrl` method.
+- Fixed static map URL encoding issue.
 - Fixed Exception error.
 
 ## 3.1.3 - 2018-08-14
@@ -80,7 +95,7 @@
 - Added JavaScript function to easily style maps.
 - Added JavaScript function to easily refresh maps.
 - Added Canadian English translation.
- 
+
 ### Changed
 - Now compatible with Feed Me 2 plugin.
 - Made `maptype` and `scale` configurable for static maps.
