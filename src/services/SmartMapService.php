@@ -34,14 +34,10 @@ use doublesecretagency\smartmap\models\FilterCriteria as FilterCriteriaModel;
 class SmartMapService extends Component
 {
 
-    const IP_COOKIE_NAME = 'SmartMap_VisitorIp';
-
     public $settings;
 
     public $visitor = false;
     public $geoInfoSet = false;
-
-    public $cookieData = false;
     public $cacheData = false;
 
     public $targetCoords;
@@ -51,48 +47,50 @@ class SmartMapService extends Component
     // Load geo data
     public function loadGeoData()
     {
-        if (!$this->visitor) {
-            $this->visitor = [ // Default to empty container array
-                'ip'        => false,
-                'city'      => false,
-                'state'     => false,
-                'zipcode'   => false,
-                'country'   => false,
-                'latitude'  => false,
-                'longitude' => false,
-                'coords'    => false,
-            ];
-            // If using geolocation, get cookie data
-            $geoSelection = SmartMap::$plugin->getSettings()->geolocation;
-            $geoServices  = ['ipstack','maxmind'];
-            $usingGeo     = in_array($geoSelection, $geoServices);
-            if ($usingGeo) {
-                $ipCookie = static::IP_COOKIE_NAME;
-                if (array_key_exists($ipCookie, $_COOKIE)) {
-                    $this->cookieData = json_decode($_COOKIE[$ipCookie], true);
-                }
-                $this->currentLocation();
-            }
+        // If visitor already exists, bail
+        if ($this->visitor) {
+            return;
         }
+
+        // Visitor defaults to empty container array
+        $this->visitor = [
+            'ip'        => false,
+            'city'      => false,
+            'state'     => false,
+            'zipcode'   => false,
+            'country'   => false,
+            'latitude'  => false,
+            'longitude' => false,
+            'coords'    => false,
+        ];
+
+        // Get geolocation service
+        $geoSelection = SmartMap::$plugin->getSettings()->geolocation;
+        $geoServices  = ['ipstack','maxmind'];
+        $usingGeo     = in_array($geoSelection, $geoServices);
+
+        // If not using geolocation, bail
+        if (!$usingGeo) {
+            return;
+        }
+
+        // Detect & set current location
+        $this->currentLocation();
     }
 
     // Automatically detect & set current location
     public function currentLocation()
     {
+        // If geo info has been set, bail
+        if ($this->geoInfoSet) {
+            return;
+        }
+
         // Detect IP address
         $ip = $this->_detectVisitorIp();
-        // If IP can't be detected
-        if (!$ip) {
-            if ($this->cookieData) {
-                $ip = $this->cookieData['ip'];
-            } else {
-                $this->_setGeoData(); // Auto detect IP
-            }
-        }
-        // Set new geo data
-        if ($ip && !$this->geoInfoSet) {
-            $this->_setGeoData($ip); // Manually set IP
-        }
+
+        // Do geolocation lookup (manual ?? automatic)
+        $this->_setGeoData($ip ?? '');
     }
 
     // Automatically detect IP address
@@ -100,6 +98,7 @@ class SmartMapService extends Component
     {
         // Get user IP address
         $ip = Craft::$app->getRequest()->getUserIP();
+
         // If IP is local, bail
         if ('127.0.0.1' == $ip) {
             return false;
@@ -142,36 +141,39 @@ class SmartMapService extends Component
     //
     private function _setGeoData($ip = '')
     {
-        // If existing data isn't found, go get it
-        if (!$this->_matchGeoData($ip)) {
-
-            // @TODO
-            // Use Google Maps Geolocation API (as default service)
-
-            switch (SmartMap::$plugin->getSettings()->geolocation) {
-                case 'ipstack':
-                    SmartMap::$plugin->smartMap_ipstack->lookupIpData($ip);
-                    break;
-                case 'maxmind':
-                    SmartMap::$plugin->smartMap_maxMind->lookupIpData($ip);
-                    break;
-            }
-
-            // Fire an 'afterDetectLocation' event
-            $eventLocation = $this->cacheData['visitor'];
-            unset($eventLocation['ip']);
-
-            // Trigger event after location detection
-            if (Event::hasHandlers(SmartMap::class, SmartMap::EVENT_AFTER_DETECT_LOCATION)) {
-                Event::trigger(SmartMap::class, SmartMap::EVENT_AFTER_DETECT_LOCATION, new DetectLocationEvent([
-                    'ip'               => $this->cacheData['visitor']['ip'],
-                    'location'         => $eventLocation,
-                    'detectionService' => $this->cacheData['service'],
-                    'cacheExpires'     => $this->cacheData['expires'],
-                ]));
-            }
-        }
+        // Mark as set
         $this->geoInfoSet = true;
+
+        // If data exists in cache, bail
+        if ($this->_matchGeoData($ip)) {
+            return;
+        }
+
+        // @TODO
+        // Use Google Maps Geolocation API (as default service)
+
+        switch (SmartMap::$plugin->getSettings()->geolocation) {
+            case 'ipstack':
+                SmartMap::$plugin->smartMap_ipstack->lookupIpData($ip);
+                break;
+            case 'maxmind':
+                SmartMap::$plugin->smartMap_maxMind->lookupIpData($ip);
+                break;
+        }
+
+        // Fire an 'afterDetectLocation' event
+        $eventLocation = $this->cacheData['visitor'];
+        unset($eventLocation['ip']);
+
+        // Trigger event after location detection
+        if (Event::hasHandlers(SmartMap::class, SmartMap::EVENT_AFTER_DETECT_LOCATION)) {
+            Event::trigger(SmartMap::class, SmartMap::EVENT_AFTER_DETECT_LOCATION, new DetectLocationEvent([
+                'ip'               => $this->cacheData['visitor']['ip'],
+                'location'         => $eventLocation,
+                'detectionService' => $this->cacheData['service'],
+                'cacheExpires'     => $this->cacheData['expires'],
+            ]));
+        }
     }
 
     // Retrieve cached geo information for IP address
@@ -181,45 +183,60 @@ class SmartMapService extends Component
         if (!$ip) {
             return false;
         }
+
         // Get cached data for IP
-        $cache = new FileCache;
-        $this->cacheData = $cache->get($ip);
+        $key = $this->_geolocationCacheKey($ip);
+        $this->cacheData = Craft::$app->getCache()->get($key);
+
         // If no cached data, bail
         if (!$this->cacheData) {
             return false;
         }
+
         // Get visitor data based on IP
         $this->visitor = $this->cacheData['visitor'];
         return true;
     }
 
-//    // Set geo information in cookie
-//    public function setGeoDataCookie($ipSet, $lifespan = 300) // Expires in five minutes
-//    {
-//        if (!$ipSet) {
-//            $this->loadGeoData();
-//            $this->cookieData = [
-//                'ip'      => $this->visitor['ip'],
-//                'expires' => time() + $lifespan,
-//            ];
-//            setcookie(static::IP_COOKIE_NAME, json_encode($this->cookieData), time()+$lifespan, '/');
-//        }
-//    }
-//
-//    // Cache geo information for IP address
-//    public function cacheGeoData($ip, $geoLookupService, $lifespan = 7776000) // 60*60*24*90 // Expires in 90 days
-//    {
-//        if ($ip) {
-//            $this->loadGeoData();
-//            $data = [
-//                'visitor' => $this->visitor,
-//                'expires' => time() + $lifespan,
-//                'service' => $geoLookupService,
-//            ];
-//            craft()->fileCache->set($ip, $data, $lifespan);
-//            $this->cacheData = $data;
-//        }
-//    }
+    // Cache geo information for IP address
+    public function cacheGeoData($ip, $geoLookupService, $lifespan = 7776000) // 60*60*24*90 // Expires in 90 days
+    {
+        // If no IP address, bail
+        if (!$ip) {
+            return;
+        }
+
+        // Ensure geo data is loaded
+        $this->loadGeoData();
+
+        // Set data to be cached
+        $data = [
+            'visitor' => $this->visitor,
+            'expires' => time() + $lifespan,
+            'service' => $geoLookupService,
+        ];
+
+        // Cache data
+        $key = $this->_geolocationCacheKey($ip);
+        Craft::$app->getCache()->set($key, $data, $lifespan);
+
+        // Set cached data
+        $this->cacheData = $data;
+    }
+
+    // Geolocation cache key
+    private function _geolocationCacheKey($ip)
+    {
+        return "smartmap-geolocation[{$ip}]";
+    }
+
+    // Lookup cache key
+    private function _lookupCacheKey($search)
+    {
+        $search = strtolower($search);
+        $search = trim($search);
+        return "smartmap-lookup[{$search}]";
+    }
 
     // ==================================================== //
 

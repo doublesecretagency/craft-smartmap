@@ -155,16 +155,10 @@ class SmartMapVariable
     {
         $debugData = [
             'remote_addr'   => Craft::$app->getRequest()->getUserIP(),
-            'cookieValue'   => false,
-            'cookieExpires' => false,
             'cacheValue'    => false,
             'cacheExpires'  => false,
             'geoService'    => 'PHP',
         ];
-        if (SmartMap::$plugin->smartMap->cookieData) {
-            $debugData['cookieValue']   = SmartMap::$plugin->smartMap->cookieData['ip'];
-            $debugData['cookieExpires'] = SmartMap::$plugin->smartMap->cookieData['expires'];
-        }
         if (SmartMap::$plugin->smartMap->cacheData) {
             $debugData['cacheValue']    = print_r(SmartMap::$plugin->smartMap->cacheData['visitor'], true);
             $debugData['cacheExpires']  = SmartMap::$plugin->smartMap->cacheData['expires'];

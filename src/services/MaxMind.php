@@ -103,9 +103,8 @@ class MaxMind extends Component
             }
             // Append visitor coords
             SmartMap::$plugin->smartMap->appendVisitorCoords();
-            // If valid IP, set cache & cookie
+            // If valid IP, set cache
             if (SmartMap::$plugin->smartMap->validIp(SmartMap::$plugin->smartMap->visitor['ip'])) {
-                SmartMap::$plugin->smartMap->setGeoDataCookie($ip);
                 SmartMap::$plugin->smartMap->cacheGeoData(SmartMap::$plugin->smartMap->visitor['ip'], 'MaxMind');
             }
         }

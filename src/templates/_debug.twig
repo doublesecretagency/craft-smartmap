@@ -25,16 +25,10 @@
             <th>Value</th>
             <th>Expires</th>
         </tr>
-        {% set dateFormat = 'M. j, Y\ng:i:s A' %}
-        <tr>
-            <td class="field">Cookie IP:</td>
-            <td>{{ craft.smartMap.debug.cookieValue }}</td>
-            <td class="expires">{{ craft.smartMap.debug.cookieExpires|date(dateFormat)|nl2br }}</td>
-        </tr>
         <tr>
             <td class="field">Cache Data:</td>
             <td><pre>{{ craft.smartMap.debug.cacheValue }}</pre></td>
-            <td class="expires">{{ craft.smartMap.debug.cacheExpires|date(dateFormat)|nl2br }}</td>
+            <td class="expires">{{ craft.smartMap.debug.cacheExpires|date('M. j, Y\ng:i:s A')|nl2br }}</td>
         </tr>
     </table>
 

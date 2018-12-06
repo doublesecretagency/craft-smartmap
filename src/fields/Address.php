@@ -19,6 +19,7 @@ use craft\elements\db\ElementQueryInterface;
 use craft\helpers\StringHelper;
 
 use doublesecretagency\smartmap\SmartMap;
+use doublesecretagency\smartmap\enums\MeasurementUnit;
 use doublesecretagency\smartmap\web\assets\FieldInputAssets;
 use doublesecretagency\smartmap\web\assets\FieldSettingsAssets;
 use doublesecretagency\smartmap\web\assets\GoogleMapsAssets;
@@ -152,25 +153,25 @@ class Address extends Field implements PreviewableFieldInterface
         $view->registerAssetBundle(GoogleMapsAssets::class);
         $view->registerAssetBundle(FieldInputAssets::class);
 
-        // TODO: Clean up this method
+        // Ensure geo data is loaded
+        SmartMap::$plugin->smartMap->measurementUnit = MeasurementUnit::Miles;
+        SmartMap::$plugin->smartMap->loadGeoData();
 
+        // Get visitor coordinates
+        $visitor = SmartMap::$plugin->smartMap->visitor;
+        if ($visitor['latitude'] && $visitor['longitude']) {
+            $visitorJs = json_encode([
+                'lat' => $visitor['latitude'],
+                'lng' => $visitor['longitude'],
+            ]);
+        } else {
+            $visitorJs = 'false';
+        }
 
-//        SmartMap::$plugin->smartMap->measurementUnit = MeasurementUnit::Miles;
+        // Register visitor JS
+        $view->registerJs('visitor = '.$visitorJs.';', $view::POS_END);
 
-//        SmartMap::$plugin->smartMap->loadGeoData();
-
-//        $visitor = SmartMap::$plugin->smartMap->visitor;
-//        if ($visitor['latitude'] && $visitor['longitude']) {
-//            $visitorJs = json_encode([
-//                'lat' => $visitor['latitude'],
-//                'lng' => $visitor['longitude'],
-//            ]);
-//        } else {
-//            $visitorJs = 'false';
-//        }
-//        $view->registerJs('visitor = '.$visitorJs.';', $view::POS_END);
-
-
+        // Load template
         return $view->renderTemplate('smart-map/address/input', [
             'name' => $this->handle,
             'value' => $value,
