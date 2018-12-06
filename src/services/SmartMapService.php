@@ -231,11 +231,16 @@ class SmartMapService extends Component
     }
 
     // Lookup cache key
-    private function _lookupCacheKey($search)
+    private function _lookupCacheKey($target, $components)
     {
-        $search = strtolower($search);
-        $search = trim($search);
-        return "smartmap-lookup[{$search}]";
+        $target = strtolower($target);
+        $target = trim($target);
+        $key = "smartmap-lookup[{$target}]";
+        if (!empty($components)) {
+            $components = json_encode($components);
+            $key .= "[{$components}]";
+        }
+        return $key;
     }
 
     // ==================================================== //
@@ -707,18 +712,30 @@ class SmartMapService extends Component
     // Lookup a target location, returning full JSON
     public function lookup($target, $components = [])
     {
+        // Cache key
+        $key = $this->_lookupCacheKey($target, $components);
+        $cachedResponse = Craft::$app->getCache()->get($key);
+
+        // If cached response exists, return it
+        if ($cachedResponse) {
+            return $cachedResponse;
+        }
+
+        // Configure API URL
         $api  = 'https://maps.googleapis.com/maps/api/geocode/json';
         $api .= '?address='.rawurlencode($target);
         $api .= $this->googleServerKey();
 
+        // If components, add them to API URL
         if (is_array($components) && !empty($components)) {
             $mergedComponents = [];
-            foreach ($components as $key => $value) {
-                $mergedComponents[] = "$key:$value";
+            foreach ($components as $k => $v) {
+                $mergedComponents[] = "$k:$v";
             }
             $api .= '&components='.implode('|', $mergedComponents);
         }
 
+        // cURL call
         $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_URL => $api,
@@ -728,13 +745,15 @@ class SmartMapService extends Component
         ]);
         $response = json_decode(curl_exec($ch), true);
         $error = curl_error($ch);
-
-        if ($error) {
-            Craft::error('cURL error: '.$error, __METHOD__);
-        }
-
         curl_close($ch);
 
+        // If there was an error, log it and bail
+        if ($error) {
+            Craft::error('cURL error: '.$error, __METHOD__);
+            return $response;
+        }
+
+        // Check for message
         $message = false;
         switch ($response['status']) {
             // case 'OK':
@@ -761,10 +780,17 @@ class SmartMapService extends Component
                 break;
         }
 
+        // If error message, log it
         if ($message) {
             Craft::error('Google API error: '.$message, __METHOD__);
         }
 
+        // If no error or message, cache response
+        if (!$error && !$message) {
+            Craft::$app->getCache()->set($key, $response);
+        }
+
+        // Return response
         return $response;
     }
 
