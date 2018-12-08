@@ -34,6 +34,8 @@ use doublesecretagency\smartmap\models\FilterCriteria as FilterCriteriaModel;
 class SmartMapService extends Component
 {
 
+    const KEY_REQUIRED_MESSAGE = 'As of June 11, 2018, Google API keys are now <a href="https://www.doublesecretagency.com/plugins/smart-map/docs/get-google-api-keys">required</a>.';
+
     public $settings;
 
     public $visitor = false;
@@ -814,8 +816,9 @@ class SmartMapService extends Component
         $settings = SmartMap::$plugin->getSettings();
         $key = trim($settings['googleServerKey']);
 
-        // If no key, bail
+        // If no key, log deprecation message and bail
         if (!$key) {
+            Craft::$app->getDeprecator()->log('SmartMapService::googleServerKey()', static::KEY_REQUIRED_MESSAGE);
             return '';
         }
 
@@ -830,8 +833,9 @@ class SmartMapService extends Component
         $settings = SmartMap::$plugin->getSettings();
         $key = trim($settings['googleBrowserKey']);
 
-        // If no key, bail
+        // If no key, log deprecation message and bail
         if (!$key) {
+            Craft::$app->getDeprecator()->log('SmartMapService::googleBrowserKey()', static::KEY_REQUIRED_MESSAGE);
             return '';
         }
 
