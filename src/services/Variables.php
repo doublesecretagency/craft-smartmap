@@ -15,11 +15,13 @@ use yii\base\Exception;
 
 use Craft;
 use craft\base\Component;
+use craft\elements\Entry;
 use craft\helpers\StringHelper;
 use craft\helpers\Template;
 use craft\helpers\UrlHelper;
 
 use doublesecretagency\smartmap\SmartMap;
+use doublesecretagency\smartmap\models\Address;
 use doublesecretagency\smartmap\web\assets\FrontEndAssets;
 use doublesecretagency\smartmap\web\assets\GoogleMapsAssets;
 
@@ -671,49 +673,82 @@ smartMap.log("['.$mapId.'] '.$message.'");';
     // ================================================================== //
 
 
-   // Get a link to open the Google map
-   public function linkToGoogle($address)
-   {
-       if (!$address) {
-           return '#invalid-address-field';
-       }
-       $q = '';
-       $components = ['street1','city','state','zip'];
-       foreach ($components as $key) {
-           if ($address->{$key}) {
-               if ($q) {$q .= ', ';}
-               $q .= $address->{$key};
-           }
-       }
-       if ($address->lat && $address->lng) {
-           $coords = $address->lat.'+'.$address->lng;
-           return 'https://maps.google.com/maps?q='.($q ? rawurlencode($q) : $coords).'&ll='.$coords;
-       } else {
-           return '#no-address-coordinates';
-       }
-   }
+    // Get a link to open the Google map
+    public function linkToGoogle($address, $title = null)
+    {
+        // If missing or invalid address, bail
+        if (!$address || !is_a($address, Address::class)) {
+            return '#invalid-address-field';
+        }
+        // If missing coordinates, bail
+        if (!$address->hasCoords()) {
+            return '#missing-address-coordinates';
+        }
+        // Get coordinates
+        $coords = implode(',', $address->coords);
+        // Get location name
+        if ($title) {
+            $place = urlencode((string) $title);
+        } else if ($address->isEmpty()) {
+            $place = $coords;
+        } else {
+            $place = urlencode((string) $address->format(true, true));
+        }
+        // Return link
+        return 'https://www.google.com/maps/place/'.$place.'/@'.$coords;
+    }
 
-   // Get a link to open directions on a Google map
-   public function linkToDirections($address, $title = null)
-   {
-       if (!$address) {
-           return '#invalid-address-field';
-       }
-       if ($address->lat && $address->lng) {
-           $coords = $address->lat.','.$address->lng;
-       } else {
-           return '#no-address-coordinates';
-       }
-       if (!$title) {
-           $components = ['street1','city','state','zip'];
-           foreach ($components as $key) {
-               if ($address->{$key}) {
-                   if ($title) {$title .= ', ';}
-                   $title .= $address->{$key};
-               }
-           }
-       }
-       return 'https://maps.google.com/maps?destination='.rawurlencode($title).'@'.$coords;
-   }
+    // Get a link to open directions on a Google map
+    public function linkToDirections($destinationAddress, $destinationTitle = null, $originTitle = false, $originAddress = false)
+    {
+        // If no destination address, bail
+        if (!$destinationAddress) {
+            return '#missing-address-field';
+        }
+        // If destination address isn't an Address model, bail
+        if (!is_a($destinationAddress, Address::class)) {
+            return '#invalid-address-field';
+        }
+        // If starting address isn't an Address model, set it to false
+        if (!is_a($originAddress, Address::class)) {
+            $originAddress = false;
+        }
+        // Compile URL
+        $url = 'https://www.google.com/maps/dir/?api=1&';
+        if ($originAddress) {
+            $url .= 'origin='.$this->_formatForDirections($originAddress, $originTitle).'&';
+        }
+        $url .= 'destination='.$this->_formatForDirections($destinationAddress, $destinationTitle);
+        // Return link
+        return $url;
+    }
+
+    /**
+     * Format address for directions URL
+     *
+     * @return string
+     */
+    public function _formatForDirections($address, $title = false)
+    {
+        // 1. Comma-separated latitude/longitude coordinates
+        if ($address->hasCoords()) {
+            return implode(',', $address->coords);
+        }
+        // 2. Address
+        if (!$address->isEmpty()) {
+            return urlencode((string) $address->format(true, true));
+        }
+        // 3A. Place name (custom title)
+        if ($title) {
+            return urlencode($title);
+        }
+        // 3B. Place name (entry title)
+        $element = Entry::find()->id($address->elementId)->one();
+        if ($element) {
+            return urlencode($element->title);
+        }
+        // ¯\_(ツ)_/¯
+        return false;
+    }
 
 }

@@ -13,7 +13,6 @@ namespace doublesecretagency\smartmap\models;
 
 use Craft;
 use craft\base\Model;
-use craft\elements\Entry;
 use craft\helpers\Template;
 
 use doublesecretagency\smartmap\SmartMap;
@@ -186,9 +185,9 @@ class Address extends Model
      *
      * @return string
      */
-    public function googleMapUrl()
+    public function googleMapUrl($title = null)
     {
-        return SmartMap::$plugin->smartMap_variables->linkToGoogle($this);
+        return SmartMap::$plugin->smartMap_variables->linkToGoogle($this, $title);
     }
 
     /**
@@ -198,54 +197,7 @@ class Address extends Model
      */
     public function directionsUrl($destinationTitle = false, $startingTitle = false, $startingAddress = false)
     {
-        // First parameter is skippable
-        if (is_string($startingAddress)) {
-            $destinationTitle = $startingAddress;
-            $startingAddress = false;
-        }
-        // If starting address isn't an Address model, set it to false
-        if (!is_a($startingAddress, 'doublesecretagency\\smartmap\\models\\Address')) {
-            $startingAddress = false;
-        }
-        // Compile URL
-        $url = 'https://www.google.com/maps/dir/?api=1&';
-        if ($startingAddress) {
-            $url .= 'origin='.$this->_formatForDirections($startingAddress, $startingTitle).'&';
-        }
-        $url .= 'destination='.$this->_formatForDirections($this, $destinationTitle);
-        return $url;
-    }
-
-    /**
-     * Format address for directions URL
-     *
-     * @return string
-     */
-    public function _formatForDirections($address, $title)
-    {
-        $output = false;
-        // 1. Comma-separated latitude/longitude coordinates
-        if ($address->hasCoords()) {
-            $output = $address->lat.','.$address->lng;
-        }
-        // 2. Address
-        if (!$output && !$address->isEmpty()) {
-            $output = urlencode((string) $address->format(true, true));
-        }
-        // 3A. Place name (custom title)
-        if (!$output) {
-            $output = urlencode($title);
-        }
-        // 3B. Place name (entry title)
-        if (!$output) {
-            $element = Entry::find()->id($address->elementId)->one();
-            if ($element) {
-                $output = urlencode($element->title);
-            }
-        }
-        // Return URL component
-        return $output;
+        return SmartMap::$plugin->smartMap_variables->linkToDirections($this, $destinationTitle, $startingTitle, $startingAddress);
     }
 
 }
-
