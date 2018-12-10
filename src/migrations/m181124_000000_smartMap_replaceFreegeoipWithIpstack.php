@@ -11,8 +11,9 @@
 
 namespace doublesecretagency\smartmap\migrations;
 
+use Craft;
 use craft\db\Migration;
-use craft\db\Query;
+use doublesecretagency\smartmap\SmartMap;
 
 /**
  * Migration: Replace FreeGeoIp.net with ipstack
@@ -27,12 +28,15 @@ class m181124_000000_smartMap_replaceFreegeoipWithIpstack extends Migration
     public function safeUp()
     {
         // Get settings
-        $settings = $this->_getSettings();
+        $settings = SmartMap::$plugin->getSettings();
 
         // If no settings exist, bail
-        if (!is_array($settings)) {
+        if (!$settings) {
             return true;
         }
+
+        // Convert model into array
+        $settings = $settings->getAttributes();
 
         // If setting doesn't exist, bail
         if (!array_key_exists('geolocation', $settings)) {
@@ -46,42 +50,12 @@ class m181124_000000_smartMap_replaceFreegeoipWithIpstack extends Migration
 
         // Modify settings
         $settings['geolocation'] = 'ipstack';
-        $settings['ipstackAccessKey'] = '';
 
         // Save settings
-        $this->_setSettings($settings);
+        Craft::$app->getPlugins()->savePluginSettings(SmartMap::$plugin, $settings);
 
         // Return true
         return true;
-    }
-
-    /**
-     * Get plugin settings
-     *
-     * @return array
-     */
-    private function _getSettings()
-    {
-        // Get original settings value
-        $oldSettings = (new Query())
-            ->select(['settings'])
-            ->from(['{{%plugins}}'])
-            ->where(['handle' => 'smart-map'])
-            ->one($this->db);
-        return @json_decode($oldSettings['settings'], true);
-    }
-
-    /**
-     * Save plugin settings
-     *
-     * @param array $settings Updated settings
-     */
-    private function _setSettings($settings)
-    {
-        // Update settings field
-        $newSettings = json_encode($settings);
-        $data = ['settings' => $newSettings];
-        $this->update('{{%plugins}}', $data, ['handle' => 'smart-map']);
     }
 
     /**
