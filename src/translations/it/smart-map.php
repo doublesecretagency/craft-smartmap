@@ -86,4 +86,6 @@ return [
     'Plugin Debug Page' => 'Pagina di debug del plugin',
     'Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site.' => 'A volte devi sapere qualcosa in più su cosa sta facendo il plugin. Questa pagina speciale può fornirti informazioni sulle funzionalità di geolocalizzazione del tuo sito.',
 
+    // 'Loading map...' => 'X'
+
 ];

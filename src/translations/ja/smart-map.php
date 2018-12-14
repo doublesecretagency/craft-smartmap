@@ -85,4 +85,6 @@ return [
     'Plugin Debug Page' => 'プラグインのデバッグページ',
     'Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site.' => '時には、プラグインの能力について少し詳細を知る必要があります。このページには、あなたのウェブサイトの地理位置能力をお知らせします。',
 
+    // 'Loading map...' => 'X'
+
 ];
