@@ -66,6 +66,7 @@ return [
     'Geolocation' => 'X',
     'Depending on the purpose of your website, you may need to use <strong>IP detection</strong> and <strong>geolocation</strong> to automatically detect where your site visitors are located.' => 'X',
     'Select a service...' => 'X',
+    'None' => 'Nincs',
     'Geolocation is disabled.' => 'X',
     'A free service, ipstack can perform IP address lookups automatically. Formerly known as FreeGeoIp.net.' => 'X',
     'A paid subscription service, MaxMind provides more accurate results, with a greater guarantee of uptime.' => 'X',
