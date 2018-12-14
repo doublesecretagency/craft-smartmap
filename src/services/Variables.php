@@ -162,7 +162,7 @@ class Variables extends Component
         $this->_mapTotal++;
 
         $this->loadAssets();
-        $html = '<div id="'.$mapId.'" class="smartmap-mapcanvas" style="'.$width.$height.'">Loading map...</div>';
+        $html = '<div id="'.$mapId.'" class="smartmap-mapcanvas" style="'.$width.$height.'">'.Craft::t('smart-map', 'Loading map...').'</div>';
         return Template::raw($html);
     }
 
