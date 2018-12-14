@@ -1,9 +1,21 @@
 # Changelog
 
+## 3.2.1 - 2018-12-14
+
+### Added
+- Added deprecation message for missing Google API keys.
+- Added Hungarian translation.
+
+### Changed
+- Additional improvements to `directionsUrl` and `googleMapUrl` methods.
+
+### Fixed
+- Fixed migration issues with Craft 3.1 compatibility.
+
 ## 3.2.0 - 2018-12-06
 
 ### Added
-- Added ipstack geolocation.
+- Added [ipstack](https://ipstack.com/) geolocation.
 - Added caching for geolocation lookups. (ipstack, MaxMind)
 - Added caching for search target lookups. (Google Maps API)
 - Added a timeout to geolocation calls.
