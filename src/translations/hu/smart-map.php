@@ -86,4 +86,5 @@ return [
     'Plugin Debug Page' => 'Beépülő modul hibakeresési oldala',
     'Sometimes you need to know a little more about what the plugin is doing. This special page can give you insight into the geolocation capabilities of your site.' => 'Olykor szükséged lehet arra, hogy tudd, mit is csinál a beépülő modul. Ezen az oldalon áttekintést kaphatsz arról, hogy milyen geolokációs képességekkel is rendelkezik az oldalad.',
 
+    'Loading map...' => 'Térkép betöltése...',
 ];
