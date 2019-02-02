@@ -34,7 +34,7 @@ use doublesecretagency\smartmap\models\FilterCriteria as FilterCriteriaModel;
 class SmartMapService extends Component
 {
 
-    const KEY_REQUIRED_MESSAGE = 'As of June 11, 2018, Google API keys are now <a href="https://www.doublesecretagency.com/plugins/smart-map/docs/get-google-api-keys">required</a>.';
+    const KEY_REQUIRED_MESSAGE = 'As of June 11, 2018, Google API keys are now <a href="'.SmartMap::DOCS_URL.'/get-google-api-keys">required</a>.';
 
     public $settings;
 

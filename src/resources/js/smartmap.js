@@ -91,6 +91,6 @@ var smartMap = {
         this.map[mapId].setZoom(zoom);
         this.map[mapId].panTo(this.marker[markerName].position);
     }
-}
+};
 
 smartMap.log('smartMap object loaded.');

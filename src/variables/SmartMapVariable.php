@@ -65,7 +65,7 @@ class SmartMapVariable
     // Link to the Google map
     public function linkToGoogle($address, $title = null)
     {
-        $docsUrl = 'https://www.doublesecretagency.com/plugins/smart-map/docs/linking-to-a-separate-google-map-page';
+        $docsUrl = SmartMap::DOCS_URL.'/linking-to-a-separate-google-map-page';
         $deprecationMessage = 'craft.smartMap.linkToGoogle() has been <a href="'.$docsUrl.'">deprecated</a>. Use element.addressFieldHandle.googleMapUrl() instead.';
         Craft::$app->getDeprecator()->log('craft.smartMap.linkToGoogle', $deprecationMessage);
         return SmartMap::$plugin->smartMap_variables->linkToGoogle($address, $title);
@@ -74,7 +74,7 @@ class SmartMapVariable
     // Link to directions on a Google map
     public function directions($address, $title = null)
     {
-        $docsUrl = 'https://www.doublesecretagency.com/plugins/smart-map/docs/linking-to-a-separate-google-map-page';
+        $docsUrl = SmartMap::DOCS_URL.'/linking-to-a-separate-google-map-page';
         $deprecationMessage = 'craft.smartMap.directions() has been <a href="'.$docsUrl.'">deprecated</a>. Use element.addressFieldHandle.directionsUrl() instead.';
         Craft::$app->getDeprecator()->log('craft.smartMap.directions', $deprecationMessage);
         return SmartMap::$plugin->smartMap_variables->linkToDirections($address, $title);
@@ -151,7 +151,7 @@ class SmartMapVariable
     // Link to full documentation
     public function docsUrl()
     {
-        return SmartMap::$plugin->documentationUrl;
+        return SmartMap::DOCS_URL;
     }
 
     // ========================================================================= //
