@@ -11,6 +11,7 @@
 
 namespace doublesecretagency\smartmap\models;
 
+use Craft;
 use craft\base\Model;
 
 /**
@@ -44,4 +45,43 @@ class Settings extends Model
     /** @var string|null  $debugRoute  Route to debug page. */
     public $debugRoute = 'map/debug';
 
+    /**
+     * @return string
+     */
+    public function getGoogleServerKey(): string
+    {
+        return Craft::parseEnv($this->googleServerKey);
+    }
+
+    /**
+     * @return string
+     */
+    public function getGoogleBrowserKey(): string
+    {
+        return Craft::parseEnv($this->googleBrowserKey);
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpstackAccessKey(): string
+    {
+        return Craft::parseEnv($this->ipstackAccessKey);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMaxmindUserId(): string
+    {
+        return Craft::parseEnv($this->maxmindUserId);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMaxmindLicenseKey(): string
+    {
+        return Craft::parseEnv($this->maxmindLicenseKey);
+    }
 }

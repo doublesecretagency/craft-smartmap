@@ -32,7 +32,7 @@ class GoogleMapsAssets extends AssetBundle
 
         // Get browser key
         $settings = SmartMap::$plugin->getSettings();
-        $key = trim($settings['googleBrowserKey']);
+        $key = trim($settings->getGoogleBrowserKey());
 
         // Append browser key
         if ($key) {

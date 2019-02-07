@@ -124,26 +124,13 @@ class SmartMapVariable
     // Google API Server Key
     public function serverKey()
     {
-        return $this->_googleKey('googleServerKey');
+        return SmartMap::$plugin->settings->getGoogleServerKey();
     }
 
     // Google API Browser Key
     public function browserKey()
     {
-        return $this->_googleKey('googleBrowserKey');
-    }
-
-    // Return Google key
-    public function _googleKey($key)
-    {
-        // Get settings
-        $settings = SmartMap::$plugin->settings;
-        // If key does not exist, bail
-        if (!array_key_exists($key, $settings)) {
-            return false;
-        }
-        // Return key
-        return $settings[$key];
+        return SmartMap::$plugin->settings->getGoogleBrowserKey();
     }
 
     // ========================================================================= //

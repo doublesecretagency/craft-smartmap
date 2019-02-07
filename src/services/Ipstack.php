@@ -35,7 +35,7 @@ class Ipstack extends Component
         parent::init();
         $s = SmartMap::$plugin->getSettings();
         if ('ipstack' == $s['geolocation']) {
-            $this->_ipstackAccessKey = $s['ipstackAccessKey'];
+            $this->_ipstackAccessKey = $s->getIpstackAccessKey();
             $this->available = (
                 $this->_ipstackApi
                 && $this->_ipstackAccessKey

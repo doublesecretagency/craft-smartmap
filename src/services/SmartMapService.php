@@ -814,7 +814,7 @@ class SmartMapService extends Component
     {
         // Get server key
         $settings = SmartMap::$plugin->getSettings();
-        $key = trim($settings['googleServerKey']);
+        $key = trim($settings->getGoogleServerKey());
 
         // If no key, log deprecation message and bail
         if (!$key) {
@@ -831,7 +831,7 @@ class SmartMapService extends Component
     {
         // Get server key
         $settings = SmartMap::$plugin->getSettings();
-        $key = trim($settings['googleBrowserKey']);
+        $key = trim($settings->getGoogleBrowserKey());
 
         // If no key, log deprecation message and bail
         if (!$key) {

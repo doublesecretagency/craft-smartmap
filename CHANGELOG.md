@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Google Maps settings (Google API Server Key and Google API Browser Key) and some Geolocation settings (ipstack API Access Key, MaxMind User ID, and MaxMind License Key) can now be set to environment variables using a `$VARIABLE_NAME` syntax.
+
 ## 3.2.1 - 2018-12-14
 
 ### Added
