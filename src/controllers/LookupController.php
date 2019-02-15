@@ -39,8 +39,9 @@ class LookupController extends Controller
         $this->requireAcceptsJson();
 
         $request = Craft::$app->getRequest();
-        $target = $request->getBodyParam('target');
-        $components = $request->getBodyParam('components');
+        $payload = Json::decode($request->getRawBody(), true);
+        $target = (isset($payload['target']) ? $payload['target'] : null);
+        $components = (isset($payload['components']) ? $payload['components'] : null);
         $components = $this->_explodeComponents($components);
         $response = SmartMap::$plugin->smartMap->lookup($target, $components);
         return $this->asJson($response);
@@ -53,8 +54,9 @@ class LookupController extends Controller
         $this->requireAcceptsJson();
 
         $request = Craft::$app->getRequest();
-        $target = $request->getBodyParam('target');
-        $components = $request->getBodyParam('components');
+        $payload = Json::decode($request->getRawBody(), true);
+        $target = (isset($payload['target']) ? $payload['target'] : null);
+        $components = (isset($payload['components']) ? $payload['components'] : null);
         $components = $this->_explodeComponents($components);
         $response = SmartMap::$plugin->smartMap->lookupCoords($target, $components);
         return $this->asJson($response);
