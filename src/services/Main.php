@@ -15,6 +15,7 @@ use Craft;
 use craft\base\Component;
 use craft\helpers\UrlHelper;
 
+use doublesecretagency\smartmap\events\SearchResultsEvent;
 use doublesecretagency\smartmap\SmartMap;
 
 /**
@@ -23,6 +24,11 @@ use doublesecretagency\smartmap\SmartMap;
  */
 class Main extends Component
 {
+
+    /**
+     * @event SearchResultsEvent The event that is triggered after search results are restructured.
+     */
+    const EVENT_MODIFY_SEARCH_RESULTS = 'modifySearchResults';
 
     // Search for address using Google Maps API
     public function addressSearch($address)
@@ -120,7 +126,14 @@ class Main extends Component
             $restructured['coords'] = $result['geometry']['location'];
             $restructuredResults[] = $restructured;
         }
-        return $restructuredResults;
+
+        // Allow plugins to modify the search results
+        $event = new SearchResultsEvent([
+            'results' => $restructuredResults
+        ]);
+        $this->trigger(self::EVENT_MODIFY_SEARCH_RESULTS, $event);
+
+        return $event->results;
     }
     /*
     for (c in components) {
