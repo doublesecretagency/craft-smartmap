@@ -29,7 +29,7 @@ $(document).on('click', '.matrix .btn, .menu ul li a', function () {
 
 // Tab "onBlur" patch
 $(document).on('keydown', '.smartmap-field input', function (e) {
-    if (9 == e.which) {
+    if (9 === e.which) {
         handle = $(this).closest('.smartmap-field').attr('id');
         if (!$('#'+handle+'-lat').val() || !$('#'+handle+'-lng').val()) {
             findCoords(handle);
@@ -211,7 +211,7 @@ function openMatches(handle, address) {
     // Load address search modal
     Craft.postActionRequest('smart-map/modal/address-search', data, $.proxy(function(response, textStatus)
     {
-        if (textStatus == 'success')
+        if (textStatus === 'success')
         {
             if (response.hasOwnProperty('message')) {
                 Craft.cp.displayError(response.message);
