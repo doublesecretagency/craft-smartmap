@@ -10,12 +10,12 @@
             </tr>
         </thead>
         <tbody class="layout-table-rows">
-            {% for subfield,subsetting in settings.layout %}
-                {% set checked = (1 == subsetting.enable ? 'checked="checked"') %}
-                <tr class="layout-table-subfield" data-subfield="{{ subfield }}">
+            {% for subfield in layout %}
+                {% set checked = (1 == subfield.enable ? 'checked="checked"') %}
+                <tr class="layout-table-subfield" data-subfield="{{ subfield.handle }}">
                     <td class="layout-table-enable"><input type="checkbox" value="1" {{ checked }} /></td>
-                    <td class="layout-table-width"><input type="number" value="{{ subsetting.width }}" /></td>
-                    <td class="layout-table-label">{{ craft.smartMap.labelFromHandle(subfield) }}</td>
+                    <td class="layout-table-width"><input type="number" value="{{ subfield.width }}" /></td>
+                    <td class="layout-table-label">{{ craft.smartMap.labelFromHandle(subfield.handle) }}</td>
                     <td class="thin action"><a class="move icon" title="{{ "Reorder"|t('smart-map') }}"></a></td>
                 </tr>
             {% endfor %}

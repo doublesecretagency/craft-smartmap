@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Fixed
+- Fixed bug to keep Address subfields in order.
 - Fixed links to documentation.
 
 ## 3.2.1 - 2018-12-14
