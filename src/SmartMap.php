@@ -47,14 +47,14 @@ class SmartMap extends Plugin
     /** @event DetectLocationEvent The event that is triggered after the user's location has been detected. */
     const EVENT_AFTER_DETECT_LOCATION = 'afterDetectLocation';
 
-    /** @var Plugin  $plugin  Self-referential plugin property. */
+    /** @var Plugin $plugin Self-referential plugin property. */
     public static $plugin;
 
-    /** @var bool  $hasCpSettings  The plugin has a settings page. */
+    /** @var bool $hasCpSettings The plugin has a settings page. */
     public $hasCpSettings = true;
 
-    /** @var bool  $schemaVersion  Current schema version of the plugin. */
-    public $schemaVersion = '3.2.0';
+    /** @var bool $schemaVersion Current schema version of the plugin. */
+    public $schemaVersion = '3.2.2';
 
     /** @inheritDoc */
     public function init()
