@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+- Added ability to filter by latitude and/or longitude.
+
 ### Changed
 - URL encode address during lookup in CP.
 - Cache Google Maps API lookup results for 90 days.

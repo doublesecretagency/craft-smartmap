@@ -294,13 +294,13 @@ class SmartMapService extends Component
     // Filter according to subfield(s)
     private function _filterSubfield(&$query, $params = [])
     {
-        $realSubfields = ['street1','street2','city','state','zip','country'];
+        $realSubfields = ['street1','street2','city','state','zip','country','lat','lng'];
 
         foreach ($params['filter'] as $subfield => $value) {
             if (in_array($subfield, $realSubfields)) {
 
                 // Ensure value is an array
-                if (is_string($value)) {
+                if (is_string($value) || is_float($value)) {
                     $value = [$value];
                 }
                 // If value is not an array, skip
