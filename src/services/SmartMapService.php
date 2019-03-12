@@ -201,7 +201,7 @@ class SmartMapService extends Component
     }
 
     // Cache geo information for IP address
-    public function cacheGeoData($ip, $geoLookupService, $lifespan = 7776000) // 60*60*24*90 // Expires in 90 days
+    public function cacheGeoData($ip, $geoLookupService, $duration = 7776000) // 60*60*24*90 // Expires in 90 days
     {
         // If no IP address, bail
         if (!$ip) {
@@ -214,13 +214,13 @@ class SmartMapService extends Component
         // Set data to be cached
         $data = [
             'visitor' => $this->visitor,
-            'expires' => time() + $lifespan,
+            'expires' => time() + $duration,
             'service' => $geoLookupService,
         ];
 
         // Cache data
         $key = $this->_geolocationCacheKey($ip);
-        Craft::$app->getCache()->set($key, $data, $lifespan);
+        Craft::$app->getCache()->set($key, $data, $duration);
 
         // Set cached data
         $this->cacheData = $data;
@@ -789,7 +789,8 @@ class SmartMapService extends Component
 
         // If no error or message, cache response
         if (!$error && !$message) {
-            Craft::$app->getCache()->set($key, $response);
+            $duration = 7776000; // 90 days
+            Craft::$app->getCache()->set($key, $response, $duration);
         }
 
         // Return response

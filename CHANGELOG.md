@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Changed
+- Cache Google Maps API lookup results for 90 days.
+
 ### Fixed
 - Fixed bug to keep Address subfields in order.
 - Fixed links to documentation.
