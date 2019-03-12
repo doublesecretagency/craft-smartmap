@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Changed
+- URL encode address during lookup in CP.
 - Cache Google Maps API lookup results for 90 days.
 
 ### Fixed

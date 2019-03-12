@@ -30,7 +30,7 @@ class Main extends Component
         $message = false;
 
         $api  = 'https://maps.googleapis.com/maps/api/geocode/json';
-        $api .= '?address='.str_replace(' ', '+', $address);
+        $api .= '?address='.rawurlencode($address);
         $api .= SmartMap::$plugin->smartMap->googleServerKey();
 
         $ch = curl_init();
