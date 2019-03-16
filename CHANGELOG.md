@@ -12,6 +12,7 @@
 
 ### Fixed
 - Fixed bug to keep Address subfields in order.
+- Fixed bug erroneously requiring JSON in `lookup` action.
 - Fixed links to documentation.
 
 ## 3.2.1 - 2018-12-14
