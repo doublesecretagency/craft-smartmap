@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.2.2 - 2019-03-15
 
 ### Added
 - Added ability to filter by latitude and/or longitude.
