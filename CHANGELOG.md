@@ -8,6 +8,7 @@
 ### Changed
 - URL encode address during lookup in CP.
 - Cache Google Maps API lookup results for 90 days.
+- Improved formatting of Address field in HUD editor.
 
 ### Fixed
 - Fixed bug to keep Address subfields in order.
