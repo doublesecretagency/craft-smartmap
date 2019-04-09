@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.2.1 - 2019-04-08
+
+### Changed
+- Neutralized problematic migration.
+
 ## 3.2.2 - 2019-03-15
 
 ### Added
