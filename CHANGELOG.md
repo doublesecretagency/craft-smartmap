@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- Craft 3.1 is now required.
+
 ## 3.2.2.1 - 2019-04-08
 
 ### Changed
