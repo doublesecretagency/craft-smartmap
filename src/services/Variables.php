@@ -461,19 +461,17 @@ class Variables extends Component
                         //$marker['element']['title'] = $marker['title'];
                     }
                     try {
-                        $markerVars = [
-                            'mapId'      => $marker['mapId'],
-                            'markerName' => $marker['mapId'].'.'.$marker['markerName'],
-                            'coords'     => [
-                                'lat' => $marker['lat'],
-                                'lng' => $marker['lng'],
-                            ],
-                        ];
-                        $html = Craft::$app->getView()->renderTemplate($template, [
-                            'marker'  => $markerVars,
+                        $infoWindowOptions['content'] = Craft::$app->getView()->renderTemplate($template, [
                             'element' => $marker['element'],
+                            'marker'  => [
+                                'mapId'      => $marker['mapId'],
+                                'markerName' => $marker['mapId'].'.'.$marker['markerName'],
+                                'coords'     => [
+                                    'lat' => $marker['lat'],
+                                    'lng' => $marker['lng'],
+                                ],
+                            ],
                         ]);
-                        $infoWindowOptions['content'] = $html;
                     } catch (\Exception $e) {
                         $infoWindowOptions['content']  = '<strong>Marker Info Template Error</strong><br />';
                         $infoWindowOptions['content'] .= $e->getMessage();
