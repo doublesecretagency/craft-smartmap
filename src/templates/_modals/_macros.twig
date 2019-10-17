@@ -4,8 +4,9 @@
     {%- spaceless -%}
 
         {# Abbreviate variables #}
-        {% set streetNumber = (a.street_number is defined ? a.street_number) %}
-        {% set streetName   = (a.route is defined ? a.route) %}
+        {% set streetNumber = (a.street_number ?? false) %}
+        {% set streetName   = (a.route         ?? false) %}
+        {% set country      = (a.country       ?? false) %}
 
         {# Countries whose street number preceeds the name #}
         {% set numberFirst = [
@@ -32,9 +33,9 @@
         ] %}
 
         {# If one of those countries, use that format #}
-        {% if a.country in numberFirst %}
+        {% if country in numberFirst %}
             {{ streetNumber ~ ' ' ~ streetName }}
-        {% elseif a.country in commaAfterStreet %}
+        {% elseif country in commaAfterStreet %}
             {{ streetName ~ ', ' ~ streetNumber }}
         {% else %}
             {{ streetName ~ ' ' ~ streetNumber }}

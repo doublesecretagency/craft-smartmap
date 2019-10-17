@@ -6,6 +6,7 @@
 - Craft 3.1 is now required.
 
 ### Fixed
+- Guard against missing `country` in Google results.
 - Replaced problematic migration.
 
 ## 3.2.2.1 - 2019-04-08
