@@ -124,6 +124,9 @@ class Variables extends Component
             unset($options['zoom']);
         }
 
+        // Use only specified field(s)
+        $selectedFields = (array_key_exists('field', $options) ? $options['field'] : null);
+
         $markerOptions     = (array_key_exists('markerOptions', $options)     ? $options['markerOptions']     : []);
         $infoWindowOptions = (array_key_exists('infoWindowOptions', $options) ? $options['infoWindowOptions'] : []);
         unset($options['markerOptions']);
@@ -136,7 +139,7 @@ class Variables extends Component
         }
 
         // Determine map center
-        $markersCenter = $this->_parseMarkers($mapId, $markers, $markerOptions);
+        $markersCenter = $this->_parseMarkers($mapId, $markers, $markerOptions, $selectedFields);
         if (array_key_exists('center', $options)) {
             $center = $this->_parseCenter($options['center']);
         } else {
@@ -169,18 +172,18 @@ class Variables extends Component
     }
 
     // Parse location variations into standard format
-    private function _parseMarkers($mapId, $locations, $markerOptions = [])
+    private function _parseMarkers($mapId, $locations, $markerOptions = [], $selectedFields = null)
     {
         // Organize markers
         if (!is_array($locations)) {
             // If $locations is an ElementQuery
             if (is_a($locations, 'craft\\elements\\db\\ElementQuery')) {
-                return $this->_parseMarkers($mapId, $locations->all());
+                return $this->_parseMarkers($mapId, $locations->all(), $markerOptions, $selectedFields);
             }
             // If $locations is a single element
             if (is_a($locations, 'craft\\base\\Element')) {
                 $locations = [$locations];
-                return $this->_parseMarkers($mapId, $locations);
+                return $this->_parseMarkers($mapId, $locations, $markerOptions, $selectedFields);
             }
             // No locations, throw exception
             if (!$locations) {
@@ -206,7 +209,7 @@ class Variables extends Component
                 $blockTypes = Craft::$app->matrix->getBlockTypesByFieldId($matrixFieldId);
                 foreach ($blockTypes as $blockType) {
                     $allFields = $blockType->getFields();
-                    $newHandles = $this->_listFieldHandles($allFields);
+                    $newHandles = $this->_listFieldHandles($allFields, $selectedFields);
                     $handles = array_merge($handles, $newHandles);
                 }
             } else if (is_a($locations[0], 'verbb\\supertable\\elements\\SuperTableBlockElement')) {
@@ -220,13 +223,13 @@ class Variables extends Component
                 $blockTypes = $superTable->getBlockTypesByFieldId($supertableFieldId);
                 foreach ($blockTypes as $blockType) {
                     $allFields = $blockType->getFields();
-                    $newHandles = $this->_listFieldHandles($allFields);
+                    $newHandles = $this->_listFieldHandles($allFields, $selectedFields);
                     $handles = array_merge($handles, $newHandles);
                 }
             } else {
                 // Get all Address field handles
                 $allFields = Craft::$app->fields->getAllFields();
-                $handles = $this->_listFieldHandles($allFields);
+                $handles = $this->_listFieldHandles($allFields, $selectedFields);
             }
 
             // Loop through all location elements
@@ -383,13 +386,26 @@ class Variables extends Component
     }
 
     // Find all Smart Map Address field handles
-    private function _listFieldHandles($allFields)
+    private function _listFieldHandles($allFields, $selectedFields = null)
     {
+        // Convert selected fields to an array
+        if ($selectedFields && is_string($selectedFields)) {
+            $selectedFields = [$selectedFields];
+        }
+
+        // Collect address field handles
         $handles = [];
         foreach ($allFields as $field) {
-            if ($field->className() == 'doublesecretagency\\smartmap\\fields\\Address') {
-                $handles[] = $field->handle;
+            // If not an address field, skip
+            if ($field->className() != 'doublesecretagency\\smartmap\\fields\\Address') {
+                continue;
             }
+            // If field was not selected, skip
+            if ($selectedFields && !in_array($field->handle, $selectedFields)) {
+                continue;
+            }
+            // Add field handle
+            $handles[] = $field->handle;
         }
         return $handles;
     }

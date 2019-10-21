@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+- Option to filter field(s) to be included on map.
+
 ### Changed
 - Craft 3.1 is now required.
 
