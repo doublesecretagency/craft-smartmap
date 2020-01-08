@@ -4,6 +4,7 @@
 
 ### Added
 - Option to filter field(s) to be included on map.
+- KML files can now be specified by absolute URL.
 
 ### Changed
 - Craft 3.1 is now required.

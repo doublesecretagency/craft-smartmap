@@ -11,6 +11,7 @@
 
 namespace doublesecretagency\smartmap\services;
 
+use craft\elements\Asset;
 use yii\base\Exception;
 
 use Craft;
@@ -638,8 +639,17 @@ class Variables extends Component
     // Load a KML map file
     public function kmlMap($kmlFile, $options = [])
     {
-        if (!$kmlFile || !is_a($kmlFile, 'craft\elements\Asset')) {
-            return 'Invalid KML file';
+        // If no file specified, bail
+        if (!$kmlFile) {
+            return 'No KML file specified.';
+        }
+        // Get the KML URL
+        if (is_a($kmlFile, Asset::class)) {
+            if (!$kmlFile->url) {
+                return 'Invalid KML file. Check that your asset source allows for public URLs.';
+            }
+        } else if (!is_string($kmlFile)) {
+            return 'Invalid KML file. Please specify an Asset or absolute URL.';
         }
         // Create a new map
         $mapId = (array_key_exists('id', $options) ? $options['id'] : 'smartmap-mapcanvas-'.$this->_mapTotal);
@@ -649,29 +659,37 @@ class Variables extends Component
         return Template::raw($html);
     }
 
-    /**
-     * TODO:
-     * - Allow a string for the first parameter. KML files may be remote (and must be publicly accessible).
-     */
     // Add a KML map layer
     public function kmlMapLayer($kmlFile, $mapId)
     {
-        if (!$kmlFile || !is_a($kmlFile, 'craft\elements\Asset')) {
-            return 'Invalid KML file';
+        // If no file specified, bail
+        if (!$kmlFile) {
+            return 'No KML file specified.';
+        }
+        // Get the KML URL
+        if (is_string($kmlFile)) {
+            $url = $kmlFile;
+        } else if (is_a($kmlFile, Asset::class)) {
+            $url = $kmlFile->url;
+            if (!$url) {
+                return 'Invalid KML file. Check that your asset source allows for public URLs.';
+            }
+        } else {
+            return 'Invalid KML file. Please specify an Asset or absolute URL.';
         }
         // Get view
         $view = Craft::$app->getView();
         // Log attempt
         $js = '
-smartMap.log("['.$mapId.'] Adding KML layer...");';
+smartMap.log("['.$mapId.'] Adding KML layer: '.$url.'");';
         // Apply KML layer
-        if (UrlHelper::isAbsoluteUrl($kmlFile->url)) {
+        if (UrlHelper::isAbsoluteUrl($url)) {
             // Success
             $js .= '
-new google.maps.KmlLayer("'.$kmlFile->url.'", {
+new google.maps.KmlLayer("'.$url.'", {
     map: smartMap.map["'.$mapId.'"]
 });';
-            $message = 'KML layer applied.';
+            $message = 'KML layer applied successfully.';
         } else {
             // Failure
             $message = 'Error: URL for KML file must be absolute.';
