@@ -12,6 +12,7 @@
 namespace doublesecretagency\smartmap\services;
 
 use craft\elements\Asset;
+use craft\elements\db\ElementQuery;
 use yii\base\Exception;
 
 use Craft;
@@ -178,7 +179,7 @@ class Variables extends Component
         // Organize markers
         if (!is_array($locations)) {
             // If $locations is an ElementQuery
-            if (is_a($locations, 'craft\\elements\\db\\ElementQuery')) {
+            if (is_a($locations, ElementQuery::class)) {
                 return $this->_parseMarkers($mapId, $locations->all(), $markerOptions, $selectedFields);
             }
             // If $locations is a single element
@@ -197,7 +198,7 @@ class Variables extends Component
         $center = SmartMap::$plugin->smartMap->defaultCoords();
 
         // If multiple locations
-        if (!empty($locations) && array_key_exists(0, $locations)) {
+        if (is_array($locations) && !empty($locations)) {
 
             $allLats = [];
             $allLngs = [];

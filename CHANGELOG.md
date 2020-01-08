@@ -12,6 +12,7 @@
 ### Fixed
 - Guard against missing `country` in Google results.
 - Replaced problematic migration.
+- Fixed bug in PHP 7.4 compatibility.
 
 ## 3.2.2.1 - 2019-04-08
 
