@@ -290,8 +290,8 @@ class SmartMapService extends Component
             $this->_filterSubfield($query, $params);
         }
 
-        // Specify only non-empty lat/lng values
-        if (array_key_exists('notEmpty', $params)) {
+        // Filter by non-null lat/lng values
+        if ($params['hasCoords'] ?? false) {
             $query->subQuery->andWhere(['not', ['or', ['lat' => null], ['lng' => null]]]);
         }
     }
