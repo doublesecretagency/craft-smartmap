@@ -16,7 +16,7 @@
         <span class="smartmap-link smartmap-drag-pin">{{ "Drag Pin"|t('smart-map') }}</span>
         <span id="{{ name }}-drag-pin-data" {{ dragPinData|raw }}></span>
     </div>
-    <div class="smartmap-subfields">
+    <div class="smartmap-subfields {{ craft.smartMap.versionClass }}">
 
         {# Set defaults #}
         {% set isFirst = true %}

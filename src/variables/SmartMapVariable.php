@@ -156,6 +156,16 @@ class SmartMapVariable
 
     // ========================================================================= //
 
+    // Class denoting version number
+    public function versionClass()
+    {
+        $currentCraft = Craft::$app->getVersion();
+        $v34orHigher = version_compare($currentCraft, '3.4', '>=');
+        return ($v34orHigher ? 'c34' : '');
+    }
+
+    // ========================================================================= //
+
     // Values for debug page
     public function debug()
     {

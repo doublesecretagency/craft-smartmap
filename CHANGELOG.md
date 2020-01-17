@@ -8,6 +8,7 @@
 
 ### Changed
 - Craft 3.1 is now required.
+- Improved subfield spacing in Craft 3.4.
 
 ### Fixed
 - Guard against missing `country` in Google results.

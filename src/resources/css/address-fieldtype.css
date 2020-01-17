@@ -12,6 +12,9 @@ div.smartmap-subfields div.field {
     height: 34px;
     clear: both;
 }
+div.smartmap-subfields.c34 div.field {
+    height: 36px;
+}
 
 /* Stack all subfields vertically below breakpoint */
 @media (max-width: 360px) {
