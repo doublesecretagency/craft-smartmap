@@ -594,7 +594,11 @@ class Variables extends Component
         $maptype = (array_key_exists('maptype', $options) ? $options['maptype'] : 'roadmap');
 
         if (array_key_exists('markerOptions', $options) && array_key_exists('icon', $options['markerOptions'])) {
-            $markerIcon = 'icon:'.urlencode($options['markerOptions']['icon']);
+            $icon = $options['markerOptions']['icon'];
+            if (is_array($icon)) {
+                $icon = ($icon['url'] ?? '');
+            }
+            $markerIcon = 'icon:'.urlencode($icon);
         } else {
             $markerIcon = 'color:red';
         }

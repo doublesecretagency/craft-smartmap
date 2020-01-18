@@ -14,6 +14,7 @@
 - Guard against missing `country` in Google results.
 - Replaced problematic migration.
 - Fixed bug in PHP 7.4 compatibility.
+- Fixed error when passing icon array to static map.
 
 ## 3.2.2.1 - 2019-04-08
 
