@@ -65,7 +65,7 @@ class Main extends Component
                 ]);
                 break;
             case 'REQUEST_DENIED':
-                if (array_key_exists('error_message', $response) && $response['error_message']) {
+                if (isset($response['error_message'])) {
                     $message = $response['error_message'];
                 } else {
                     $message = Craft::t('smart-map','Your request was denied for some reason.');
@@ -79,7 +79,7 @@ class Main extends Component
         if (!$message) {
             if (!$response) {
                 $message = Craft::t('smart-map','Failed to execute cURL command.');
-            } else if (array_key_exists('status', $response) && $response['status']) {
+            } else if (isset($response['status'])) {
                 $message = Craft::t('smart-map','Response from Google Maps API:').' '.$response['status'];
             } else {
                 $message = Craft::t('smart-map','Unknown cURL response:').' '.json_encode($response);

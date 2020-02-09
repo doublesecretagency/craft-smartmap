@@ -39,12 +39,12 @@ class m150329_000000_smartMap_splitGoogleApiKeys extends Migration
         $settings = $settings->getAttributes();
 
         // If enableService isn't set to "google", bail
-        if (!array_key_exists('enableService', $settings) || !in_array('google', $settings['enableService'])) {
+        if (!isset($settings['enableService']) || !in_array('google', $settings['enableService'])) {
             return true;
         }
 
         // If googleApiKey isn't set, bail
-        if (!array_key_exists('googleApiKey', $settings)) {
+        if (!isset($settings['googleApiKey'])) {
             return true;
         }
 

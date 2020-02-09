@@ -139,7 +139,7 @@ class SmartMapVariable
         // Get settings
         $settings = SmartMap::$plugin->settings;
         // If key does not exist, bail
-        if (!array_key_exists($key, $settings)) {
+        if (!isset($settings[$key])) {
             return false;
         }
         // Return key

@@ -281,12 +281,12 @@ class SmartMapService extends Component
         $query->subQuery->leftJoin('{{%smartmap_addresses}} addresses', '[[addresses.elementId]] = [[elements.id]]');
 
         // Search by comparing coordinates
-        if (array_key_exists('target', $params) || array_key_exists('range', $params)) {
+        if (isset($params['target']) || isset($params['range'])) {
             $this->_searchCoords($query, $params);
         }
 
         // Filter according to subfield(s)
-        if (array_key_exists('filter', $params)) {
+        if (isset($params['filter'])) {
             $this->_filterSubfield($query, $params);
         }
     }
@@ -438,7 +438,7 @@ class SmartMapService extends Component
             $params = [];
             $api = MapApi::LatLngArray;
             $coords = $this->defaultCoords();
-        } else if (!array_key_exists('target', $params)) {
+        } else if (!isset($params['target'])) {
             $api = MapApi::LatLngArray;
             $coords = $this->defaultCoords();
         } else if (is_array($params['target'])) {
@@ -652,7 +652,7 @@ class SmartMapService extends Component
                         } else {
                             $lat = $this->findKeyInArray($loc, ['latitude','lat']);
                             $lng = $this->findKeyInArray($loc, ['longitude','lng','lon','long']);
-                            $title = (array_key_exists('title',$loc) ? $loc['title'] : '');
+                            $title = (isset($loc['title']) ? $loc['title'] : '');
                         }
                         $markers[] = [
                             'lat'     => $lat,
@@ -668,14 +668,14 @@ class SmartMapService extends Component
         }
 
         // Determine center of map
-        if (array_key_exists('center', $options)) {
+        if (isset($options['center'])) {
             // Center is specified in options
             $center = $options['center'];
         } else if (empty($locations) || empty($allLats) || empty($allLngs)) {
             // Error was triggered
             $markers = [];
-            if (array_key_exists('target', $options)) {
-                $components = (array_key_exists('components', $options) ? $options['components'] : []);
+            if (isset($options['target'])) {
+                $components = (isset($options['components']) ? $options['components'] : []);
                 $center = $this->targetCoords = $this->_geocodeGoogleMapApi($options['target'], $components);
             } else {
                 $center = $this->targetCenter();
@@ -771,7 +771,7 @@ class SmartMapService extends Component
                 $message = Craft::t('smart-map', 'You are over your quota. If this is a shared server, enable Google Maps API Keys.');
                 break;
             case 'REQUEST_DENIED':
-                if (array_key_exists('error_message', $response) && $response['error_message']) {
+                if (isset($response['error_message']) && $response['error_message']) {
                     $message = $response['error_message'];
                 } else {
                     $message = Craft::t('smart-map', 'Your request was denied for some reason.');
@@ -856,7 +856,7 @@ class SmartMapService extends Component
             'lng' => -123.393333,
         ];
         $this->loadGeoData();
-        if ($this->visitor && array_key_exists('latitude', $this->visitor) && array_key_exists('longitude', $this->visitor)) {
+        if ($this->visitor && isset($this->visitor['latitude']) && isset($this->visitor['longitude'])) {
             $coords = [
                 // Current location
                 'lat' => $this->visitor['latitude'],
@@ -880,7 +880,7 @@ class SmartMapService extends Component
     public function findKeyInArray($array, $possibleKeys)
     {
         foreach ($possibleKeys as $key) {
-            if (array_key_exists($key, $array)) {
+            if (isset($array[$key])) {
                 return $array[$key];
             }
         }

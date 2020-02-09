@@ -39,7 +39,7 @@ class m181124_000000_smartMap_replaceFreegeoipWithIpstack extends Migration
         $settings = $settings->getAttributes();
 
         // If setting doesn't exist, bail
-        if (!array_key_exists('geolocation', $settings)) {
+        if (!isset($settings['geolocation'])) {
             return true;
         }
 

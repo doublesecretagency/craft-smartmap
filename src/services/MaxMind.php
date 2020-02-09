@@ -82,22 +82,22 @@ class MaxMind extends Component
             // Ping geo location service
             $results = $this->rawData($ip);
             // Populate visitor geolocation data
-            if (array_key_exists('traits',$results)) {
+            if (isset($results['traits'])) {
                 SmartMap::$plugin->smartMap->visitor['ip'] = $results['traits']['ip_address'];
             }
-            if (array_key_exists('city',$results)) {
+            if (isset($results['city'])) {
                 SmartMap::$plugin->smartMap->visitor['city'] = $results['city']['names']['en'];
             }
-            if (array_key_exists('subdivisions',$results) && !empty($results['subdivisions'])) {
+            if (isset($results['subdivisions']) && !empty($results['subdivisions'])) {
                 SmartMap::$plugin->smartMap->visitor['state'] = $results['subdivisions'][0]['names']['en'];
             }
-            if (array_key_exists('postal',$results)) {
+            if (isset($results['postal'])) {
                 SmartMap::$plugin->smartMap->visitor['zipcode'] = $results['postal']['code'];
             }
-            if (array_key_exists('country',$results)) {
+            if (isset($results['country'])) {
                 SmartMap::$plugin->smartMap->visitor['country'] = $results['country']['names']['en'];
             }
-            if (array_key_exists('location',$results)) {
+            if (isset($results['location'])) {
                 SmartMap::$plugin->smartMap->visitor['latitude'] = $results['location']['latitude'];
                 SmartMap::$plugin->smartMap->visitor['longitude'] = $results['location']['longitude'];
             }

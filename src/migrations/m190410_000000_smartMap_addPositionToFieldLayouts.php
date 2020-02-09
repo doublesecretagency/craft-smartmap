@@ -67,8 +67,8 @@ class m190410_000000_smartMap_addPositionToFieldLayouts extends Migration
             // Get field settings
             $settings = $field->getSettings();
 
-            // If layout doesn't exist or is misconfigured
-            if (!array_key_exists('layout', $settings) || !$settings['layout']) {
+            // If no layout
+            if (!isset($settings['layout'])) {
 
                 // Use the default layout
                 $field->layout = $this->_defaultLayout;
@@ -85,7 +85,7 @@ class m190410_000000_smartMap_addPositionToFieldLayouts extends Migration
             $subfield = reset($layout);
 
             // If subfield is misconfigured
-            if (!array_key_exists('width', $subfield) || !array_key_exists('enable', $subfield)) {
+            if (!isset($subfield['width']) || !isset($subfield['enable'])) {
 
                 // Use the default layout
                 $field->layout = $this->_defaultLayout;
@@ -96,7 +96,7 @@ class m190410_000000_smartMap_addPositionToFieldLayouts extends Migration
             }
 
             // If positions are already set, skip to next field
-            if (array_key_exists('position', $subfield)) {
+            if (isset($subfield['position'])) {
                 continue;
             }
 

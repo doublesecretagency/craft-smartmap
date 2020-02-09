@@ -70,7 +70,7 @@ class Ipstack extends Component
             // Ping geo location service
             $results = $this->rawData($ip);
             // If failed to get geolocation data
-            if (array_key_exists('success', $results) && !$results['success']) {
+            if (isset($results['success']) && !$results['success']) {
                 // Get error message
                 switch ($results['error']['type']) {
                     case 'missing_access_key':
@@ -90,13 +90,13 @@ class Ipstack extends Component
             }
             // Populate visitor geolocation data
             SmartMap::$plugin->smartMap->visitor = [
-                'ip'        => (array_key_exists('ip',$results)           ? $results['ip']           : ''),
-                'city'      => (array_key_exists('city',$results)         ? $results['city']         : ''),
-                'state'     => (array_key_exists('region_name',$results)  ? $results['region_name']  : ''),
-                'zipcode'   => (array_key_exists('zipcode',$results)      ? $results['zipcode']      : ''),
-                'country'   => (array_key_exists('country_name',$results) ? $results['country_name'] : ''),
-                'latitude'  => (array_key_exists('latitude',$results)     ? $results['latitude']     : ''),
-                'longitude' => (array_key_exists('longitude',$results)    ? $results['longitude']    : ''),
+                'ip'        => (isset($results['ip'])           ? $results['ip']           : ''),
+                'city'      => (isset($results['city'])         ? $results['city']         : ''),
+                'state'     => (isset($results['region_name'])  ? $results['region_name']  : ''),
+                'zipcode'   => (isset($results['zipcode'])      ? $results['zipcode']      : ''),
+                'country'   => (isset($results['country_name']) ? $results['country_name'] : ''),
+                'latitude'  => (isset($results['latitude'])     ? $results['latitude']     : ''),
+                'longitude' => (isset($results['longitude'])    ? $results['longitude']    : ''),
             ];
             // Append visitor coords
             SmartMap::$plugin->smartMap->appendVisitorCoords();

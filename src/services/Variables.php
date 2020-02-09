@@ -95,18 +95,18 @@ class Variables extends Component
     public function dynamicMap($markers = false, $options = [])
     {
         // Extract non-Google parameters
-        $mapId  = (array_key_exists('id', $options) ? $options['id'] : 'smartmap-mapcanvas-'.$this->_mapTotal);
+        $mapId  = (isset($options['id']) ? $options['id'] : 'smartmap-mapcanvas-'.$this->_mapTotal);
         unset($options['id']);
 
-        $width  = (array_key_exists('width', $options)  ? 'width:'.$options['width'].'px;'   : '');
-        $height = (array_key_exists('height', $options) ? 'height:'.$options['height'].'px;' : '');
+        $width  = (isset($options['width'])  ? 'width:'.$options['width'].'px;'   : '');
+        $height = (isset($options['height']) ? 'height:'.$options['height'].'px;' : '');
         unset($options['width']);
         unset($options['height']);
 
         // No zoom by default
         $zoom = false;
         // (1) Convert zoom object to string (if possible)
-        if (array_key_exists('zoom', $options)) {
+        if (isset($options['zoom'])) {
             $zoom = (string) $options['zoom'];
         }
         // (2) Convert zoom string to integer (if possible)
@@ -127,22 +127,22 @@ class Variables extends Component
         }
 
         // Use only specified field(s)
-        $selectedFields = (array_key_exists('field', $options) ? $options['field'] : null);
+        $selectedFields = (isset($options['field']) ? $options['field'] : null);
 
-        $markerOptions     = (array_key_exists('markerOptions', $options)     ? $options['markerOptions']     : []);
-        $infoWindowOptions = (array_key_exists('infoWindowOptions', $options) ? $options['infoWindowOptions'] : []);
+        $markerOptions     = (isset($options['markerOptions'])     ? $options['markerOptions']     : []);
+        $infoWindowOptions = (isset($options['infoWindowOptions']) ? $options['infoWindowOptions'] : []);
         unset($options['markerOptions']);
         unset($options['infoWindowOptions']);
 
         // If marker info template specified, move to info window options
-        if (array_key_exists('markerInfo', $options)) {
+        if (isset($options['markerInfo'])) {
             $infoWindowOptions['template'] = $options['markerInfo'];
             unset($options['markerInfo']);
         }
 
         // Determine map center
         $markersCenter = $this->_parseMarkers($mapId, $markers, $markerOptions, $selectedFields);
-        if (array_key_exists('center', $options)) {
+        if (isset($options['center'])) {
             $center = $this->_parseCenter($options['center']);
         } else {
             $center = $this->_parseCenter($markersCenter);
@@ -293,12 +293,12 @@ class Variables extends Component
                     'lng'        => $el['lng'],
                     'element'    => Craft::$app->elements->getElementById($locations['elementId']),
                 ];
-                if (array_key_exists('title', $markerOptions)) {
+                if (isset($markerOptions['title'])) {
                     $markers[$markerName]['title'] = $markerOptions['title'];
                 }
             }
             // If coordinates exist, set center
-            if (array_key_exists('lat',$el) && array_key_exists('lng',$el) && is_numeric($el['lat']) && is_numeric($el['lng'])) {
+            if (isset($el['lat']) && isset($el['lng']) && is_numeric($el['lat']) && is_numeric($el['lng'])) {
                 $center = [
                     'lat' => $el['lat'],
                     'lng' => $el['lng'],
@@ -353,21 +353,21 @@ class Variables extends Component
 
         // Parse coordinates from array
         if (is_array($coords)) {
-            if ((2 == count($coords)) && array_key_exists(0, $coords) && array_key_exists(1, $coords)) {
+            if ((2 == count($coords)) && isset($coords[0]) && isset($coords[1])) {
                 // Center is [#, #]
                 $lat = $coords[0];
                 $lng = $coords[1];
-            } else if (array_key_exists('lat', $coords)) {
+            } else if (isset($coords['lat'])) {
                 // Center is {lat:#, lng:#} or variation
                 $lat = $coords['lat'];
-                if (array_key_exists('lng', $coords)) {
+                if (isset($coords['lng'])) {
                     $lng = $coords['lng'];
-                } else if (array_key_exists('lon', $coords)) {
+                } else if (isset($coords['lon'])) {
                     $lng = $coords['lon'];
-                } else if (array_key_exists('long', $coords)) {
+                } else if (isset($coords['long'])) {
                     $lng = $coords['long'];
                 }
-            } else if (array_key_exists('latitude', $coords) && array_key_exists('longitude', $coords)) {
+            } else if (isset($coords['latitude']) && isset($coords['longitude'])) {
                 // Center is {latitude:#, longitude:#}
                 $lat = $coords['latitude'];
                 $lng = $coords['longitude'];
@@ -416,8 +416,8 @@ class Variables extends Component
     private function _buildMap($mapId, $mapOptions)
     {
         // LEGACY: "scrollZoom" option
-        if (!array_key_exists('scrollwheel', $mapOptions)) {
-            if (array_key_exists('scrollZoom', $mapOptions)) {
+        if (!isset($mapOptions['scrollwheel'])) {
+            if (isset($mapOptions['scrollZoom'])) {
                 $mapOptions['scrollwheel'] = (bool) $mapOptions['scrollZoom'];
             } else {
                 $mapOptions['scrollwheel'] = false;
@@ -451,7 +451,7 @@ class Variables extends Component
             $markerOptions['map']      = 'smartMap.map["'.$mapId.'"]';
             $markerOptions['position'] = 'smartMap.coords('.$lat.','.$lng.')';
 
-            if (array_key_exists('title', $marker)) {
+            if (isset($marker['title'])) {
                 $markerOptions['title'] = $marker['title'];
             }
 
@@ -467,15 +467,15 @@ class Variables extends Component
     private function _buildInfoWindows($mapId, $infoWindowOptions)
     {
 
-        $contentExists = array_key_exists('content', $infoWindowOptions);
-        $template = (array_key_exists('template', $infoWindowOptions) ? $infoWindowOptions['template'] : null);
+        $contentExists = isset($infoWindowOptions['content']);
+        $template = (isset($infoWindowOptions['template']) ? $infoWindowOptions['template'] : null);
         unset($infoWindowOptions['template']);
 
         $infoWindowJs = '';
         foreach ($this->_marker[$mapId] as $markerName => $marker) {
             if (!$contentExists) {
                 if ($template) {
-                    if (array_key_exists('title', $marker)) {
+                    if (isset($marker['title'])) {
                         //$marker['element']['title'] = $marker['title'];
                     }
                     try {
@@ -571,7 +571,7 @@ class Variables extends Component
         $src = $this->staticMapSrc($markers, $options);
         $dimensions = '';
         foreach (['width','height'] as $side) {
-            if (array_key_exists($side, $options)) {
+            if (isset($options[$side])) {
                 $dimensions .= ' '.$side.'="'.$options[$side].'"';
             }
         }
@@ -588,12 +588,12 @@ class Variables extends Component
         // Decipher map info
         $map = SmartMap::$plugin->smartMap->markerCoords($markers, $options);
 
-        $width   = (array_key_exists('width', $options)   ? $options['width']   : '200');
-        $height  = (array_key_exists('height', $options)  ? $options['height']  : '150');
-        $scale   = (array_key_exists('scale', $options)   ? $options['scale']   : '2');
-        $maptype = (array_key_exists('maptype', $options) ? $options['maptype'] : 'roadmap');
+        $width   = (isset($options['width'])   ? $options['width']   : '200');
+        $height  = (isset($options['height'])  ? $options['height']  : '150');
+        $scale   = (isset($options['scale'])   ? $options['scale']   : '2');
+        $maptype = (isset($options['maptype']) ? $options['maptype'] : 'roadmap');
 
-        if (array_key_exists('markerOptions', $options) && array_key_exists('icon', $options['markerOptions'])) {
+        if (isset($options['markerOptions']) && isset($options['markerOptions']['icon'])) {
             $icon = $options['markerOptions']['icon'];
             if (is_array($icon)) {
                 $icon = ($icon['url'] ?? '');
@@ -612,7 +612,7 @@ class Variables extends Component
         $data .= '&amp;size='.$width.'x'.$height;
         $data .= '&amp;maptype='.$maptype;
 
-        if (array_key_exists('zoom', $options)) {
+        if (isset($options['zoom'])) {
             $data .= '&amp;zoom='.$options['zoom'];
         }
 
@@ -657,7 +657,7 @@ class Variables extends Component
             return 'Invalid KML file. Please specify an Asset or absolute URL.';
         }
         // Create a new map
-        $mapId = (array_key_exists('id', $options) ? $options['id'] : 'smartmap-mapcanvas-'.$this->_mapTotal);
+        $mapId = (isset($options['id']) ? $options['id'] : 'smartmap-mapcanvas-'.$this->_mapTotal);
         $html  = $this->dynamicMap([], $options);
         // Apply KML layer
         $this->kmlMapLayer($kmlFile, $mapId);
