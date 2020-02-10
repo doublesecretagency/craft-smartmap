@@ -9,11 +9,12 @@
 ### Changed
 - Craft 3.1 is now required.
 - Improved subfield spacing in Craft 3.4.
+- Improved geolocation with better IP autodetection.
 
 ### Fixed
 - Guard against missing `country` in Google results.
 - Replaced problematic migration.
-- Fixed bug in PHP 7.4 compatibility.
+- Fixed PHP 7.4 compatibility issues.
 - Fixed error when passing icon array to static map.
 
 ## 3.2.2.1 - 2019-04-08
@@ -77,7 +78,7 @@
 - Fixed filter bug.
 
 ## 3.1.2 - 2018-08-08
- 
+
 ### Changed
 - Settings page now specifies that API keys are required, not optional.
 - Replaced `daddr/saddr` with `destination/origin` in directions links.
@@ -130,7 +131,7 @@
 - Craft 3 compatibility.
 
 ## 2.4.2 - 2018-01-20
- 
+
 ### Changed
 - Allows nested `markerOptions` settings.
 
@@ -157,12 +158,12 @@
 - Added region biasing.
 - Added ability to set default position & zoom for "Drag Pin" modal.
 - Added British English translation.
- 
+
 ### Changed
 - Improved compatibility with CP Field Links plugin.
 - Improved logging.
 - Improved error messaging for Google API.
- 
+
 ### Fixed
 - Fixed PHP 7 race condition.
 - Fixed dual address bug.
@@ -180,10 +181,10 @@
 - Added `craft.smartMap.serverKey` to get Google Server Key.
 - Added `craft.smartMap.browserKey` to get Google Browser Key.
 - Creating JS objects now returns them.
- 
+
 ### Changed
 - Better JS logging.
- 
+
 ### Fixed
 - Fixed bug which allowed modals to overlap.
 
@@ -225,10 +226,10 @@
 - Added craft->smartMap->visitor property to get the visitor's current geolocation data in PHP (if geolocation is enabled)
 - Added French translation
 - Added Dutch translation
- 
+
 ### Changed
 - Better error handling for unsupported `.ids()` usage
- 
+
 ### Fixed
 - Fixed validation bug
 - Fixed bug preventing zoom from being set by a dropdown menu
@@ -243,11 +244,11 @@
 - Japanese language translation.
 - Detects if street number should come before or after street name.
 - Added __toString for Address model.
- 
+
 ### Changed
 - BREAKING CHANGE: Reordered parameters of "directionsUrl".
 - Switched IP detection to Craft native.
- 
+
 ### Fixed
 - Fixed bug occurring in some address matches.
 - Fixed static map marker bug.
@@ -258,7 +259,7 @@
 ### Added
 - New "googleMapUrl" method on Address model.
 - New "directionsUrl" method on Address model.
- 
+
 ### Fixed
 - Fixed bug preventing multiple maps from being displayed.
 
@@ -280,7 +281,7 @@
 - Added "isEmpty" and "hasCoords" to address model, to easily determine if data exists.
 - Added ability to insert "smartMap.js" anywhere in the template.
 - Added ability to perform an address lookup from the front-end.
- 
+
 ### Changed
 - Retina scaling for static maps.
 - JavaScript console.log messages only appear when devMode is enabled.
@@ -296,7 +297,7 @@
 
 ### Changed
 - Cleaned up UI in Matrix fields.
- 
+
 ### Fixed
 - Fixed "Undefined index: zipcode" bug.
 - Fixed map page & directions links.
@@ -330,7 +331,7 @@
 
 ### Changed
 - Console log enhancements.
- 
+
 ### Fixed
 - Bug fix (per Mike Pepper).
 
@@ -360,7 +361,7 @@
 
 ### Added
 - Fully Matrix-compatible.
- 
+
 ### Fixed
 - Squashed bugs.
 
@@ -368,7 +369,7 @@
 
 ### Changed
 - Skip geocoding IP when running through yiic.
- 
+
 ### Fixed
 - Minor bug fixes.
 
@@ -380,7 +381,7 @@
 - Drag & drop map pins.
 - Can be linked to a MaxMind account for the most precise location detection accuracy.
 - Can be linked to a Google Maps for Business account for more allowed views and higher quality static maps.
- 
+
 ### Changed
 - Vastly expanded customization options.
 - Expanded customization via Twig.

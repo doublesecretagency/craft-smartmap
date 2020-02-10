@@ -11,11 +11,11 @@
 
 namespace doublesecretagency\smartmap\services;
 
-use doublesecretagency\smartmap\SmartMap;
-
 use Craft;
 use craft\base\Component;
+use craft\helpers\Json;
 use craft\helpers\UrlHelper;
+use doublesecretagency\smartmap\SmartMap;
 
 /**
  * Class MaxMind
@@ -78,34 +78,37 @@ class MaxMind extends Component
         // Attempt lookup
         try
         {
-            SmartMap::$plugin->smartMap->loadGeoData();
+            // Get plugin class
+            $smartMap = SmartMap::$plugin->smartMap;
+            // Load geo data
+            $smartMap->loadGeoData();
             // Ping geo location service
             $results = $this->rawData($ip);
             // Populate visitor geolocation data
             if (isset($results['traits'])) {
-                SmartMap::$plugin->smartMap->visitor['ip'] = $results['traits']['ip_address'];
+                $smartMap->visitor['ip'] = $results['traits']['ip_address'];
             }
             if (isset($results['city'])) {
-                SmartMap::$plugin->smartMap->visitor['city'] = $results['city']['names']['en'];
+                $smartMap->visitor['city'] = $results['city']['names']['en'];
             }
             if (isset($results['subdivisions']) && !empty($results['subdivisions'])) {
-                SmartMap::$plugin->smartMap->visitor['state'] = $results['subdivisions'][0]['names']['en'];
+                $smartMap->visitor['state'] = $results['subdivisions'][0]['names']['en'];
             }
             if (isset($results['postal'])) {
-                SmartMap::$plugin->smartMap->visitor['zipcode'] = $results['postal']['code'];
+                $smartMap->visitor['zipcode'] = $results['postal']['code'];
             }
             if (isset($results['country'])) {
-                SmartMap::$plugin->smartMap->visitor['country'] = $results['country']['names']['en'];
+                $smartMap->visitor['country'] = $results['country']['names']['en'];
             }
             if (isset($results['location'])) {
-                SmartMap::$plugin->smartMap->visitor['latitude'] = $results['location']['latitude'];
-                SmartMap::$plugin->smartMap->visitor['longitude'] = $results['location']['longitude'];
+                $smartMap->visitor['latitude'] = $results['location']['latitude'];
+                $smartMap->visitor['longitude'] = $results['location']['longitude'];
             }
             // Append visitor coords
-            SmartMap::$plugin->smartMap->appendVisitorCoords();
+            $smartMap->appendVisitorCoords();
             // If valid IP, set cache
-            if (SmartMap::$plugin->smartMap->validIp(SmartMap::$plugin->smartMap->visitor['ip'])) {
-                SmartMap::$plugin->smartMap->cacheGeoData(SmartMap::$plugin->smartMap->visitor['ip'], 'MaxMind');
+            if (filter_var($smartMap->visitor['ip'], FILTER_VALIDATE_IP)) {
+                $smartMap->cacheGeoData($smartMap->visitor['ip'], 'MaxMind');
             }
         }
         catch (\Exception $e)
@@ -128,7 +131,7 @@ class MaxMind extends Component
             'headers' => ['Authorization' => $authorization]
         ]);
         // Return nested array of results
-        return json_decode($response->getBody(), true);
+        return Json::decode($response->getBody());
     }
 
 }

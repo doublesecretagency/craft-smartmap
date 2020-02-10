@@ -100,25 +100,16 @@ class SmartMapService extends Component
     {
         // Get user IP address
         $ip = Craft::$app->getRequest()->getUserIP();
-
         // If IP is local, bail
         if ('127.0.0.1' == $ip) {
             return false;
         }
         // If IP is invalid, bail
-        if (!$this->validIp($ip)) {
+        if (!filter_var($ip, FILTER_VALIDATE_IP)) {
             return false;
         }
         // Return IP address
         return $ip;
-    }
-
-    // Checks whether IP address is valid
-    public function validIp($ip)
-    {
-        // TODO: THIS ISN'T CHECKING FOR IPv6
-        $ipPattern = '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/';
-        return preg_match($ipPattern, $ip);
     }
 
     //
@@ -151,9 +142,7 @@ class SmartMapService extends Component
             return;
         }
 
-        // @TODO
-        // Use Google Maps Geolocation API (as default service)
-
+        // Determine which API to use for geolocation
         switch (SmartMap::$plugin->getSettings()->geolocation) {
             case 'ipstack':
                 SmartMap::$plugin->smartMap_ipstack->lookupIpData($ip);
@@ -163,7 +152,12 @@ class SmartMapService extends Component
                 break;
         }
 
-        // Fire an 'afterDetectLocation' event
+        // If no visitor data, bail
+        if (isset($this->cacheData['visitor'])) {
+            return;
+        }
+
+        // Get visitor data
         $eventLocation = $this->cacheData['visitor'];
         unset($eventLocation['ip']);
 
