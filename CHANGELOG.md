@@ -3,8 +3,9 @@
 ## Unreleased
 
 ### Added
-- Option to filter field(s) to be included on map.
 - KML files can now be specified by absolute URL.
+- Added [`field`](https://www.doublesecretagency.com/plugins/smart-map/docs/customizing-the-map-in-twig) option to filter field(s) to be included on map.
+- Added [`hasCoords`](https://www.doublesecretagency.com/plugins/smart-map/docs/filtering-out-entries-with-invalid-coordinates) parameter to filter out results with incomplete coordinates.
 
 ### Changed
 - Craft 3.1 is now required.

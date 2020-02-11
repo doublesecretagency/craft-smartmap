@@ -286,45 +286,55 @@ class SmartMapService extends Component
 
         // Filter by non-null lat/lng values
         if ($params['hasCoords'] ?? false) {
-            $query->subQuery->andWhere(['not', ['or', ['lat' => null], ['lng' => null]]]);
+            $query->subQuery->andWhere(['not', [
+                'or',
+                ['lat' => null],
+                ['lng' => null]
+            ]]);
         }
     }
 
     // Filter according to subfield(s)
     private function _filterSubfield(&$query, $params = [])
     {
+        // List of valid subfields
         $realSubfields = ['street1','street2','city','state','zip','country','lat','lng'];
 
+        // Loop through specified subfields
         foreach ($params['filter'] as $subfield => $value) {
-            if (in_array($subfield, $realSubfields)) {
 
-                // Ensure value is an array
-                if (is_string($value) || is_float($value)) {
-                    $value = [$value];
-                }
-                // If value is not an array, skip
-                if (!is_array($value)) {
-                    continue;
-                }
-
-                // Compile WHERE clause
-                $where = [];
-
-                // Loop through filter values
-                foreach ($value as $filterValue) {
-                    $where[] = [$subfield => $filterValue];
-                }
-
-                // Re-organize WHERE filters
-                if (1 == count($where)) {
-                    $where = $where[0];
-                } else {
-                    array_unshift($where, 'or');
-                }
-
-                // Append WHERE clause to subquery
-                $query->subQuery->andWhere($where);
+            // Skip invalid subfields
+            if (!in_array($subfield, $realSubfields)) {
+                continue;
             }
+
+            // Ensure value is an array
+            if (is_string($value) || is_float($value)) {
+                $value = [$value];
+            }
+
+            // If value is not an array, skip
+            if (!is_array($value)) {
+                continue;
+            }
+
+            // Compile WHERE clause
+            $where = [];
+
+            // Loop through filter values
+            foreach ($value as $filterValue) {
+                $where[] = [$subfield => $filterValue];
+            }
+
+            // Re-organize WHERE filters
+            if (1 == count($where)) {
+                $where = $where[0];
+            } else {
+                array_unshift($where, 'or');
+            }
+
+            // Append WHERE clause to subquery
+            $query->subQuery->andWhere($where);
         }
     }
 
