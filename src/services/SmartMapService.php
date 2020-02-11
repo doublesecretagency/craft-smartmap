@@ -283,6 +283,11 @@ class SmartMapService extends Component
         if (isset($params['filter'])) {
             $this->_filterSubfield($query, $params);
         }
+
+        // Filter by non-null lat/lng values
+        if ($params['hasCoords'] ?? false) {
+            $query->subQuery->andWhere(['not', ['or', ['lat' => null], ['lng' => null]]]);
+        }
     }
 
     // Filter according to subfield(s)
