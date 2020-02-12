@@ -43,8 +43,8 @@ class MaxMind extends Component
                 $this->_maxmindApi = null;
             }
 
-            $this->_maxmindUserId     = $s['maxmindUserId'];
-            $this->_maxmindLicenseKey = $s['maxmindLicenseKey'];
+            $this->_maxmindUserId     = $s->getMaxmindUserId();
+            $this->_maxmindLicenseKey = $s->getMaxmindLicenseKey();
 
             $this->available = (
                 $this->_maxmindApi

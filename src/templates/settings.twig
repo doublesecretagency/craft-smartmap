@@ -44,24 +44,26 @@
 
 <div class="smartmap-field-container" id="smartmap-fields-google">
 
-    {{ forms.textField({
+    {{ forms.autosuggestField({
         label: "Google API Server Key"|t('smart-map'),
         instructions: "Used for address lookups"|t('smart-map'),
         id: 'googleServerKey',
         name: 'googleServerKey',
         value: settings.googleServerKey,
         disabled: 'googleServerKey' in overrideKeys,
-        warning: 'googleServerKey' in overrideKeys ? configWarning('googleServerKey', docsUrl)
+        warning: 'googleServerKey' in overrideKeys ? configWarning('googleServerKey', docsUrl),
+        suggestEnvVars: true
     }) }}
 
-    {{ forms.textField({
+    {{ forms.autosuggestField({
         label: "Google API Browser Key"|t('smart-map'),
         instructions: "Used for static & dynamic map rendering"|t('smart-map'),
         id: 'googleBrowserKey',
         name: 'googleBrowserKey',
         value: settings.googleBrowserKey,
         disabled: 'googleBrowserKey' in overrideKeys,
-        warning: 'googleBrowserKey' in overrideKeys ? configWarning('googleBrowserKey', docsUrl)
+        warning: 'googleBrowserKey' in overrideKeys ? configWarning('googleBrowserKey', docsUrl),
+        suggestEnvVars: true
     }) }}
 
 </div>
@@ -102,13 +104,14 @@
     <h2>{{ "ipstack Configuration"|t }}</h2>
     <p>{{ 'Copy your <a href="{url}" target="_blank">API Access Key</a> and paste it here...'|t({url:'https://ipstack.com/dashboard'})|raw }}</p>
 
-    {{ forms.textField({
+    {{ forms.autosuggestField({
         label: "API Access Key"|t,
         id: 'ipstackAccessKey',
         name: 'ipstackAccessKey',
         value: settings.ipstackAccessKey,
         disabled: 'ipstackAccessKey' in overrideKeys,
-        warning: 'ipstackAccessKey' in overrideKeys ? configWarning('ipstackAccessKey', docsUrl)
+        warning: 'ipstackAccessKey' in overrideKeys ? configWarning('ipstackAccessKey', docsUrl),
+        suggestEnvVars: true
     }) }}
 </div>
 
@@ -134,22 +137,24 @@
 
     <p>{{ '<strong>Step 3:</strong> Copy your <a href="{url}" target="_blank">security access information</a> and paste it here...'|t('smart-map', {url:'https://www.maxmind.com/en/my_license_key'})|raw }}</p>
 
-    {{ forms.textField({
+    {{ forms.autosuggestField({
         label: "User ID"|t('smart-map'),
         id: 'maxmindUserId',
         name: 'maxmindUserId',
         value: settings.maxmindUserId,
         disabled: 'maxmindUserId' in overrideKeys,
-        warning: 'maxmindUserId' in overrideKeys ? configWarning('maxmindUserId', docsUrl)
+        warning: 'maxmindUserId' in overrideKeys ? configWarning('maxmindUserId', docsUrl),
+        suggestEnvVars: true
     }) }}
 
-    {{ forms.textField({
+    {{ forms.autosuggestField({
         label: "License Key"|t('smart-map'),
         id: 'maxmindLicenseKey',
         name: 'maxmindLicenseKey',
         value: settings.maxmindLicenseKey,
         disabled: 'maxmindLicenseKey' in overrideKeys,
-        warning: 'maxmindLicenseKey' in overrideKeys ? configWarning('maxmindLicenseKey', docsUrl)
+        warning: 'maxmindLicenseKey' in overrideKeys ? configWarning('maxmindLicenseKey', docsUrl),
+        suggestEnvVars: true
     }) }}
 </div>
 
