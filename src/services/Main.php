@@ -13,6 +13,7 @@ namespace doublesecretagency\smartmap\services;
 
 use Craft;
 use craft\base\Component;
+use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 
 use doublesecretagency\smartmap\SmartMap;
@@ -40,7 +41,7 @@ class Main extends Component
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_FOLLOWLOCATION => true,
         ]);
-        $response = json_decode(curl_exec($ch), true);
+        $response = Json::decode(curl_exec($ch));
         $error = curl_error($ch);
 
         if ($error) {
@@ -82,7 +83,7 @@ class Main extends Component
             } else if (isset($response['status'])) {
                 $message = Craft::t('smart-map','Response from Google Maps API:').' '.$response['status'];
             } else {
-                $message = Craft::t('smart-map','Unknown cURL response:').' '.json_encode($response);
+                $message = Craft::t('smart-map','Unknown cURL response:').' '.Json::encode($response);
             }
         }
 

@@ -153,7 +153,7 @@ class SmartMapService extends Component
         }
 
         // If no visitor data, bail
-        if (isset($this->cacheData['visitor'])) {
+        if (!isset($this->cacheData['visitor'])) {
             return;
         }
 
