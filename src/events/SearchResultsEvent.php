@@ -15,7 +15,7 @@ use yii\base\Event;
 
 /**
  * Class SearchResultsEvent
- * @since 3.2.3
+ * @since 3.3.0
  */
 class SearchResultsEvent extends Event
 {

@@ -5,8 +5,9 @@
 ### Added
 - KML files can now be specified by absolute URL.
 - Added [`field`](https://www.doublesecretagency.com/plugins/smart-map/docs/customizing-the-map-in-twig) option to filter field(s) to be included on map.
-- Added [`hasCoords`](https://www.doublesecretagency.com/plugins/smart-map/docs/filtering-out-entries-with-invalid-coordinates) parameter to filter out results with incomplete coordinates.
-- All API access keys (for Google, ipstack, and MaxMind) can now be set via [environment variables](https://docs.craftcms.com/v3/config/environments.html).
+- Added [`hasCoords`](https://www.doublesecretagency.com/plugins/smart-map/docs/filtering-out-entries-with-invalid-coordinates) parameter to filter out results with incomplete coordinates. (thanks @bencroker)
+- Added `SearchResultsEvent`, which allows you to modify the address lookup results. (thanks @carlcs)
+- All API access keys (for Google, ipstack, and MaxMind) can now be set via [environment variables](https://docs.craftcms.com/v3/config/environments.html). (thanks @carlcs)
 
 ### Changed
 - Craft 3.1 is now required.
