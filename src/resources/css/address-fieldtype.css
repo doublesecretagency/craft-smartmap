@@ -12,6 +12,9 @@ div.smartmap-subfields div.field {
     height: 34px;
     clear: both;
 }
+div.smartmap-subfields.c34 div.field {
+    height: 36px;
+}
 
 /* Stack all subfields vertically below breakpoint */
 @media (max-width: 360px) {
@@ -27,6 +30,19 @@ div.smartmap-top-right {
     top: -23px;
     width: 100%;
     text-align: right;
+}
+
+/* Compatible with HUD editor modal */
+.hud .elementeditor div.smartmap-field {
+    margin-top: 21px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+.hud .elementeditor div.smartmap-field div.smartmap-top-right {
+    width: 88%;
+}
+.hud .elementeditor .main .meta .smartmap-subfields .field {
+    padding: 0;
 }
 
 /* Compatible with Super Table plugin */

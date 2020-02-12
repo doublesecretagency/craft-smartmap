@@ -35,14 +35,14 @@ class Address extends Field implements PreviewableFieldInterface
      * @var array|null
      */
     public $layout = [
-        'street1' => ['enable' => 1, 'width' => 100],
-        'street2' => ['enable' => 1, 'width' => 100],
-        'city'    => ['enable' => 1, 'width' =>  50],
-        'state'   => ['enable' => 1, 'width' =>  15],
-        'zip'     => ['enable' => 1, 'width' =>  35],
-        'country' => ['enable' => 1, 'width' => 100],
-        'lat'     => ['enable' => 1, 'width' =>  50],
-        'lng'     => ['enable' => 1, 'width' =>  50],
+        'street1' => ['enable' => 1, 'width' => 100, 'position' => 1],
+        'street2' => ['enable' => 1, 'width' => 100, 'position' => 2],
+        'city'    => ['enable' => 1, 'width' =>  50, 'position' => 3],
+        'state'   => ['enable' => 1, 'width' =>  15, 'position' => 4],
+        'zip'     => ['enable' => 1, 'width' =>  35, 'position' => 5],
+        'country' => ['enable' => 1, 'width' => 100, 'position' => 6],
+        'lat'     => ['enable' => 1, 'width' =>  50, 'position' => 7],
+        'lng'     => ['enable' => 1, 'width' =>  50, 'position' => 8],
     ];
 
     /**
@@ -134,14 +134,20 @@ class Address extends Field implements PreviewableFieldInterface
         $view->registerAssetBundle(GoogleMapsAssets::class);
         $view->registerAssetBundle(FieldSettingsAssets::class);
 
+        // Get settings
+        $settings = $this->getSettings();
+
+        // Restructure layout
+        $layout = $this->_extractLayout($settings);
+        unset($settings['layout']);
+
         // Render fieldtype settings template
         return $view->renderTemplate('smart-map/address/fieldtype-settings', [
-            'settings' => $this->getSettings(),
+            'settings' => $settings,
+            'layout' => $layout,
             'containerId' => 'id-'.StringHelper::randomString(10),
         ]);
     }
-
-    // ========================================================================= //
 
     /**
      * @inheritdoc
@@ -171,12 +177,42 @@ class Address extends Field implements PreviewableFieldInterface
         // Register visitor JS
         $view->registerJs('visitor = '.$visitorJs.';', $view::POS_END);
 
+        // Extract layout
+        $settings = $this->getSettings();
+        $layout = $this->_extractLayout($settings);
+
         // Load template
         return $view->renderTemplate('smart-map/address/input', [
             'name' => $this->handle,
             'value' => $value,
             'field' => $this,
+            'layout' => $layout,
         ]);
+    }
+
+    /**
+     * Extract layout data from settings
+     *
+     * @param $settings
+     * @return array
+     */
+    private function _extractLayout($settings)
+    {
+        // Initialize
+        $i = 0;
+        $layout = [];
+
+        // Loop through layout data
+        foreach ($settings['layout'] as $handle => $subfield) {
+            $i++;
+            $position = ($subfield['position'] ?? $i);
+            $layout[$position] = array_merge($subfield, ['handle' => $handle]);
+        }
+
+        // Cleanup
+        ksort($layout);
+
+        return $layout;
     }
 
     // ========================================================================= //

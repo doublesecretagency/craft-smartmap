@@ -34,7 +34,7 @@ use doublesecretagency\smartmap\models\FilterCriteria as FilterCriteriaModel;
 class SmartMapService extends Component
 {
 
-    const KEY_REQUIRED_MESSAGE = 'As of June 11, 2018, Google API keys are now <a href="https://www.doublesecretagency.com/plugins/smart-map/docs/get-google-api-keys">required</a>.';
+    const KEY_REQUIRED_MESSAGE = 'As of June 11, 2018, Google API keys are now <a href="'.SmartMap::DOCS_URL.'/get-google-api-keys">required</a>.';
 
     public $settings;
 
@@ -100,25 +100,16 @@ class SmartMapService extends Component
     {
         // Get user IP address
         $ip = Craft::$app->getRequest()->getUserIP();
-
         // If IP is local, bail
         if ('127.0.0.1' == $ip) {
             return false;
         }
         // If IP is invalid, bail
-        if (!$this->validIp($ip)) {
+        if (!filter_var($ip, FILTER_VALIDATE_IP)) {
             return false;
         }
         // Return IP address
         return $ip;
-    }
-
-    // Checks whether IP address is valid
-    public function validIp($ip)
-    {
-        // TODO: THIS ISN'T CHECKING FOR IPv6
-        $ipPattern = '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/';
-        return preg_match($ipPattern, $ip);
     }
 
     //
@@ -151,9 +142,7 @@ class SmartMapService extends Component
             return;
         }
 
-        // @TODO
-        // Use Google Maps Geolocation API (as default service)
-
+        // Determine which API to use for geolocation
         switch (SmartMap::$plugin->getSettings()->geolocation) {
             case 'ipstack':
                 SmartMap::$plugin->smartMap_ipstack->lookupIpData($ip);
@@ -163,7 +152,12 @@ class SmartMapService extends Component
                 break;
         }
 
-        // Fire an 'afterDetectLocation' event
+        // If no visitor data, bail
+        if (isset($this->cacheData['visitor'])) {
+            return;
+        }
+
+        // Get visitor data
         $eventLocation = $this->cacheData['visitor'];
         unset($eventLocation['ip']);
 
@@ -201,7 +195,7 @@ class SmartMapService extends Component
     }
 
     // Cache geo information for IP address
-    public function cacheGeoData($ip, $geoLookupService, $lifespan = 7776000) // 60*60*24*90 // Expires in 90 days
+    public function cacheGeoData($ip, $geoLookupService, $duration = 7776000) // 60*60*24*90 // Expires in 90 days
     {
         // If no IP address, bail
         if (!$ip) {
@@ -214,13 +208,13 @@ class SmartMapService extends Component
         // Set data to be cached
         $data = [
             'visitor' => $this->visitor,
-            'expires' => time() + $lifespan,
+            'expires' => time() + $duration,
             'service' => $geoLookupService,
         ];
 
         // Cache data
         $key = $this->_geolocationCacheKey($ip);
-        Craft::$app->getCache()->set($key, $data, $lifespan);
+        Craft::$app->getCache()->set($key, $data, $duration);
 
         // Set cached data
         $this->cacheData = $data;
@@ -281,51 +275,66 @@ class SmartMapService extends Component
         $query->subQuery->leftJoin('{{%smartmap_addresses}} addresses', '[[addresses.elementId]] = [[elements.id]]');
 
         // Search by comparing coordinates
-        if (array_key_exists('target', $params) || array_key_exists('range', $params)) {
+        if (isset($params['target']) || isset($params['range'])) {
             $this->_searchCoords($query, $params);
         }
 
         // Filter according to subfield(s)
-        if (array_key_exists('filter', $params)) {
+        if (isset($params['filter'])) {
             $this->_filterSubfield($query, $params);
+        }
+
+        // Filter by non-null lat/lng values
+        if ($params['hasCoords'] ?? false) {
+            $query->subQuery->andWhere(['not', [
+                'or',
+                ['lat' => null],
+                ['lng' => null]
+            ]]);
         }
     }
 
     // Filter according to subfield(s)
     private function _filterSubfield(&$query, $params = [])
     {
-        $realSubfields = ['street1','street2','city','state','zip','country'];
+        // List of valid subfields
+        $realSubfields = ['street1','street2','city','state','zip','country','lat','lng'];
 
+        // Loop through specified subfields
         foreach ($params['filter'] as $subfield => $value) {
-            if (in_array($subfield, $realSubfields)) {
 
-                // Ensure value is an array
-                if (is_string($value)) {
-                    $value = [$value];
-                }
-                // If value is not an array, skip
-                if (!is_array($value)) {
-                    continue;
-                }
-
-                // Compile WHERE clause
-                $where = [];
-
-                // Loop through filter values
-                foreach ($value as $filterValue) {
-                    $where[] = [$subfield => $filterValue];
-                }
-
-                // Re-organize WHERE filters
-                if (1 == count($where)) {
-                    $where = $where[0];
-                } else {
-                    array_unshift($where, 'or');
-                }
-
-                // Append WHERE clause to subquery
-                $query->subQuery->andWhere($where);
+            // Skip invalid subfields
+            if (!in_array($subfield, $realSubfields)) {
+                continue;
             }
+
+            // Ensure value is an array
+            if (is_string($value) || is_float($value)) {
+                $value = [$value];
+            }
+
+            // If value is not an array, skip
+            if (!is_array($value)) {
+                continue;
+            }
+
+            // Compile WHERE clause
+            $where = [];
+
+            // Loop through filter values
+            foreach ($value as $filterValue) {
+                $where[] = [$subfield => $filterValue];
+            }
+
+            // Re-organize WHERE filters
+            if (1 == count($where)) {
+                $where = $where[0];
+            } else {
+                array_unshift($where, 'or');
+            }
+
+            // Append WHERE clause to subquery
+            $query->subQuery->andWhere($where);
         }
     }
 
@@ -438,7 +447,7 @@ class SmartMapService extends Component
             $params = [];
             $api = MapApi::LatLngArray;
             $coords = $this->defaultCoords();
-        } else if (!array_key_exists('target', $params)) {
+        } else if (!isset($params['target'])) {
             $api = MapApi::LatLngArray;
             $coords = $this->defaultCoords();
         } else if (is_array($params['target'])) {
@@ -652,7 +661,7 @@ class SmartMapService extends Component
                         } else {
                             $lat = $this->findKeyInArray($loc, ['latitude','lat']);
                             $lng = $this->findKeyInArray($loc, ['longitude','lng','lon','long']);
-                            $title = (array_key_exists('title',$loc) ? $loc['title'] : '');
+                            $title = (isset($loc['title']) ? $loc['title'] : '');
                         }
                         $markers[] = [
                             'lat'     => $lat,
@@ -668,14 +677,14 @@ class SmartMapService extends Component
         }
 
         // Determine center of map
-        if (array_key_exists('center', $options)) {
+        if (isset($options['center'])) {
             // Center is specified in options
             $center = $options['center'];
         } else if (empty($locations) || empty($allLats) || empty($allLngs)) {
             // Error was triggered
             $markers = [];
-            if (array_key_exists('target', $options)) {
-                $components = (array_key_exists('components', $options) ? $options['components'] : []);
+            if (isset($options['target'])) {
+                $components = (isset($options['components']) ? $options['components'] : []);
                 $center = $this->targetCoords = $this->_geocodeGoogleMapApi($options['target'], $components);
             } else {
                 $center = $this->targetCenter();
@@ -771,7 +780,7 @@ class SmartMapService extends Component
                 $message = Craft::t('smart-map', 'You are over your quota. If this is a shared server, enable Google Maps API Keys.');
                 break;
             case 'REQUEST_DENIED':
-                if (array_key_exists('error_message', $response) && $response['error_message']) {
+                if (isset($response['error_message']) && $response['error_message']) {
                     $message = $response['error_message'];
                 } else {
                     $message = Craft::t('smart-map', 'Your request was denied for some reason.');
@@ -789,7 +798,8 @@ class SmartMapService extends Component
 
         // If no error or message, cache response
         if (!$error && !$message) {
-            Craft::$app->getCache()->set($key, $response);
+            $duration = 7776000; // 90 days
+            Craft::$app->getCache()->set($key, $response, $duration);
         }
 
         // Return response
@@ -855,7 +865,7 @@ class SmartMapService extends Component
             'lng' => -123.393333,
         ];
         $this->loadGeoData();
-        if ($this->visitor && array_key_exists('latitude', $this->visitor) && array_key_exists('longitude', $this->visitor)) {
+        if ($this->visitor && isset($this->visitor['latitude']) && isset($this->visitor['longitude'])) {
             $coords = [
                 // Current location
                 'lat' => $this->visitor['latitude'],
@@ -879,7 +889,7 @@ class SmartMapService extends Component
     public function findKeyInArray($array, $possibleKeys)
     {
         foreach ($possibleKeys as $key) {
-            if (array_key_exists($key, $array)) {
+            if (isset($array[$key])) {
                 return $array[$key];
             }
         }

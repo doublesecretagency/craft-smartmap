@@ -41,17 +41,20 @@ use doublesecretagency\smartmap\listeners\GetAddressFieldSchema;
 class SmartMap extends Plugin
 {
 
+    /** @const string Root URL for documentation. */
+    const DOCS_URL = 'https://www.doublesecretagency.com/plugins/smart-map/docs';
+
     /** @event DetectLocationEvent The event that is triggered after the user's location has been detected. */
     const EVENT_AFTER_DETECT_LOCATION = 'afterDetectLocation';
 
-    /** @var Plugin  $plugin  Self-referential plugin property. */
+    /** @var Plugin $plugin Self-referential plugin property. */
     public static $plugin;
 
-    /** @var bool  $hasCpSettings  The plugin has a settings page. */
+    /** @var bool $hasCpSettings The plugin has a settings page. */
     public $hasCpSettings = true;
 
-    /** @var bool  $schemaVersion  Current schema version of the plugin. */
-    public $schemaVersion = '3.2.0';
+    /** @var bool $schemaVersion Current schema version of the plugin. */
+    public $schemaVersion = '3.2.3';
 
     /** @inheritDoc */
     public function init()
@@ -142,7 +145,7 @@ class SmartMap extends Plugin
         return $view->renderTemplate('smart-map/settings', [
             'settings' => $this->getSettings(),
             'overrideKeys' => $overrideKeys,
-            'docsUrl' => $this->documentationUrl,
+            'docsUrl' => static::DOCS_URL,
         ]);
     }
 

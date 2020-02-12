@@ -36,8 +36,6 @@ class LookupController extends Controller
     public function actionIndex()
     {
         $this->requirePostRequest();
-        $this->requireAcceptsJson();
-
         $request = Craft::$app->getRequest();
         $target = $request->getBodyParam('target');
         $components = $request->getBodyParam('components');
@@ -50,8 +48,6 @@ class LookupController extends Controller
     public function actionCoords()
     {
         $this->requirePostRequest();
-        $this->requireAcceptsJson();
-
         $request = Craft::$app->getRequest();
         $target = $request->getBodyParam('target');
         $components = $request->getBodyParam('components');

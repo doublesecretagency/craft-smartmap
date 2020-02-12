@@ -209,6 +209,11 @@ SmartMap.Address = Garnish.Base.extend({
         this.layout[subfield]['enable'] = (checked ? 1 : 0);
     },
 
+    // Check subfield position
+    _subfieldPosition: function(subfield, position) {
+        this.layout[subfield]['position'] = position;
+    },
+
     // Move a row in the blueprint
     _moveBlueprintRow: function(subfield) {
         var $bpField = this.$blueprintPanel.find('.blueprint-' + subfield);
@@ -221,11 +226,12 @@ SmartMap.Address = Garnish.Base.extend({
         // Re-initialize layout data
         this.layout = {};
         // Loop through subfields
-        this.$layoutTable.find('tr.layout-table-subfield').each(function () {
+        this.$layoutTable.find('tr.layout-table-subfield').each(function (i) {
             var subfield = $(this).data('subfield');
             parent.layout[subfield] = {};
             parent._subfieldWidth(subfield, $(this));
             parent._subfieldEnabled(subfield, $(this));
+            parent._subfieldPosition(subfield, (i + 1));
             parent._moveBlueprintRow(subfield);
         });
         // Update blueprint data

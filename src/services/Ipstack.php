@@ -11,11 +11,11 @@
 
 namespace doublesecretagency\smartmap\services;
 
-use doublesecretagency\smartmap\SmartMap;
-
 use Craft;
 use craft\base\Component;
+use craft\helpers\Json;
 use craft\helpers\UrlHelper;
+use doublesecretagency\smartmap\SmartMap;
 
 /**
  * Class Ipstack
@@ -67,10 +67,12 @@ class Ipstack extends Component
         // Attempt lookup
         try
         {
+            // Get plugin class
+            $smartMap = SmartMap::$plugin->smartMap;
             // Ping geo location service
             $results = $this->rawData($ip);
             // If failed to get geolocation data
-            if (array_key_exists('success', $results) && !$results['success']) {
+            if (isset($results['success']) && !$results['success']) {
                 // Get error message
                 switch ($results['error']['type']) {
                     case 'missing_access_key':
@@ -89,20 +91,20 @@ class Ipstack extends Component
                 return;
             }
             // Populate visitor geolocation data
-            SmartMap::$plugin->smartMap->visitor = [
-                'ip'        => (array_key_exists('ip',$results)           ? $results['ip']           : ''),
-                'city'      => (array_key_exists('city',$results)         ? $results['city']         : ''),
-                'state'     => (array_key_exists('region_name',$results)  ? $results['region_name']  : ''),
-                'zipcode'   => (array_key_exists('zipcode',$results)      ? $results['zipcode']      : ''),
-                'country'   => (array_key_exists('country_name',$results) ? $results['country_name'] : ''),
-                'latitude'  => (array_key_exists('latitude',$results)     ? $results['latitude']     : ''),
-                'longitude' => (array_key_exists('longitude',$results)    ? $results['longitude']    : ''),
+            $smartMap->visitor = [
+                'ip'        => (isset($results['ip'])           ? $results['ip']           : ''),
+                'city'      => (isset($results['city'])         ? $results['city']         : ''),
+                'state'     => (isset($results['region_name'])  ? $results['region_name']  : ''),
+                'zipcode'   => (isset($results['zipcode'])      ? $results['zipcode']      : ''),
+                'country'   => (isset($results['country_name']) ? $results['country_name'] : ''),
+                'latitude'  => (isset($results['latitude'])     ? $results['latitude']     : ''),
+                'longitude' => (isset($results['longitude'])    ? $results['longitude']    : ''),
             ];
             // Append visitor coords
-            SmartMap::$plugin->smartMap->appendVisitorCoords();
+            $smartMap->appendVisitorCoords();
             // If valid IP, set cache
-            if (SmartMap::$plugin->smartMap->validIp(SmartMap::$plugin->smartMap->visitor['ip'])) {
-                SmartMap::$plugin->smartMap->cacheGeoData(SmartMap::$plugin->smartMap->visitor['ip'], 'ipstack');
+            if (filter_var($smartMap->visitor['ip'], FILTER_VALIDATE_IP)) {
+                $smartMap->cacheGeoData($smartMap->visitor['ip'], 'ipstack');
             }
         }
         catch (\Exception $e)
@@ -115,6 +117,8 @@ class Ipstack extends Component
     // Get raw API data
     public function rawData($ip = null)
     {
+        // If no IP address, check automatically
+        $ip = ($ip ? $ip : 'check');
         // Create Guzzle client
         $client = Craft::createGuzzleClient(['timeout' => 4, 'connect_timeout' => 4]);
         // Set endpoint for lookup
@@ -124,7 +128,7 @@ class Ipstack extends Component
         // Get API response
         $response = $client->request('GET', $endpoint);
         // Return nested array of results
-        return json_decode($response->getBody(), true);
+        return Json::decode($response->getBody());
     }
 
 }

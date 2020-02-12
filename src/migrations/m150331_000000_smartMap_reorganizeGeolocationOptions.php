@@ -42,7 +42,7 @@ class m150331_000000_smartMap_reorganizeGeolocationOptions extends Migration
         $service = 'none';
 
         // If "enableService" value exists
-        if (array_key_exists('enableService', $settings)) {
+        if (isset($settings['enableService'])) {
 
             // Get currently enabled
             $enabled = $settings['enableService'];

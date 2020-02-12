@@ -16,17 +16,17 @@
         <span class="smartmap-link smartmap-drag-pin">{{ "Drag Pin"|t('smart-map') }}</span>
         <span id="{{ name }}-drag-pin-data" {{ dragPinData|raw }}></span>
     </div>
-    <div class="smartmap-subfields">
+    <div class="smartmap-subfields {{ craft.smartMap.versionClass }}">
 
         {# Set defaults #}
         {% set isFirst = true %}
         {% set totalWidths = 0 %}
 
         {# Loop through subfields #}
-        {% for subfield,subsetting in field.layout %}
+        {% for subfield in layout %}
 
             {# If subfield is enabled #}
-            {% if subsetting.enable %}
+            {% if subfield.enable %}
 
                 {# Reset subfield style #}
                 {% set style = '' %}
@@ -40,7 +40,7 @@
                 {% set isFirst = (0 == totalWidths) %}
 
                 {# Get field width #}
-                {% set width = subsetting.width %}
+                {% set width = subfield.width %}
 
                 {# Add to total widths #}
                 {% set totalWidths = (totalWidths + width) %}
@@ -85,12 +85,12 @@
 
             {% endif %}
 
-            <div class="{{ subfield }}" style="{{ style }}">
+            <div class="{{ subfield.handle }}" style="{{ style }}">
                 {{ forms.textField({
-                    placeholder: craft.smartMap.labelFromHandle(subfield),
-                    id: name~'-'~subfield,
-                    name: name~'['~subfield~']',
-                    value: (value and attribute(value, subfield) ? attribute(value, subfield)),
+                    placeholder: craft.smartMap.labelFromHandle(subfield.handle),
+                    id: name~'-'~subfield.handle,
+                    name: name~'['~subfield.handle~']',
+                    value: (attribute(value, subfield.handle) ?? ''),
                 }) }}
             </div>
 
