@@ -50,7 +50,7 @@ class Settings extends Model
      */
     public function getGoogleServerKey(): string
     {
-        return Craft::parseEnv($this->googleServerKey);
+        return (Craft::parseEnv($this->googleServerKey) ?? '');
     }
 
     /**
@@ -58,7 +58,7 @@ class Settings extends Model
      */
     public function getGoogleBrowserKey(): string
     {
-        return Craft::parseEnv($this->googleBrowserKey);
+        return (Craft::parseEnv($this->googleBrowserKey) ?? '');
     }
 
     /**
@@ -66,7 +66,7 @@ class Settings extends Model
      */
     public function getIpstackAccessKey(): string
     {
-        return Craft::parseEnv($this->ipstackAccessKey);
+        return (Craft::parseEnv($this->ipstackAccessKey) ?? '');
     }
 
     /**
@@ -74,7 +74,7 @@ class Settings extends Model
      */
     public function getMaxmindUserId(): string
     {
-        return Craft::parseEnv($this->maxmindUserId);
+        return (Craft::parseEnv($this->maxmindUserId) ?? '');
     }
 
     /**
@@ -82,6 +82,6 @@ class Settings extends Model
      */
     public function getMaxmindLicenseKey(): string
     {
-        return Craft::parseEnv($this->maxmindLicenseKey);
+        return (Craft::parseEnv($this->maxmindLicenseKey) ?? '');
     }
 }
