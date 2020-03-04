@@ -19,6 +19,7 @@
 - Replaced problematic migration.
 - Fixed PHP 7.4 compatibility issues.
 - Fixed error when passing icon array to static map.
+- Fix bug that showed apostrophes as HTML entities.
 - Fixed all bugs in the debug page.
 
 ## 3.2.2.1 - 2019-04-08

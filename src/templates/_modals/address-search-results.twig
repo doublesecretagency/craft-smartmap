@@ -30,11 +30,11 @@
                         {% for a in searchResults %}
                             {% set streetAddress = modalMacro.formatStreetAddress(a) %}
                             <tr class="smartmap-modal-row">
-                                <td data-subfield="street1">{{ streetAddress|trim }}</td>
-                                <td data-subfield="city">{{ a.locality is defined ? a.locality }}</td>
-                                <td data-subfield="state">{{ a.administrative_area_level_1 is defined ? a.administrative_area_level_1 }}</td>
-                                <td data-subfield="zip">{{ a.postal_code is defined ? a.postal_code }}</td>
-                                <td data-subfield="country">{{ a.country is defined ? a.country }}</td>
+                                <td data-subfield="street1">{{ streetAddress|trim|raw }}</td>
+                                <td data-subfield="city">{{ a.locality is defined ? a.locality|raw }}</td>
+                                <td data-subfield="state">{{ a.administrative_area_level_1 is defined ? a.administrative_area_level_1|raw }}</td>
+                                <td data-subfield="zip">{{ a.postal_code is defined ? a.postal_code|raw }}</td>
+                                <td data-subfield="country">{{ a.country is defined ? a.country|raw }}</td>
                                 <td data-subfield="lat" class="smartmap-modal-coords">{{ a.coords.lat is defined ? a.coords.lat }}</td>
                                 <td data-subfield="lng" class="smartmap-modal-coords">{{ a.coords.lng is defined ? a.coords.lng }}</td>
                             </tr>
