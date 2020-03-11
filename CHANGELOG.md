@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- Added support for Address exports via the native Craft exporter tool.
 - KML files can now be specified by absolute URL.
 - Added [`field`](https://www.doublesecretagency.com/plugins/smart-map/docs/customizing-the-map-in-twig) option to filter field(s) to be included on map.
 - Added [`hasCoords`](https://www.doublesecretagency.com/plugins/smart-map/docs/filtering-out-entries-with-invalid-coordinates) parameter to filter out results with incomplete coordinates. (thanks @bencroker)
@@ -10,7 +11,7 @@
 - All API access keys (for Google, ipstack, and MaxMind) can now be set via [environment variables](https://docs.craftcms.com/v3/config/environments.html). (thanks @carlcs)
 
 ### Changed
-- Craft 3.1 is now required.
+- Craft 3.2 is now required.
 - Improved subfield spacing in Craft 3.4.
 - Improved geolocation with better IP autodetection.
 
@@ -19,7 +20,7 @@
 - Replaced problematic migration.
 - Fixed PHP 7.4 compatibility issues.
 - Fixed error when passing icon array to static map.
-- Fix bug that showed apostrophes as HTML entities.
+- Fixed bug that showed apostrophes as HTML entities.
 - Fixed all bugs in the debug page.
 
 ## 3.2.2.1 - 2019-04-08

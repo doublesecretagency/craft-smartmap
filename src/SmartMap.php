@@ -11,6 +11,8 @@
 
 namespace doublesecretagency\smartmap;
 
+use craft\base\Element;
+use doublesecretagency\smartmap\exports\AddressExport;
 use yii\base\Event;
 
 use Craft;
@@ -87,6 +89,15 @@ class SmartMap extends Plugin
             function (Event $event) {
                 $variable = $event->sender;
                 $variable->set('smartMap', SmartMapVariable::class);
+            }
+        );
+
+        // Register exporter
+        Event::on(
+            Element::class,
+            Element::EVENT_REGISTER_EXPORTERS,
+            function (Event $event) {
+                $event->exporters[] = AddressExport::class;
             }
         );
 
