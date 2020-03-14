@@ -534,14 +534,8 @@ class SmartMapService extends Component
     // Get coordinates from Google Maps API
     private function _geocodeGoogleMapApi($target, $components = [])
     {
-        // Lookup geocode matches
-        $response = $this->lookup($target, $components);
-        // If no results, use default coords
-        if (empty($response['results'])) {
-            return $this->defaultCoords();
-        }
-        // Return location data
-        return $response['results'][0]['geometry']['location'];
+        $coords = $this->lookupCoords($target, $components);
+        return ($coords ? $coords : $this->defaultCoords());
     }
 
     // Decipher map center & markers based on locations
