@@ -11,6 +11,8 @@
 
 namespace doublesecretagency\smartmap\services;
 
+use craft\elements\db\ElementQuery;
+use craft\elements\MatrixBlock;
 use yii\base\Event;
 use yii\caching\FileCache;
 
@@ -551,7 +553,7 @@ class SmartMapService extends Component
         }
 
         // If Address model, process immediately
-        if (is_object($locations) && is_a($locations, 'doublesecretagency\\smartmap\\models\\Address')) {
+        if (is_object($locations) && is_a($locations, AddressModel::class)) {
 
             $markers = [];
 
@@ -583,7 +585,7 @@ class SmartMapService extends Component
         }
 
         // If ElementCriteriaModel, convert to normal array
-        if (is_object($locations[0]) && is_a($locations[0], 'craft\\elements\\db\\ElementQuery')) {
+        if (is_object($locations[0]) && is_a($locations[0], ElementQuery::class)) {
             return $this->markerCoords($locations[0]->all(), $options);
         }
 
@@ -608,7 +610,7 @@ class SmartMapService extends Component
             } else {
                 // Find all Smart Map Address field fieldIds
                 foreach (Craft::$app->fields->getAllFields() as $field) {
-                    if ($field->className() == 'doublesecretagency\\smartmap\\fields\\Address') {
+                    if ($field->className() == AddressField::class) {
                         $fieldHandles[] = $field->handle;
                     }
                 }
@@ -616,12 +618,12 @@ class SmartMapService extends Component
                 foreach ($locations as $loc) {
                     if (is_object($loc)) {
                         // If Matrix Block model, get new set of field handles
-                        if (is_a($loc, 'craft\\elements\\MatrixBlock')) {
+                        if (is_a($loc, MatrixBlock::class)) {
                             // Find all Smart Map Address field fieldIds related specifically to this matrix block type
                             $fieldHandles = [];
                             $typeId = $loc->type->id;
-                            foreach (Craft::$app->fields->getAllFields(null, "matrixBlockType:$typeId") as $field) {
-                                if ($field->className() == 'doublesecretagency\\smartmap\\fields\\Address') {
+                            foreach (Craft::$app->fields->getAllFields("matrixBlockType:$typeId") as $field) {
+                                if ($field->className() == AddressField::class) {
                                     $fieldHandles[] = $field->handle;
                                 }
                             }

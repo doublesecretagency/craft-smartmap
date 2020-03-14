@@ -11,8 +11,10 @@
 
 namespace doublesecretagency\smartmap\services;
 
+use craft\base\Element;
 use craft\elements\Asset;
 use craft\elements\db\ElementQuery;
+use craft\elements\MatrixBlock;
 use yii\base\Exception;
 
 use Craft;
@@ -23,7 +25,8 @@ use craft\helpers\Template;
 use craft\helpers\UrlHelper;
 
 use doublesecretagency\smartmap\SmartMap;
-use doublesecretagency\smartmap\models\Address;
+use doublesecretagency\smartmap\fields\Address as AddressField;
+use doublesecretagency\smartmap\models\Address as AddressModel;
 use doublesecretagency\smartmap\web\assets\FrontEndAssets;
 use doublesecretagency\smartmap\web\assets\GoogleMapsAssets;
 
@@ -183,7 +186,7 @@ class Variables extends Component
                 return $this->_parseMarkers($mapId, $locations->all(), $markerOptions, $selectedFields);
             }
             // If $locations is a single element
-            if (is_a($locations, 'craft\\base\\Element')) {
+            if (is_a($locations, Element::class)) {
                 $locations = [$locations];
                 return $this->_parseMarkers($mapId, $locations, $markerOptions, $selectedFields);
             }
@@ -204,7 +207,7 @@ class Variables extends Component
             $allLngs = [];
 
             // If location elements are Matrix fields
-            if (is_a($locations[0], 'craft\\elements\\MatrixBlock')) {
+            if (is_a($locations[0], MatrixBlock::class)) {
                 // Get all Address field handles within Matrix
                 $handles = [];
                 $matrixFieldId = $locations[0]->fieldId;
@@ -399,7 +402,7 @@ class Variables extends Component
         $handles = [];
         foreach ($allFields as $field) {
             // If not an address field, skip
-            if ($field->className() != 'doublesecretagency\\smartmap\\fields\\Address') {
+            if ($field->className() != AddressField::class) {
                 continue;
             }
             // If field was not selected, skip
@@ -714,7 +717,7 @@ smartMap.log("['.$mapId.'] '.$message.'");';
     public function linkToGoogle($address, $title = null)
     {
         // If missing or invalid address, bail
-        if (!$address || !is_a($address, Address::class)) {
+        if (!$address || !is_a($address, AddressModel::class)) {
             return '#invalid-address-field';
         }
         // If missing coordinates, bail
@@ -743,11 +746,11 @@ smartMap.log("['.$mapId.'] '.$message.'");';
             return '#missing-address-field';
         }
         // If destination address isn't an Address model, bail
-        if (!is_a($destinationAddress, Address::class)) {
+        if (!is_a($destinationAddress, AddressModel::class)) {
             return '#invalid-address-field';
         }
         // If starting address isn't an Address model, set it to false
-        if (!is_a($originAddress, Address::class)) {
+        if (!is_a($originAddress, AddressModel::class)) {
             $originAddress = false;
         }
         // Compile URL
