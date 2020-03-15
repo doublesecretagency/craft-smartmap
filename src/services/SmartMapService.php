@@ -302,8 +302,11 @@ class SmartMapService extends Component
         // List of valid subfields
         $realSubfields = ['street1','street2','city','state','zip','country','lat','lng'];
 
+        // Ensure filter is a valid array
+        $filter = (is_array($params['filter'] ?? false) ? $params['filter'] : []);
+
         // Loop through specified subfields
-        foreach ($params['filter'] as $subfield => $value) {
+        foreach ($filter as $subfield => $value) {
 
             // Skip invalid subfields
             if (!in_array($subfield, $realSubfields)) {
@@ -442,7 +445,7 @@ class SmartMapService extends Component
     // ==================================================== //
 
     // Parse query filter
-    private function _parseFilter(array $params)
+    private function _parseFilter(array &$params)
     {
 
         if (!is_array($params)) {
@@ -487,7 +490,18 @@ class SmartMapService extends Component
                 break;
             case MapApi::GoogleMaps:
             default:
-                $filter->coords = $this->_geocodeGoogleMapApi($filter->target, $filter->components);
+                // Whether to use the filter fallback
+                $filterFallback = ('fallback' == ($params['filter'] ?? false));
+                // Perform geocode
+                $results = $this->_geocodeGoogleMapApi($filter->target, $filter->components, $filterFallback);
+                // If using the filter fallback
+                if ($filterFallback) {
+                    // Set coords and updated filter
+                    list($filter->coords, $params['filter']) = $results;
+                } else {
+                    // Set coords the old-fashioned way
+                    $filter->coords = $results;
+                }
                 break;
         }
 
@@ -498,7 +512,7 @@ class SmartMapService extends Component
     }
 
     // Search by coordinates
-    private function _searchCoords(&$query, array $params)
+    private function _searchCoords(&$query, array &$params)
     {
         $filter = $this->_parseFilter($params);
         // Implement haversine formula
@@ -534,10 +548,81 @@ class SmartMapService extends Component
     }
 
     // Get coordinates from Google Maps API
-    private function _geocodeGoogleMapApi($target, $components = [])
+    private function _geocodeGoogleMapApi($target, $components, &$filterFallback = false)
     {
-        $coords = $this->lookupCoords($target, $components);
-        return ($coords ? $coords : $this->defaultCoords());
+        // Perform geocoding
+        $response = $this->lookup($target, $components);
+
+        // If no results, return default coordinates
+        if (empty($response['results'])) {
+            $filterFallback = false;
+            return $this->defaultCoords();
+        }
+
+        // Get first matching location
+        $location = $response['results'][0];
+        $coords = $location['geometry']['location'];
+
+        // If not using the filter fallback, return coordinates of location
+        if (!$filterFallback) {
+            return $coords;
+        }
+
+        // Initialize reconfigured parts
+        $parts = [];
+
+        // Restructure the address component parts
+        foreach ($location['address_components'] as $component) {
+            $c = ($component['types'][0] ?? false);
+            switch ($c) {
+                case 'locality':
+                case 'country':
+                    $parts[$c] = $component['long_name'];
+                    break;
+                default:
+                    $parts[$c] = $component['short_name'];
+                    break;
+            }
+        }
+
+        // Don't filter further, we have a specific address!
+        if (isset($parts['route'])) {
+            $filterFallback = false;
+            return $coords;
+        }
+
+        // Reconfigure filter
+        $filter = [
+            'city'    => ($parts['locality']                    ?? null),
+            'state'   => ($parts['administrative_area_level_1'] ?? null),
+            'zip'     => ($parts['postal_code']                 ?? null),
+            'country' => ($parts['country']                     ?? null),
+        ];
+
+        // Abbreviate target
+        $t = trim(strtolower($target));
+
+        // Prune unspecified subfields
+        foreach ($filter as $subfield => $part) {
+
+            // Abbreviate part
+            $p = trim(strtolower($part));
+
+            // If target and part are identical, filter by THIS PART ONLY!
+            if ($t === $p) {
+                $filter = [$subfield => $part];
+                break;
+            }
+
+            // If no part was specified, remove from filter
+            if (null === $part) {
+                unset($filter[$subfield]);
+            }
+
+        }
+
+        // Return coordinates and updated filter
+        return [$coords, $filter];
     }
 
     // Decipher map center & markers based on locations
