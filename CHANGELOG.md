@@ -15,6 +15,7 @@
 - Craft 3.2 is now required.
 - Improved subfield spacing in Craft 3.4.
 - Improved geolocation with better IP autodetection.
+- Allow target coordinates to be provided as a string.
 
 ### Fixed
 - Guard against missing `country` in Google results.

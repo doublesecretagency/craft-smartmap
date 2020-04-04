@@ -447,7 +447,7 @@ class SmartMapService extends Component
     // Parse query filter
     private function _parseFilter(array &$params)
     {
-
+        $coordsPattern = '/^-?[0-9.]*, *-?[0-9.]*$/';
         if (!is_array($params)) {
             $params = [];
             $api = MapApi::LatLngArray;
@@ -467,6 +467,14 @@ class SmartMapService extends Component
             $coords = [
                 'lat' => $lat,
                 'lng' => $lng,
+            ];
+        } else if (is_string($params['target']) && preg_match($coordsPattern, trim($params['target']))) {
+            $api = MapApi::LatLngArray;
+            $coordsString = $params['target'];
+            $coordsArray = explode(',', $coordsString);
+            $coords = [
+                'lat' => (float) trim($coordsArray[0]),
+                'lng' => (float) trim($coordsArray[1]),
             ];
         } else if (is_string($params['target']) || is_numeric($params['target'])) {
             $api = MapApi::GoogleMaps;
