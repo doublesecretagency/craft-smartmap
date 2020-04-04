@@ -447,7 +447,7 @@ class SmartMapService extends Component
     // Parse query filter
     private function _parseFilter(array &$params)
     {
-        $coordsPattern = '/^-?[0-9.]*, *-?[0-9.]*$/';
+        $coordsPattern = '/^-?[0-9.]+, *-?[0-9.]+$/';
         if (!is_array($params)) {
             $params = [];
             $api = MapApi::LatLngArray;
