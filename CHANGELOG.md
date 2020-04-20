@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.3.0 - 2020-04-20
 
 ### Added
 - Added support for Address exports via the native Craft exporter tool.
