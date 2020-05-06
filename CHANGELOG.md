@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.3.1 - 2020-05-06
+
+### Changed
+- Craft 3.4 is now required.
+
+### Fixed
+- Uses an "Export" event introduced in Craft 3.4.
+
 ## 3.3.0 - 2020-04-20
 
 ### Added
