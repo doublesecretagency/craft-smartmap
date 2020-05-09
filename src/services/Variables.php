@@ -418,15 +418,12 @@ class Variables extends Component
     // Create single map
     private function _buildMap($mapId, $mapOptions)
     {
-        // LEGACY: "scrollZoom" option
-        if (!isset($mapOptions['scrollwheel'])) {
-            if (isset($mapOptions['scrollZoom'])) {
-                $mapOptions['scrollwheel'] = (bool) $mapOptions['scrollZoom'];
-            } else {
-                $mapOptions['scrollwheel'] = false;
-            }
+        $usingScrollwheel     = isset($mapOptions['scrollwheel']);
+        $usingGestureHandling = isset($mapOptions['gestureHandling']);
+
+        if (!$usingScrollwheel && !$usingGestureHandling) {
+            $mapOptions['scrollwheel'] = false;
         }
-        unset($mapOptions['scrollZoom']);
 
         $options = $this->_jsonify($mapOptions);
         $mapJs  = PHP_EOL;

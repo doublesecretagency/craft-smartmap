@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.3.2 - 2020-05-08
+
+### Changed
+- Improved support for `gestureHandling`.
+- Dropped support for `scrollZoom`.
+
 ## 3.3.1 - 2020-05-06
 
 ### Changed
