@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.3.3 - 2020-06-18
+
+### Fixed
+- Fixed field settings bug for improved compatibility with Craft 3.4.22+.
+
 ## 3.3.2 - 2020-05-08
 
 ### Changed

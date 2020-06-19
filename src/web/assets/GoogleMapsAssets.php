@@ -11,9 +11,10 @@
 
 namespace doublesecretagency\smartmap\web\assets;
 
+use Craft;
 use craft\web\AssetBundle;
-
 use doublesecretagency\smartmap\SmartMap;
+use yii\web\HttpException;
 
 /**
  * Class GoogleMapsAssets
@@ -27,21 +28,34 @@ class GoogleMapsAssets extends AssetBundle
     {
         parent::init();
 
-        // Google Maps API
-        $googleMapsApi = 'https://maps.googleapis.com/maps/api/js';
+        // Get request services
+        $request = Craft::$app->getRequest();
 
         // Get browser key
         $settings = SmartMap::$plugin->getSettings();
         $key = trim($settings->getGoogleBrowserKey());
 
-        // Append browser key
-        if ($key) {
-            $googleMapsApi .= "?key={$key}";
+        // Ensure key exists
+        if (!$key) {
+            throw new HttpException('Google Maps API keys are required.');
         }
 
+        // Check path to see if we're creating a new field
+        $newField = preg_match('#actions/fields/render-settings#', $request->getPathInfo());
+
+        // CDN path for Google Maps API
+        $googleMapsApi = "https://maps.googleapis.com/maps/api/js?key={$key}";
+
+        // If creating a new field, append callback
+        if ($request->getIsCpRequest() && $newField) {
+            $googleMapsApi .= "&callback=initAddressFieldtypeSettings";
+        }
+
+        // Register Google Maps API JS
         $this->js = [
             $googleMapsApi
         ];
+
     }
 
 }

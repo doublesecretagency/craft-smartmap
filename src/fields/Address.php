@@ -131,7 +131,6 @@ class Address extends Field implements PreviewableFieldInterface
     {
         // Reference assets
         $view = Craft::$app->getView();
-        $view->registerAssetBundle(GoogleMapsAssets::class);
         $view->registerAssetBundle(FieldSettingsAssets::class);
 
         // Get settings

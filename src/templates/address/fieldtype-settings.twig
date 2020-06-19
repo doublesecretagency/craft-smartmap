@@ -61,6 +61,20 @@
     </div>
 </div>
 
-{%- js %}
-    new SmartMap.Address('#{{ containerId|namespaceInputId }}');
+{% js %}
+// Get strings from Twig
+var addressContainer = '#{{ containerId|namespaceInputId }}';
+var currentPath = '{{ craft.app.request.getPathInfo }}';
+var newFieldPath = 'actions/fields/render-settings';
+{% endjs %}
+
+{% js %}
+// Callback to initialize the map
+function initAddressFieldtypeSettings() {
+    new SmartMap.Address(addressContainer);
+}
+// If not a new field, initialize immediately
+if (-1 === currentPath.indexOf(newFieldPath)) {
+    initAddressFieldtypeSettings();
+}
 {% endjs %}
