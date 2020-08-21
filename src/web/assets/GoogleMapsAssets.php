@@ -35,11 +35,6 @@ class GoogleMapsAssets extends AssetBundle
         $settings = SmartMap::$plugin->getSettings();
         $key = trim($settings->getGoogleBrowserKey());
 
-        // Ensure key exists
-        if (!$key) {
-            throw new HttpException('Google Maps API keys are required.');
-        }
-
         // Check path to see if we're creating a new field
         $newField = preg_match('#actions/fields/render-settings#', $request->getPathInfo());
 
