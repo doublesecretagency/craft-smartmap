@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.3.4 - 2020-08-22
+
+### Changed
+- Craft 3.5 is now required.
+- Removed unnecessary error message.
+- Improved formatting of UK addresses.
+
+### Fixed
+- Fixed field settings styles for improved compatibility with Craft 3.5+.
+
 ## 3.3.3 - 2020-06-18
 
 ### Fixed
