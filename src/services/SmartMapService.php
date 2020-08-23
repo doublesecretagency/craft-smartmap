@@ -607,6 +607,14 @@ class SmartMapService extends Component
             'country' => ($parts['country']                     ?? null),
         ];
 
+        // Country-specific adjustments
+        switch ($filter['country']) {
+            case 'United Kingdom':
+                $filter['city']  = ($parts['postal_town']                 ?? null);
+                $filter['state'] = ($parts['administrative_area_level_2'] ?? null);
+                break;
+        }
+
         // Abbreviate target
         $t = trim(strtolower($target));
 
