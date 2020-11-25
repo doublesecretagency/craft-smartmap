@@ -528,14 +528,28 @@ class SmartMapService extends Component
             $filter->coords['lat'],
             $filter->coords['lng']
         );
-        // Modify subquery
-        $query->subQuery
-            ->addSelect($haversine.' AS [[distance]]')
-            ->andWhere('[[addresses.fieldId]] = :fieldId', [':fieldId' => $filter->fieldId])
-            ->having('[[distance]] <= :range', [':range' => $filter->range])
-        ;
-        // Temporarily store the distance under the field handle
-        $query->query->addSelect("[[subquery.distance]] AS [[{$params['fieldHandle']}]]");
+
+
+        // We need to double check if we are dealing with MySQL or PostgreSQL,
+        // as both database engines handle the HAVING clause differently.
+        if(Craft::$app->db->isMysql) {
+            // Modify subquery
+            $query->subQuery
+                ->addSelect($haversine . ' AS [[distance]]')
+                ->andWhere('[[addresses.fieldId]] = :fieldId', [':fieldId' => $filter->fieldId])
+                ->having('[[distance]] <= :range', [':range' => $filter->range]);
+            // Temporarily store the distance under the field handle
+            $query->query->addSelect("[[subquery.distance]] AS [[{$params['fieldHandle']}]]");
+        } elseif (Craft::$app->db->isPgsql) {
+            // Modify subquery
+            $query->subQuery
+                ->addSelect($haversine.' AS [[distance]]')
+                ->andWhere('[[addresses.fieldId]] = :fieldId', [':fieldId' => $filter->fieldId])
+            ;
+            // Temporarily store the distance under the field handle
+            $query->query->addSelect("[[subquery.distance]] AS [[{$params['fieldHandle']}]]");
+            $query->query->andWhere('[[distance]] <= :range', [':range' => $filter->range]);
+        }
     }
 
     // Use haversine formula
