@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.3.5 - 2020-11-24
+
+### Fixed
+- Patched Postgres proximity search incompatibility. (thanks @Timusan)
+
 ## 3.3.4 - 2020-08-22
 
 ### Changed
