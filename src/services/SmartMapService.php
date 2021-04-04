@@ -265,7 +265,6 @@ class SmartMapService extends Component
         return ($unitVal * acos(cos(deg2rad($lat_1)) * cos(deg2rad($lat_2)) * cos(deg2rad($lng_2) - deg2rad($lng_1)) + sin(deg2rad($lat_1)) * sin(deg2rad($lat_2))));
     }
 
-
     // ============================================================================ //
     // CALLED VIA doublesecretagency\smartmap\fields\Address::modifyElementsQuery()
     // ============================================================================ //
@@ -343,7 +342,6 @@ class SmartMapService extends Component
         }
     }
 
-
     // ==================================================== //
     // CALLED VIA FIELDTYPE
     // ==================================================== //
@@ -384,7 +382,6 @@ class SmartMapService extends Component
 
         // Save record
         return $record->save();
-
     }
 
     // Retrieves address from 3rd party table
@@ -411,31 +408,6 @@ class SmartMapService extends Component
             $model = new AddressModel();
         }
         $model->handle = $field->handle;
-
-// This is bad, remove this from the next version.
-// It was determining "distance" with relation to the geolocated user,
-// even if no proximity search was conducted. It is not a behavior that
-// people would expect, and can be very confusing.
-
-// On a similar note, make `haversinePHP` a publicly accessible service.
-// It can be useful in one-off calculations.
-
-//        // Set distance property
-//        $data = $model->getAttributes();
-//        if ($this->targetCoords) {
-//            $visitor = $this->targetCoords;
-//        } else {
-//            $this->loadGeoData();
-//            $visitor = [
-//                'lat' => $this->visitor['latitude'],
-//                'lng' => $this->visitor['longitude'],
-//            ];
-//        }
-//        if (is_numeric($data['lat']) && is_numeric($data['lng'])) {
-//            $model->distance = $this->_haversinePHP($visitor, $data);
-//        } else {
-//            $model->distance = null;
-//        }
 
         return $model;
     }
@@ -528,7 +500,6 @@ class SmartMapService extends Component
             $filter->coords['lat'],
             $filter->coords['lng']
         );
-
 
         // We need to double check if we are dealing with MySQL or PostgreSQL,
         // as both database engines handle the HAVING clause differently.
@@ -927,7 +898,6 @@ class SmartMapService extends Component
         return $response['results'][0]['geometry']['location'];
     }
 
-
     // ==================================================== //
 
     // Append Google API server key
@@ -966,7 +936,6 @@ class SmartMapService extends Component
 
     // ==================================================== //
 
-
     // Use default coordinates
     public function defaultCoords()
     {
@@ -990,7 +959,6 @@ class SmartMapService extends Component
         }
         return $coords;
     }
-
 
     // ==================================================== //
     // HELPER FUNCTIONS
