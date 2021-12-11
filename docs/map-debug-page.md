@@ -4,6 +4,8 @@ description: If you are using Smart Map's visitor geolocation, then accuracy is 
 
 # Map Debug Page
 
+<update-message/>
+
 If you are taking advantage of the automatic location detection built into Smart Map, then accuracy is probably important to you. You will want to know exactly where the website thinks you are, and occasionally you may even need to send a link for this tool to another user.
 
 This is when the **map debug page** comes in handy...

@@ -4,6 +4,8 @@ description: You can completely rearrange the Address subfields! Watch the anima
 
 # Internationalization Support
 
+<update-message/>
+
 ## Reorganize the Address Subfields
 
 By default, the Address field is arranged according to American address formatting.

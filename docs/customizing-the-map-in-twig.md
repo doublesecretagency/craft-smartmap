@@ -4,6 +4,8 @@ description: You can customize your map before rendering it by simply passing in
 
 # Customizing the map in Twig
 
+<update-message/>
+
 :::warning Use JS for styles
 Need to apply `styles` to your map? [Use JavaScript instead...](/styling-a-map/)
 

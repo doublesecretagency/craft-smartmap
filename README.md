@@ -3,38 +3,20 @@
 Smart Map plugin for Craft CMS
 ======================================
 
-**The most comprehensive proximity search and mapping tool for Craft.**
+**RETIRED - Instead, use the Google Maps plugin for Craft CMS.**
 
 ***
 
-Smart Map gives you a powerful "Address" field which allows you to...
- - Do proximity searches (aka "store locator")
- - Create dynamic & static maps
- - Geolocate site visitors
- - Customize a map in Twig
- - Manipulate a map in JavaScript
- - Format a map with custom styles
- - Add info window bubbles
- - Use KML files
- - Fully translatable
- - Compatible with CraftQL!
+### Renamed, Rebuilt, and Rejuvenated! 🚀
 
-To see everything that Smart Map can do, check out [doublesecretagency.com/plugins/smart-map](https://www.doublesecretagency.com/plugins/smart-map)
+After evolving as Smart Map for seven years, this plugin has been renamed to **Google Maps**. It has been completely, 100% refactored from the ground up, improving upon every single aspect of the original plugin.
 
-![](src/resources/img/example-header.png)
+The new Google Maps plugin is _better_, _faster_, and _easier to use_. It does everything that Smart Map did and much, much more! And it's backed by [detailed documentation](https://plugins.doublesecretagency.com/google-maps/) which explains every single feature in depth.
+
+**Please install the [Google Maps](https://plugins.craftcms.com/google-maps) plugin instead of Smart Map.** [➡️](https://plugins.craftcms.com/google-maps)
 
 ***
 
-## Feedback
+Need to update from Smart Map to Google Maps?
 
-For bugs & feature requests, please submit a [Github issue](https://github.com/doublesecretagency/craft-smartmap/issues).
-
-**We provide some of the best customer support in the business.** Find us on [Craft Slack](https://craftcms.com/community#slack), or via the [Intercom widget](https://www.doublesecretagency.com/plugins/) or [contact form](https://www.doublesecretagency.com/contact) on our website. Or simply email us at <support@doublesecretagency.com>.
-
-***
-
-## Anything else?
-
-We've got other plugins too!
-
-Check out the full catalog at [doublesecretagency.com/plugins](https://www.doublesecretagency.com/plugins)
+- [Updating from Smart Map](https://plugins.doublesecretagency.com/google-maps/getting-started/updating-from-smart-map/)

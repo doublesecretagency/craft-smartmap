@@ -4,6 +4,8 @@ description: You can bulk import addresses using either the "Feed Me" or "Import
 
 # Importing Addresses
 
+<update-message/>
+
 In order to import Address data, use the [Feed Me](https://plugins.craftcms.com/feed-me) plugin.
 
 Before you run the import, it's important that you **already have** the latitude & longitude in your original data. You'll be able to simply set latitude & longitude alongside the other address data, and import it all at once.

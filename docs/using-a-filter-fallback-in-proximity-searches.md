@@ -4,6 +4,8 @@ description: When conducting a proximity search, you may want to allow the "filt
 
 # Using a filter fallback in proximity searches
 
+<update-message/>
+
 As of v3.3, it's now possible for the `filter` values to be set automatically.
 
 ```twig

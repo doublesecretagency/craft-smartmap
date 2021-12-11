@@ -4,6 +4,8 @@ description: Occasionally, you'll need to know where your site visitors are loca
 
 # Visitor Geolocation
 
+<update-message/>
+
 Occasionally, you'll need to know where your site visitors are located. Fortunately, Smart Map provides an easy way to geolocate visitors based on their IP address.
 
 On the plugin's Settings page, select which geolocation service you'd like to use...

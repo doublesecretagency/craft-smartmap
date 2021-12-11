@@ -4,6 +4,8 @@ description: Occasionally, you want to display different marker icons based on s
 
 # Different icons for different marker types
 
+<update-message/>
+
 Occasionally, you want to display **different marker icons** based on some distinction between marker types.
 
 You can use the following pseudo-code as a basis for performing that task. It will need to be customized to suit your own unique purposes.

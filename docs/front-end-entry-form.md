@@ -4,6 +4,8 @@ description: On the front-end, you can easily save data in a standard front-end 
 
 # Front-End Entry Form
 
+<update-message/>
+
 On the front-end, you can easily save data in a standard [front-end entry form](https://craftcms.com/knowledge-base/entry-form).
 
 The address field would look something like this...

@@ -4,6 +4,8 @@ description: Conduct a proximity search to find the nearest location.
 
 # Sorting entries by closest locations
 
+<update-message/>
+
 ## Twig template
 
 Include this in your `craft.entries` call:

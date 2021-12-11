@@ -4,6 +4,8 @@ description: As of Smart Map 3.3, you can easily export your Address data using 
 
 # Exporting the Address data
 
+<update-message/>
+
 As of Smart Map 3.3, you can easily export your Address data using the native export tool introduced in Craft 3.2.
 
 Select the **Address (Smart Map)** option from the Export Type menu to export the following...

@@ -4,6 +4,8 @@ description: By applying a filter, you can screen the subfields of your address 
 
 # Filtering entries by subfield value
 
+<update-message/>
+
 By applying a `filter`, you can screen the subfields of your address fields. This allows you to ensure that only entries with an _exact match_ are returned in the results.
 
 ```twig

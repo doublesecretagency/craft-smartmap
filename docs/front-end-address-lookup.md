@@ -4,6 +4,8 @@ description: You may find yourself needing to lookup an address or zip code from
 
 # Front-End Address Lookup
 
+<update-message/>
+
 You may find yourself needing to lookup an address or zip code from the front-end of your website. Fortunately, you can use the same geocoding techniques that Smart Map is using, without having to write a lot of extra custom code.
 
 ## Lookup via Variable

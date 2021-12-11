@@ -4,6 +4,8 @@ description: Here are a few common issues that people face when getting started.
 
 # Troubleshooting
 
+<update-message/>
+
 ## The map isn't appearing at all
 
 Check your DOM to see if the map container has been generated. If it has, then you're probably facing a simple CSS issue. By default, the `height` of a div will be zero... So even though the container is there, it isn't visible.

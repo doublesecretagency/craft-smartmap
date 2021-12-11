@@ -4,6 +4,8 @@ description: You can easily display a complete, nicely formatted address.
 
 # Automatically format an entire address
 
+<update-message/>
+
 You can keep the entire address on a single line by calling the field directly as a string...
 
 ```twig

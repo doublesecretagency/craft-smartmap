@@ -28,7 +28,6 @@ module.exports = {
         logo: '/images/icon.svg',
         searchMaxSuggestions: 10,
         nav: [
-            {text: 'Getting Started️', link: '/getting-started/'},
             {
                 text: 'How It Works',
                 items: [
@@ -71,7 +70,6 @@ module.exports = {
         ],
         sidebar: {
             '/': [
-                'getting-started',
                 'using-an-address-field',
                 'render-a-map-in-twig',
                 'sorting-entries-by-closest-locations',

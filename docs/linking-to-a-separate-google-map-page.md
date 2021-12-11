@@ -4,6 +4,8 @@ description: You can quickly generate a Google Maps link to your location. Simil
 
 # Linking to a separate Google Map page
 
+<update-message/>
+
 ## Generating a link to a Google map page
 
 ```twig

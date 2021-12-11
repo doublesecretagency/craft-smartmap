@@ -4,6 +4,8 @@ description: To ensure you have full access to the Google APIs, generate your AP
 
 # Get Google API keys
 
+<update-message/>
+
 In order to use the Google Maps API, you will need to generate two distinct API keys. Follow the official instructions provided by Google in order to set up a **browser key** and **server key**.
 
 :::warning Full Walkthrough

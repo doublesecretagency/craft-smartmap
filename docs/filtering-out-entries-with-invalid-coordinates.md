@@ -4,6 +4,8 @@ description: You can filter out location results which do not have valid coordin
 
 # Filtering out entries with invalid coordinates
 
+<update-message/>
+
 You can pass a `hasCoords` parameter to **show only locations with valid coordinates...**
 
 ```twig

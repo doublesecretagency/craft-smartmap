@@ -4,6 +4,8 @@ description: It's possible to override the Google API keys on the fly.
 
 # Override Google API keys
 
+<update-message/>
+
 There may be instances where you need to overwrite the Google API keys from a Twig template.
 
 ```twig

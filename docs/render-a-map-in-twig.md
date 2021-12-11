@@ -4,6 +4,8 @@ description: Create a map with either a single marker or a multiple markers. The
 
 # Render a map in Twig
 
+<update-message/>
+
 ## How to draw a map using Twig
 
 Create a **dynamic** or **static** map with one or more markers on it...

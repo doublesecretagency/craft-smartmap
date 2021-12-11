@@ -4,6 +4,8 @@ description: It's easy to add info bubbles to your map markers! An info bubble w
 
 # Adding marker info bubbles
 
+<update-message/>
+
 <img :src="$withBase('/images/smartmap-marker-info-example.png')" class="dropshadow" alt="">
 
 It's easy to add info bubbles to your map markers! An info bubble will appear when you click on each marker.

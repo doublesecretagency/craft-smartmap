@@ -4,6 +4,8 @@ description: Create a new Address field, and add it to anything you want. Your n
 
 # Using an Address field
 
+<update-message/>
+
 Create a new **Address** field, and add it to anything you want. Your new field can be part of an Entry, Asset, User, etc... basically, any Element Type is a valid host for your new address field. You can set an address as a Global field, or even include it in a Matrix field!
 
 When you're editing your content, you'll have three methods available to you for modifying an address:

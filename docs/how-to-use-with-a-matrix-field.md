@@ -4,6 +4,8 @@ description: Creating a map from a Matrix field is easy.
 
 # How to use with a Matrix field
 
+<update-message/>
+
 Creating a map from a Matrix field is easy... If your Matrix field handle is `myMatrixField`, then your code would look something like this:
 
 ```twig

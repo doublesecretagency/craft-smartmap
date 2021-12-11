@@ -4,6 +4,8 @@ description: It's common to create a set of map styles in JSON, and very easy to
 
 # Styling a Map
 
+<update-message/>
+
 It's common for people to use a site like [Snazzy Maps](https://snazzymaps.com) to generate a JSON styling for their map. Once you've got a JSON snippet from there, you'll want to apply those styles to your map in JavaScript.
 
 ```js

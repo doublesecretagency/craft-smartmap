@@ -4,6 +4,8 @@ description: After the map has been rendered in the browser, you can continue to
 
 # Manipulating the map in JavaScript
 
+<update-message/>
+
 After the map has been rendered in the browser, you can then continue to make adjustments via JavaScript. The Smart Map tools are in a JS object called `smartMap`... this is also where all of the maps & markers are stored.
 
 :::warning Google Maps API

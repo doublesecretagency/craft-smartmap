@@ -4,6 +4,8 @@ description: It's possible to use KML files with Smart Map. You can either apply
 
 # KML files
 
+<update-message/>
+
 When the needs of your map get too complex, you may find it beneficial to create a custom map with [Google My Maps](https://www.google.com/maps/about/mymaps/) (or a similar service). Once you have your KML file in hand, there are two ways to apply it using Smart Map...
 
 ## Generate a new map from the KML file

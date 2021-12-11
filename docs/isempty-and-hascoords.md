@@ -4,6 +4,8 @@ description: To make Twig logic a little easier, the Address model includes the 
 
 # `isEmpty` and `hasCoords`
 
+<update-message/>
+
 To make Twig logic a little easier, the Address model includes two methods...
 
 ## `.isEmpty`
