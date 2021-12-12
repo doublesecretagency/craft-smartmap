@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.3.6 - 2021-12-11
+
+> {warning} **Smart Map has been deprecated.** The plugin has been completely refactored, and re-released as the new [Google Maps plugin](https://plugins.craftcms.com/google-maps).
+> 
+> **Please switch to the Google Maps plugin as soon as possible.** [How to update...](https://plugins.doublesecretagency.com/google-maps/getting-started/updating-from-smart-map/)
+
 ## 3.3.5 - 2020-11-24
 
 ### Fixed

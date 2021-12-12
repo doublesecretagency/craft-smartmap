@@ -2,7 +2,7 @@
     "name": "doublesecretagency/craft-smartmap",
     "description": "The most comprehensive proximity search and mapping tool for Craft.",
     "type": "craft-plugin",
-    "version": "3.3.5",
+    "version": "3.3.6",
     "keywords": [
         "craft",
         "cms",
@@ -28,7 +28,7 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.5.0"
+        "craftcms/cms": "^3.6.14"
     },
     "autoload": {
         "psr-4": {
