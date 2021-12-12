@@ -44,7 +44,7 @@ class SmartMap extends Plugin
 {
 
     /** @const string Root URL for documentation. */
-    const DOCS_URL = 'https://www.doublesecretagency.com/plugins/smart-map/docs';
+    const DOCS_URL = 'https://plugins.doublesecretagency.com/smart-map';
 
     /** @event DetectLocationEvent The event that is triggered after the user's location has been detected. */
     const EVENT_AFTER_DETECT_LOCATION = 'afterDetectLocation';

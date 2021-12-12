@@ -86,7 +86,7 @@ var smartMap = {
         this.map[mapId].setOptions({styles: styles});
     },
     // Zoom in on a marker
-    // SEE DOCS: https://www.doublesecretagency.com/plugins/smart-map/docs/adding-marker-info-bubbles
+    // SEE DOCS: https://plugins.doublesecretagency.com/smart-map/adding-marker-info-bubbles
     zoomOnMarker: function (mapId, markerName, zoom) {
         this.map[mapId].setZoom(zoom);
         this.map[mapId].panTo(this.marker[markerName].position);

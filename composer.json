@@ -17,7 +17,7 @@
         "locations"
     ],
     "support": {
-        "docs": "https://www.doublesecretagency.com/plugins/smart-map/docs",
+        "docs": "https://plugins.doublesecretagency.com/smart-map",
         "issues": "https://github.com/doublesecretagency/craft-smartmap/issues"
     },
     "license": "proprietary",

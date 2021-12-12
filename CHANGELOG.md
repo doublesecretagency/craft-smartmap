@@ -38,10 +38,10 @@
 
 ### Added
 - Added support for Address exports via the native Craft exporter tool.
-- Added [filter fallback](https://www.doublesecretagency.com/plugins/smart-map/docs/using-a-filter-fallback-in-proximity-searches) technique for proximity searches.
+- Added [filter fallback](https://plugins.doublesecretagency.com/smart-map/using-a-filter-fallback-in-proximity-searches) technique for proximity searches.
 - KML files can now be specified by absolute URL.
-- Added [`field`](https://www.doublesecretagency.com/plugins/smart-map/docs/customizing-the-map-in-twig) option to filter field(s) to be included on map.
-- Added [`hasCoords`](https://www.doublesecretagency.com/plugins/smart-map/docs/filtering-out-entries-with-invalid-coordinates) parameter to filter out results with incomplete coordinates. (thanks @bencroker)
+- Added [`field`](https://plugins.doublesecretagency.com/smart-map/customizing-the-map-in-twig) option to filter field(s) to be included on map.
+- Added [`hasCoords`](https://plugins.doublesecretagency.com/smart-map/filtering-out-entries-with-invalid-coordinates) parameter to filter out results with incomplete coordinates. (thanks @bencroker)
 - Added `SearchResultsEvent`, which allows you to modify the address lookup results. (thanks @carlcs)
 - All API access keys (for Google, ipstack, and MaxMind) can now be set via [environment variables](https://docs.craftcms.com/v3/config/environments.html). (thanks @carlcs)
 
