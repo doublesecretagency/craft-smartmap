@@ -1,20 +1,17 @@
 {% extends '_layouts/cp' %}
-{% set title = 'Welcome to Smart Map!'|t('smart-map') %}
-
-{% set emailLink = 'mailto:support@doublesecretagency.com?subject=Smart+Map+~+Fresh+Installation' %}
-
-{% set iconUrl = view.getAssetManager().getPublishedUrl('@doublesecretagency/smartmap/icon.svg', true) %}
+{% set title = 'Welcome to Smart Map (DEPRECATED)'|t('smart-map') %}
 
 {% set content %}
-    <div style="text-align:center; margin:0 auto;">
-        <img src="{{ iconUrl }}" alt="" width="200" style="margin:12px;">
-        <h2>{{ 'Thanks for using Smart Map!'|t('smart-map') }}</h2>
-        <p>{{ 'Feel free to <a href="{emailLink}" target="_blank">contact us</a> with any feature requests, bug reports, or suggestions.'|t('smart-map', {emailLink:emailLink})|raw }}</p>
-        <div class="btngroup" style="display:inline-block; margin-right:20px;">
-            <a class="btn submit" href="{{ cpUrl('settings/fields/new') }}">{{ 'Create an Address field'|t('smart-map') }}</a>
-        </div>
-        <div class="btngroup" style="display:inline-block">
-            <a class="btn submit" href="{{ craft.smartMap.docsUrl }}" target="_blank">{{ 'View full documentation'|t('smart-map') }}</a>
-        </div>
+    <p><strong>Thanks for installing Smart Map!</strong> This plugin is deprecated, however... please update to the <a href="https://plugins.craftcms.com/google-maps" target="_blank">Google Maps plugin</a> as soon as possible.</p>
+    <div class="pane">
+        <h2>Smart Map has been replaced by Google Maps</h2>
+        <p>As of February 2021, the Smart Map plugin has been completely rebuilt and replaced with the new <strong>Google Maps plugin for Craft CMS</strong>.</p>
+        <p>Please update to the <a href="https://plugins.craftcms.com/google-maps" target="_blank">Google Maps plugin</a> as soon as possible. For more details, see <a href="https://www.doublesecretagency.com/blog/smart-map-is-dead-long-live-google-maps" target="_blank">the blog announcement...</a></p>
+    </div>
+    <div class="btngroup" style="display:inline-block; margin-right:10px;">
+        <a class="btn submit" href="https://plugins.craftcms.com/google-maps">See the new Google Maps plugin</a>
+    </div>
+    <div class="btngroup" style="display:inline-block;">
+        <a class="btn" href="{{ cpUrl('settings/fields/new') }}">{{ 'Create an Address field with Smart Map'|t('smart-map') }}</a>
     </div>
 {% endset %}

@@ -2,8 +2,6 @@
 
 {% set apiKeysUrl = docsUrl ~ '/get-google-api-keys' %}
 
-{% set supportEmail = '<a href="mailto:support@doublesecretagency.com?subject=Smart%20Map%20Feedback" target="_blank">support@doublesecretagency.com</a>' %}
-
 {% macro configWarning(setting, docsUrl) -%}
     {{ "This is being overridden by the {setting} config setting."|t('app', {
         setting: '<a href="'~docsUrl~'" target="_blank">'~setting~'</a>'
@@ -32,9 +30,12 @@
 {% from _self import configWarning %}
 {% from _self import geolocationOption %}
 
-<h2>{{ "Documentation & Feedback"|t('smart-map') }}</h2>
-<p>{{ 'All documentation can be found at <a href="{url}" target="_blank">doublesecretagency.com</a>.'|t('smart-map', {url:docsUrl})|raw }}</p>
-<p>{{ "You can reach us at {supportEmail}. All questions, comments, and suggestions are welcome!"|t('smart-map', {supportEmail:supportEmail})|raw }}</p>
+<div class="pane">
+    <h2>Smart Map has been replaced by Google Maps</h2>
+    <p>As of February 2021, the Smart Map plugin has been completely rebuilt and replaced with the new <strong>Google Maps plugin for Craft CMS</strong>.</p>
+    <p>Please update to the <a href="https://plugins.craftcms.com/google-maps" target="_blank">Google Maps plugin</a> as soon as possible. For more details, <a href="https://www.doublesecretagency.com/blog/smart-map-is-dead-long-live-google-maps" target="_blank">see here...</a></p>
+</div>
+
 <hr/>
 
 <h2>{{ "Google Maps API Keys"|t('smart-map') }}</h2>
